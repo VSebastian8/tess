@@ -187,3 +187,8 @@ hex =
 hexv : PC
 hexv =
     { poly = hexagon, col = Primary, centre = { x = 0.5, y = 0.86 }, dist = 0.86 }
+
+
+oct : PC
+oct =
+    { poly = octagon, col = Primary, centre = { x = 0.5, y = 0.5 + sqrt 0.5 }, dist = 0.5 + sqrt 0.5 }

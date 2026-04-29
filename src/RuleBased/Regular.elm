@@ -11,19 +11,13 @@ regularTesselations : List ( String, Tess )
 regularTesselations =
     [ ( "Square", squareTessellation )
     , ( "Rotated Square", rotatedSquareTessellation )
+    , ( "Square Flower", squareFlowerTessellation )
     , ( "Triangular", triangularTessellation )
     , ( "Rotated Triangular", rotatedTriangularTessellation )
     , ( "Hexagonal", hexagonalTessellation )
     ]
 
 
-{-| Regular Tiling of the plane with the `square` shape.
-
-  - Type: regular
-  - Corners: **4.4.4.4**
-  - Symmetry: square
-
--}
 squareTessellation : Tess
 squareTessellation =
     let
@@ -65,13 +59,6 @@ squareTessellation =
     }
 
 
-{-| Regular Tiling of the plane with the `triangle` shape.
-
-  - Type: regular
-  - Corners: **3.3.3.3.3.3**
-  - Symmetry: hexagonal
-
--}
 triangularTessellation : Tess
 triangularTessellation =
     let
@@ -114,13 +101,6 @@ triangularTessellation =
     }
 
 
-{-| Regular Tiling of the plane with the `hexagon` shape.
-
-  - Type: regular
-  - Corners: **6.6.6**
-  - Symmetry: hexagonal
-
--}
 hexagonalTessellation : Tess
 hexagonalTessellation =
     let
@@ -255,6 +235,84 @@ rotatedTriangularTessellation =
     in
     { rules = [ triRule1, triRule2, triRule3, triRule4 ]
     , open = [ eqi |> rto 45 |> tr { x = -1, y = 0 } ]
+    , closed = []
+    , size = 30
+    }
+
+
+squareFlowerTessellation : Tess
+squareFlowerTessellation =
+    let
+        diag1 =
+            { anchor = squ
+            , additions =
+                [ { squ | col = Secondary } |> tr { x = 1, y = 1 }
+                ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -1 }, { x = 3, y = 3 } )
+            }
+
+        diag2 =
+            { anchor = { squ | col = Secondary }
+            , additions =
+                [ { squ | col = Ternary } |> tr { x = 1, y = 1 }
+                ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -1 }, { x = 3, y = 3 } )
+            }
+
+        diag3 =
+            { anchor = { squ | col = Ternary }
+            , additions =
+                [ squ |> tr { x = 1, y = 1 }
+                ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -1 }, { x = 3, y = 3 } )
+            }
+
+        fill1 =
+            { anchor = squ
+            , additions =
+                [ squ |> tr { x = 0, y = -1 }
+                ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -2 }, { x = 3, y = 3 } )
+            }
+
+        fill2 =
+            { anchor = { squ | col = Secondary }
+            , additions =
+                [ { squ | col = Secondary } |> tr { x = 0, y = -1 }
+                ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -2 }, { x = 3, y = 3 } )
+            }
+
+        fill3 =
+            { anchor = { squ | col = Ternary }
+            , additions =
+                [ { squ | col = Ternary } |> tr { x = 0, y = -1 }
+                ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -2 }, { x = 3, y = 3 } )
+            }
+    in
+    { rules =
+        [ diag1
+        , diag2
+        , diag3
+        , fill1
+        , fill2
+        , fill3
+        ]
+    , open =
+        [ { squ | col = Secondary } |> rto 180
+        , { squ | col = Secondary } |> rto 90 |> tr { x = 1, y = 0 }
+        , { squ | col = Secondary } |> tr { x = 1, y = 1 }
+        , { squ | col = Secondary } |> rto -90 |> tr { x = 0, y = 1 }
+        , squ
+        ]
+            |> List.map (tr { x = 12.8, y = 12.8 })
     , closed = []
     , size = 30
     }

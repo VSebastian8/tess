@@ -8,6 +8,7 @@ import Html.Attributes exposing (class, id, name, src, style, type_, value)
 import Html.Events exposing (onClick, onInput)
 import RuleBased.Isogonal exposing (isogonalTesselations)
 import RuleBased.Regular exposing (regularTesselations)
+import RuleBased.Semiregular exposing (semiregularTesselations)
 import Rules exposing (..)
 import String exposing (fromFloat)
 import Svg exposing (svg)
@@ -52,7 +53,7 @@ type alias Model =
 
 tesselations : List ( String, Tess )
 tesselations =
-    regularTesselations ++ isogonalTesselations
+    regularTesselations ++ isogonalTesselations ++ semiregularTesselations
 
 
 tessOptions : List String
@@ -78,7 +79,7 @@ init =
       , customSecondary = "#CCCCCC"
       , customTernary = "#999999"
       , customQuart = "#555555"
-      , selectedTess = "Hexagonal"
+      , selectedTess = "Square Flower"
       }
     , Cmd.none
     )
