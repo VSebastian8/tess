@@ -12,16 +12,27 @@
     <div id="app"></div>
     <script src="elm.js"></script>
     <script>
-      var app = Elm.Main.init({ node: document.getElementById("app") });
-      
+      // Get local values
+      var tessellation = localStorage.getItem('tess-tessellation') ?? "Hexagonal";
+      var theme = localStorage.getItem('tess-theme') ?? "Forest";
+      var stroke = localStorage.getItem('tess-primary') ?? "#000000"; 
+      var primary = localStorage.getItem('tess-primary') ?? "#FFFFFF"; 
+      var secondary = localStorage.getItem('tess-secondary') ?? "#CCCCCC"; 
+      var ternary = localStorage.getItem('tess-ternary') ?? "#999999"; 
+      var quart = localStorage.getItem('tess-quart') ?? "#555555"; 
+      // Initiate app
+      var app = Elm.Main.init({ node: document.getElementById("app"), flags: {tessellation, theme, stroke, primary, secondary, ternary, quart} });
+      // Save local values
+      app.ports.setLocal.subscribe(function(pair) {
+        localStorage.setItem(pair[0], pair[1]);
+      });
+      // Port for svg download
       app.ports.downloadSvg.subscribe(function(imageName) {
-        // const containerId = 'svgContainer';
         const containerId = 'tilingDownload';
         const svgElement = document.getElementById(containerId).querySelector('svg');
         const svgString = new XMLSerializer().serializeToString(svgElement);
         const blob = new Blob([svgString], {type: "image/svg+xml"});
         const url = URL.createObjectURL(blob);
-        
         const link = document.createElement('a');
         link.href = url;
         link.download = imageName;

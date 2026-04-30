@@ -13,23 +13,27 @@ import Rules exposing (..)
 import String exposing (fromFloat)
 import Svg exposing (svg)
 import Svg.Attributes exposing (height, viewBox, width)
+import Task
 
 
 
--- Outgoing port to JavaScript
+-- Outgoing ports to JavaScript
 
 
 port downloadSvg : String -> Cmd msg
+
+
+port setLocal : ( String, String ) -> Cmd msg
 
 
 
 -- MAIN
 
 
-main : Program () Model Msg
+main : Program Flags Model Msg
 main =
     Browser.element
-        { init = \() -> init
+        { init = init
         , view = view
         , update = update
         , subscriptions = \_ -> Sub.none
@@ -51,35 +55,19 @@ type alias Model =
     }
 
 
-tesselations : List ( String, Tess )
-tesselations =
-    regularTesselations ++ isogonalTesselations ++ semiregularTesselations
+type alias Flags =
+    { tessellation : String, theme : String, stroke : String, primary : String, secondary : String, ternary : String, quart : String }
 
 
-tessOptions : List String
-tessOptions =
-    tesselations |> List.map Tuple.first
-
-
-tessDict : Dict String Tess
-tessDict =
-    Dict.fromList tesselations
-
-
-themeOptions : List String
-themeOptions =
-    [ "Forest", "Aqua", "Amethyst", "Honey", "Custom" ]
-
-
-init : ( Model, Cmd msg )
-init =
-    ( { selectedTheme = "Forest"
-      , customStroke = "#000000"
-      , customPrimary = "#FFFFFF"
-      , customSecondary = "#CCCCCC"
-      , customTernary = "#999999"
-      , customQuart = "#555555"
-      , selectedTess = "Square Flower"
+init : Flags -> ( Model, Cmd msg )
+init { tessellation, theme, stroke, primary, secondary, ternary, quart } =
+    ( { selectedTheme = theme
+      , customStroke = stroke
+      , customPrimary = primary
+      , customSecondary = secondary
+      , customTernary = ternary
+      , customQuart = quart
+      , selectedTess = tessellation
       }
     , Cmd.none
     )
@@ -98,34 +86,43 @@ type Msg
     | PickTernary String
     | PickQuart String
     | DownloadSvg
+    | SetLocal String String
+
+
+run : msg -> Cmd msg
+run m =
+    Task.perform (always m) (Task.succeed ())
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         SelectTess tessName ->
-            ( { model | selectedTess = tessName }, Cmd.none )
+            ( { model | selectedTess = tessName }, run (SetLocal "tess-tessellation" tessName) )
 
         SelectTheme theme ->
-            ( { model | selectedTheme = theme }, Cmd.none )
+            ( { model | selectedTheme = theme }, run (SetLocal "tess-theme" theme) )
 
         PickStroke color ->
-            ( { model | customStroke = color }, Cmd.none )
+            ( { model | customStroke = color }, run (SetLocal "tess-stroke" color) )
 
         PickPrimary color ->
-            ( { model | customPrimary = color }, Cmd.none )
+            ( { model | customPrimary = color }, run (SetLocal "tess-primary" color) )
 
         PickSecondary color ->
-            ( { model | customSecondary = color }, Cmd.none )
+            ( { model | customSecondary = color }, run (SetLocal "tess-secondary" color) )
 
         PickTernary color ->
-            ( { model | customTernary = color }, Cmd.none )
+            ( { model | customTernary = color }, run (SetLocal "tess-ternary" color) )
 
         PickQuart color ->
-            ( { model | customQuart = color }, Cmd.none )
+            ( { model | customQuart = color }, run (SetLocal "tess-quart" color) )
 
         DownloadSvg ->
             ( model, downloadSvg (model.selectedTess ++ "_" ++ model.selectedTheme) )
+
+        SetLocal key val ->
+            ( model, setLocal ( key, val ) )
 
 
 
@@ -143,6 +140,26 @@ view model =
         , tessDisplay model
         , downloadDisplay model
         ]
+
+
+tessellations : List ( String, Tess )
+tessellations =
+    regularTesselations ++ isogonalTesselations ++ semiregularTesselations
+
+
+tessOptions : List String
+tessOptions =
+    tessellations |> List.map Tuple.first
+
+
+tessDict : Dict String Tess
+tessDict =
+    Dict.fromList tessellations
+
+
+themeOptions : List String
+themeOptions =
+    [ "Forest", "Aqua", "Amethyst", "Honey", "Custom" ]
 
 
 tessMenu : Model -> Html Msg
