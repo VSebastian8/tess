@@ -1,6 +1,5 @@
 module Hardcoded.Lab exposing (convexHexaTiling, floretHexaTiling, pythagoreanTiling, templateTiling)
 
-import ColorTheme exposing (..)
 import List exposing (repeat)
 import Polygon exposing (..)
 import Shapes exposing (..)
@@ -15,8 +14,8 @@ import Util exposing (..)
   - Symmetry:
 
 -}
-templateTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-templateTiling theme n m origin =
+templateTiling : Int -> Int -> Point -> List (Svg msg)
+templateTiling n m origin =
     if m <= 0 then
         []
 
@@ -28,11 +27,11 @@ templateTiling theme n m origin =
             next_origin =
                 origin
         in
-        templateLine theme n origin size ++ templateTiling theme n (m - 1) next_origin
+        templateLine n origin size ++ templateTiling n (m - 1) next_origin
 
 
-templateLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-templateLine theme n origin size =
+templateLine : Int -> Point -> Float -> List (Svg msg)
+templateLine n origin size =
     if n <= 0 then
         []
 
@@ -41,8 +40,8 @@ templateLine theme n origin size =
             next_origin =
                 origin
         in
-        renderShape templateShape size origin theme [ Primary ]
-            ++ templateLine theme (n - 1) next_origin size
+        renderShape templateShape size origin [ Primary ]
+            ++ templateLine (n - 1) next_origin size
 
 
 templateShape : Shape
@@ -52,8 +51,8 @@ templateShape =
 
 {-| Pentagonal floret and hexagon tessellation
 -}
-floretHexaTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-floretHexaTiling theme n m origin =
+floretHexaTiling : Int -> Int -> Point -> List (Svg msg)
+floretHexaTiling n m origin =
     if m <= 0 then
         []
 
@@ -81,11 +80,11 @@ floretHexaTiling theme n m origin =
                     _ ->
                         -2
         in
-        floretHexaLine theme n origin size ++ floretHexaTiling theme (n + color_offset) (m - 1) next_origin
+        floretHexaLine n origin size ++ floretHexaTiling (n + color_offset) (m - 1) next_origin
 
 
-floretHexaLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-floretHexaLine theme n origin size =
+floretHexaLine : Int -> Point -> Float -> List (Svg msg)
+floretHexaLine n origin size =
     if n <= 0 then
         []
 
@@ -98,7 +97,7 @@ floretHexaLine theme n origin size =
                     |> mul size
                     |> add origin
         in
-        renderShape floretHexaShape size origin theme ((mix3Color n |> repeat 6) ++ [ Quart ]) ++ floretHexaLine theme (n - 1) next_origin size
+        renderShape floretHexaShape size origin ((mix3Color n |> repeat 6) ++ [ Quart ]) ++ floretHexaLine (n - 1) next_origin size
 
 
 floretHexaShape : Shape
@@ -116,8 +115,8 @@ floretHexaShape =
 
 {-| Big squares with little squares between them
 -}
-pythagoreanTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-pythagoreanTiling theme n m origin =
+pythagoreanTiling : Int -> Int -> Point -> List (Svg msg)
+pythagoreanTiling n m origin =
     let
         big_size =
             30.0
@@ -150,15 +149,15 @@ pythagoreanTiling theme n m origin =
                               )
                             ]
                         )
-                    |> List.concatMap (\( point, size, color ) -> renderShape (asShape [ square ]) size point theme [ color ])
+                    |> List.concatMap (\( point, size, color ) -> renderShape (asShape [ square ]) size point [ color ])
             )
         |> List.concat
 
 
 {-| Convex Hexagon type 3 Tiling
 -}
-convexHexaTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-convexHexaTiling theme n m origin =
+convexHexaTiling : Int -> Int -> Point -> List (Svg msg)
+convexHexaTiling n m origin =
     if m <= 0 then
         []
 
@@ -185,11 +184,11 @@ convexHexaTiling theme n m origin =
                     _ ->
                         0
         in
-        convexHexaLine theme n offset origin size ++ convexHexaTiling theme n (m - 1) next_origin
+        convexHexaLine n offset origin size ++ convexHexaTiling n (m - 1) next_origin
 
 
-convexHexaLine : Theme -> Int -> Int -> Point -> Float -> List (Svg msg)
-convexHexaLine theme n offset origin size =
+convexHexaLine : Int -> Int -> Point -> Float -> List (Svg msg)
+convexHexaLine n offset origin size =
     if n <= 0 then
         []
 
@@ -202,7 +201,7 @@ convexHexaLine theme n offset origin size =
                     |> mul size
                     |> add origin
         in
-        renderShape convexHexaShape size origin theme (n + offset |> mix3Color |> repeat 3) ++ convexHexaLine theme (n - 1) offset next_origin size
+        renderShape convexHexaShape size origin (n + offset |> mix3Color |> repeat 3) ++ convexHexaLine (n - 1) offset next_origin size
 
 
 convexHexaShape : Shape

@@ -1,7 +1,6 @@
 port module Main exposing (..)
 
 import Browser
-import ColorTheme exposing (..)
 import Dict exposing (Dict)
 import Html exposing (..)
 import Html.Attributes exposing (class, id, name, src, style, type_, value)
@@ -14,6 +13,7 @@ import String exposing (fromFloat)
 import Svg exposing (svg)
 import Svg.Attributes exposing (height, viewBox, width)
 import Task
+import Util exposing (..)
 
 
 
@@ -119,7 +119,7 @@ update msg model =
             ( { model | customQuart = color }, run (SetLocal "tess-quart" color) )
 
         DownloadSvg ->
-            ( model, downloadSvg (model.selectedTess ++ "_" ++ model.selectedTheme) )
+            ( model, downloadSvg (model.selectedTess ++ " " ++ model.selectedTheme) )
 
         SetLocal key val ->
             ( model, setLocal ( key, val ) )
@@ -132,7 +132,9 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div
-        [ id "container" ]
+        [ id "container"
+        , class ("theme" ++ model.selectedTheme)
+        ]
         [ tessMenu model
         , themeMenu model
         , settingsMenu
@@ -294,15 +296,15 @@ settingsMenu =
         ]
 
 
-showTess : Tess -> Float -> Float -> Theme -> Html msg
-showTess tess w h theme =
+showTess : Tess -> Float -> Float -> Html msg
+showTess tess w h =
     svg
         [ viewBox ("0 0 " ++ fromFloat w ++ " " ++ fromFloat h)
         , width (fromFloat w)
         , height (fromFloat h)
         , style "margin-bottom" "-5px"
         ]
-        (renderTess (fix tess ( { x = -3, y = -3 }, { x = w / tess.size + 2, y = h / tess.size + 2 } )) theme)
+        (renderTess (fix tess ( { x = -3, y = -3 }, { x = w / tess.size + 2, y = h / tess.size + 2 } )))
 
 
 currentSvg : Model -> Float -> Float -> Html msg
@@ -312,12 +314,7 @@ currentSvg model w h =
             div [] []
 
         Just tess ->
-            showTess tess
-                w
-                h
-                (getTheme
-                    model
-                )
+            showTess tess w h
 
 
 tessDisplay : Model -> Html msg
@@ -343,7 +340,7 @@ rulesDisplay model =
 
                 Just tess ->
                     tess.rules
-                        |> List.map (\r -> renderRule r (getTheme model))
+                        |> List.map (\r -> renderRule r)
             )
         ]
 
@@ -356,39 +353,3 @@ downloadDisplay model =
             [ currentSvg model 1920 1080
             ]
         ]
-
-
-getTheme : Model -> Theme
-getTheme model =
-    case model.selectedTheme of
-        "Amethyst" ->
-            amethystTheme
-
-        "Aqua" ->
-            aquaTheme
-
-        "Honey" ->
-            honeyTheme
-
-        "Forest" ->
-            forestTheme
-
-        _ ->
-            { getColor =
-                \color ->
-                    case color of
-                        Primary ->
-                            model.customPrimary
-
-                        Secondary ->
-                            model.customSecondary
-
-                        Ternary ->
-                            model.customTernary
-
-                        Quart ->
-                            model.customQuart
-
-                        Stroke ->
-                            model.customStroke
-            }

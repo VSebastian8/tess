@@ -1,39 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=1"
+    />
     <title>Tess</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="buttons.css">
-    <link rel="icon" type="image/svg" href="assets/logo.svg">
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="themes.css" />
+    <link rel="icon" type="image/svg" href="assets/logo.svg" />
   </head>
   <body>
     <div id="app"></div>
     <script src="elm.js"></script>
     <script>
       // Get local values
-      var tessellation = localStorage.getItem('tess-tessellation') ?? "Hexagonal";
-      var theme = localStorage.getItem('tess-theme') ?? "Forest";
-      var stroke = localStorage.getItem('tess-primary') ?? "#000000"; 
-      var primary = localStorage.getItem('tess-primary') ?? "#FFFFFF"; 
-      var secondary = localStorage.getItem('tess-secondary') ?? "#CCCCCC"; 
-      var ternary = localStorage.getItem('tess-ternary') ?? "#999999"; 
-      var quart = localStorage.getItem('tess-quart') ?? "#555555"; 
+      let tessellation =
+        localStorage.getItem("tess-tessellation") ?? "Hexagonal";
+      let theme = localStorage.getItem("tess-theme") ?? "Forest";
+      let primary = "#FFFFFF";
+      let secondary = "#CCCCCC";
+      let ternary = "#999999";
+      let quart = "#555555";
+      let stroke = "#000000";
+      // Custom theme style
+      const styleCustomTheme = document.createElement("style");
+      document.head.appendChild(styleCustomTheme);
+      const setCustomStyle = () => {
+        primary = localStorage.getItem("tess-primary") ?? primary;
+        secondary = localStorage.getItem("tess-secondary") ?? secondary;
+        ternary = localStorage.getItem("tess-ternary") ?? ternary;
+        quart = localStorage.getItem("tess-quart") ?? quart;
+        stroke = localStorage.getItem("tess-stroke") ?? stroke;
+        styleCustomTheme.textContent = `.themeCustom {
+          --primary-color: ${primary};
+          --secondary-color: ${secondary};
+          --ternary-color: ${ternary};
+          --quart-color: ${quart};
+          --stroke-color: ${stroke};
+        }`;
+      };
       // Initiate app
-      var app = Elm.Main.init({ node: document.getElementById("app"), flags: {tessellation, theme, stroke, primary, secondary, ternary, quart} });
+      setCustomStyle();
+      var app = Elm.Main.init({
+        node: document.getElementById("app"),
+        flags: {
+          tessellation,
+          theme,
+          stroke,
+          primary,
+          secondary,
+          ternary,
+          quart,
+        },
+      });
       // Save local values
-      app.ports.setLocal.subscribe(function(pair) {
+      app.ports.setLocal.subscribe(function (pair) {
         localStorage.setItem(pair[0], pair[1]);
+        setCustomStyle();
       });
       // Port for svg download
-      app.ports.downloadSvg.subscribe(function(imageName) {
-        const containerId = 'tilingDownload';
-        const svgElement = document.getElementById(containerId).querySelector('svg');
-        const svgString = new XMLSerializer().serializeToString(svgElement);
-        const blob = new Blob([svgString], {type: "image/svg+xml"});
+      app.ports.downloadSvg.subscribe(function (imageName) {
+        const containerId = "tilingDownload";
+        const svgElement = document
+          .getElementById(containerId)
+          .querySelector("svg");
+        // Resolve CSS colors, clone so DOM is not mutated
+        const clone = svgElement.cloneNode(true);
+        clone.querySelectorAll("*").forEach((el, i) => {
+          const live = svgElement.querySelectorAll("*")[i];
+          const computed = getComputedStyle(live);
+          const fill = computed.fill;
+          if (fill) el.setAttribute("fill", fill);
+          const stroke = computed.stroke;
+          if (stroke) el.setAttribute("stroke", stroke);
+        });
+        // Download
+        const svgString = new XMLSerializer().serializeToString(clone);
+        const blob = new Blob([svgString], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
         link.download = imageName;
         document.body.appendChild(link);
@@ -43,5 +90,4 @@
       });
     </script>
   </body>
-  
 </html>

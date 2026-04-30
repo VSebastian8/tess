@@ -1,6 +1,5 @@
 module Shapes exposing (..)
 
-import ColorTheme exposing (..)
 import Polygon exposing (..)
 import Svg exposing (Svg)
 import Util exposing (..)
@@ -41,8 +40,8 @@ asShape polygons =
     { render = polygons, topLeft = { x = xmin, y = ymin }, bottomRight = { x = xmax, y = ymax } }
 
 
-renderShape : Shape -> Float -> Point -> Theme -> List Color -> List (Svg msg)
-renderShape { render, topLeft, bottomRight } size origin theme colors =
+renderShape : Shape -> Float -> Point -> List Color -> List (Svg msg)
+renderShape { render, topLeft, bottomRight } size origin colors =
     let
         leftPoint =
             topLeft |> mul size |> add origin
@@ -60,7 +59,7 @@ renderShape { render, topLeft, bottomRight } size origin theme colors =
         []
 
     else
-        List.map2 (\poly color -> polygonSvg poly size origin theme color 2) render colors
+        List.map2 (\poly color -> polygonSvg poly size origin color 2) render colors
 
 
 equilateral : Polygon

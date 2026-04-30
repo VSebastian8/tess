@@ -5279,7 +5279,7 @@ var $author$project$Main$update = F2(
 			case 'DownloadSvg':
 				return _Utils_Tuple2(
 					model,
-					$author$project$Main$downloadSvg(model.selectedTess + ('_' + model.selectedTheme)));
+					$author$project$Main$downloadSvg(model.selectedTess + (' ' + model.selectedTheme)));
 			default:
 				var key = msg.a;
 				var val = msg.b;
@@ -5289,6 +5289,14 @@ var $author$project$Main$update = F2(
 						_Utils_Tuple2(key, val)));
 		}
 	});
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$core$Basics$compare = _Utils_compare;
 var $elm$core$Dict$get = F2(
@@ -5322,100 +5330,6 @@ var $elm$core$Dict$get = F2(
 			}
 		}
 	});
-var $author$project$ColorTheme$amethystTheme = {
-	getColor: function (color) {
-		switch (color.$) {
-			case 'Primary':
-				return '#810EA9';
-			case 'Secondary':
-				return '#BC7AD2';
-			case 'Ternary':
-				return '#51185C';
-			case 'Quart':
-				return '#E9CDF6';
-			default:
-				return 'black';
-		}
-	}
-};
-var $author$project$ColorTheme$aquaTheme = {
-	getColor: function (color) {
-		switch (color.$) {
-			case 'Primary':
-				return '#F2EFE7';
-			case 'Secondary':
-				return '#9ACBD0';
-			case 'Ternary':
-				return '#48A6A7';
-			case 'Quart':
-				return '#006A71';
-			default:
-				return '#006A71';
-		}
-	}
-};
-var $author$project$ColorTheme$forestTheme = {
-	getColor: function (color) {
-		switch (color.$) {
-			case 'Primary':
-				return '#8AB2A6';
-			case 'Secondary':
-				return '#ACD3A8';
-			case 'Ternary':
-				return '#F6F1DE';
-			case 'Quart':
-				return '#3E3F5B';
-			default:
-				return '#3E3F5B';
-		}
-	}
-};
-var $author$project$ColorTheme$honeyTheme = {
-	getColor: function (color) {
-		switch (color.$) {
-			case 'Primary':
-				return '#FF9A0A';
-			case 'Secondary':
-				return '#FECB09';
-			case 'Ternary':
-				return '#FEED0D';
-			case 'Quart':
-				return '#CE7C00';
-			default:
-				return '#CE7C00';
-		}
-	}
-};
-var $author$project$Main$getTheme = function (model) {
-	var _v0 = model.selectedTheme;
-	switch (_v0) {
-		case 'Amethyst':
-			return $author$project$ColorTheme$amethystTheme;
-		case 'Aqua':
-			return $author$project$ColorTheme$aquaTheme;
-		case 'Honey':
-			return $author$project$ColorTheme$honeyTheme;
-		case 'Forest':
-			return $author$project$ColorTheme$forestTheme;
-		default:
-			return {
-				getColor: function (color) {
-					switch (color.$) {
-						case 'Primary':
-							return model.customPrimary;
-						case 'Secondary':
-							return model.customSecondary;
-						case 'Ternary':
-							return model.customTernary;
-						case 'Quart':
-							return model.customQuart;
-						default:
-							return model.customStroke;
-					}
-				}
-			};
-	}
-};
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
 		any:
@@ -5646,7 +5560,6 @@ var $author$project$Rules$fix = F2(
 	});
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
-var $author$project$ColorTheme$Stroke = {$: 'Stroke'};
 var $elm$core$Tuple$pair = F2(
 	function (a, b) {
 		return _Utils_Tuple2(a, b);
@@ -5691,6 +5604,7 @@ var $author$project$Polygon$asPoints = function (_v0) {
 				lengths,
 				A2($elm$core$List$cons, rotation + 180, angles))));
 };
+var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $author$project$Polygon$drawAt = F2(
 	function (origin, points) {
 		return A2(
@@ -5699,6 +5613,20 @@ var $author$project$Polygon$drawAt = F2(
 			points);
 	});
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
+var $author$project$Util$getVar = function (color) {
+	switch (color.$) {
+		case 'Primary':
+			return '--primary-color';
+		case 'Secondary':
+			return '--secondary-color';
+		case 'Ternary':
+			return '--ternary-color';
+		case 'Quart':
+			return '--quart-color';
+		default:
+			return '--stroke-color';
+	}
+};
 var $elm$svg$Svg$Attributes$points = _VirtualDom_attribute('points');
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$polygon = $elm$svg$Svg$trustedNode('polygon');
@@ -5717,8 +5645,8 @@ var $author$project$Polygon$scaleWith = F2(
 	});
 var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
 var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
-var $author$project$Polygon$polygonSvg = F6(
-	function (poly, size, origin, theme, color, w) {
+var $author$project$Polygon$polygonSvg = F5(
+	function (poly, size, origin, color, w) {
 		var svgPoints = A2(
 			$elm$core$String$join,
 			' ',
@@ -5740,39 +5668,37 @@ var $author$project$Polygon$polygonSvg = F6(
 				[
 					$elm$svg$Svg$Attributes$points(svgPoints),
 					$elm$svg$Svg$Attributes$fill(
-					theme.getColor(color)),
-					$elm$svg$Svg$Attributes$stroke(
-					theme.getColor($author$project$ColorTheme$Stroke)),
+					'var(' + ($author$project$Util$getVar(color) + ')')),
+					$elm$svg$Svg$Attributes$stroke('var(--stroke-color)'),
 					$elm$svg$Svg$Attributes$strokeWidth(
-					$elm$core$String$fromFloat(w))
+					$elm$core$String$fromFloat(w)),
+					$elm$svg$Svg$Attributes$class('poly')
 				]),
 			_List_Nil);
 	});
-var $author$project$Rules$renderTess = F2(
-	function (_v0, theme) {
-		var closed = _v0.closed;
-		var size = _v0.size;
-		return A2(
-			$elm$core$List$map,
-			function (p) {
-				return A6(
-					$author$project$Polygon$polygonSvg,
-					p.poly,
-					size,
-					{x: 0, y: 0},
-					theme,
-					p.col,
-					2);
-			},
-			closed);
-	});
+var $author$project$Rules$renderTess = function (_v0) {
+	var closed = _v0.closed;
+	var size = _v0.size;
+	return A2(
+		$elm$core$List$map,
+		function (p) {
+			return A5(
+				$author$project$Polygon$polygonSvg,
+				p.poly,
+				size,
+				{x: 0, y: 0},
+				p.col,
+				2);
+		},
+		closed);
+};
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
-var $author$project$Main$showTess = F4(
-	function (tess, w, h, theme) {
+var $author$project$Main$showTess = F3(
+	function (tess, w, h) {
 		return A2(
 			$elm$svg$Svg$svg,
 			_List_fromArray(
@@ -5785,15 +5711,13 @@ var $author$project$Main$showTess = F4(
 					$elm$core$String$fromFloat(h)),
 					A2($elm$html$Html$Attributes$style, 'margin-bottom', '-5px')
 				]),
-			A2(
-				$author$project$Rules$renderTess,
+			$author$project$Rules$renderTess(
 				A2(
 					$author$project$Rules$fix,
 					tess,
 					_Utils_Tuple2(
 						{x: -3, y: -3},
-						{x: (w / tess.size) + 2, y: (h / tess.size) + 2})),
-				theme));
+						{x: (w / tess.size) + 2, y: (h / tess.size) + 2}))));
 	});
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
@@ -5917,9 +5841,9 @@ var $elm$core$Dict$fromList = function (assocs) {
 		$elm$core$Dict$empty,
 		assocs);
 };
-var $author$project$ColorTheme$Secondary = {$: 'Secondary'};
-var $author$project$ColorTheme$Ternary = {$: 'Ternary'};
-var $author$project$ColorTheme$Primary = {$: 'Primary'};
+var $author$project$Util$Secondary = {$: 'Secondary'};
+var $author$project$Util$Ternary = {$: 'Ternary'};
+var $author$project$Util$Primary = {$: 'Primary'};
 var $author$project$Shapes$equilateral = {
 	angles: _List_fromArray(
 		[60, 60, 60]),
@@ -5930,7 +5854,7 @@ var $author$project$Shapes$equilateral = {
 };
 var $author$project$Rules$eqi = {
 	centre: {x: 0.5, y: 0.28},
-	col: $author$project$ColorTheme$Primary,
+	col: $author$project$Util$Primary,
 	dist: 0.28,
 	poly: $author$project$Shapes$equilateral
 };
@@ -5944,7 +5868,7 @@ var $author$project$Shapes$hexagon = {
 };
 var $author$project$Rules$hexv = {
 	centre: {x: 0.5, y: 0.86},
-	col: $author$project$ColorTheme$Primary,
+	col: $author$project$Util$Primary,
 	dist: 0.86,
 	poly: $author$project$Shapes$hexagon
 };
@@ -6060,7 +5984,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 			2,
 			_Utils_update(
 				$author$project$Rules$eqi,
-				{col: $author$project$ColorTheme$Ternary})),
+				{col: $author$project$Util$Ternary})),
 		bounds: _Utils_Tuple2(
 			{x: -1, y: 0},
 			{x: 5, y: 5}),
@@ -6091,7 +6015,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 				60,
 				_Utils_update(
 					$author$project$Rules$eqi,
-					{col: $author$project$ColorTheme$Secondary}))),
+					{col: $author$project$Util$Secondary}))),
 		bounds: _Utils_Tuple2(
 			{x: -1, y: -3},
 			{x: 5, y: 5}),
@@ -6108,7 +6032,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 					60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Secondary}))),
+						{col: $author$project$Util$Secondary}))),
 				A2(
 				$author$project$Rules$sz,
 				2,
@@ -6117,7 +6041,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 					A2($author$project$Rules$pt, 1, $author$project$Rules$hexv),
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Ternary}))),
+						{col: $author$project$Util$Ternary}))),
 				A2(
 				$author$project$Rules$sz,
 				2,
@@ -6129,7 +6053,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 						-60,
 						_Utils_update(
 							$author$project$Rules$eqi,
-							{col: $author$project$ColorTheme$Secondary})))),
+							{col: $author$project$Util$Secondary})))),
 				A2(
 				$author$project$Rules$sz,
 				2,
@@ -6141,7 +6065,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 						-120,
 						_Utils_update(
 							$author$project$Rules$eqi,
-							{col: $author$project$ColorTheme$Ternary})))),
+							{col: $author$project$Util$Ternary})))),
 				A2(
 				$author$project$Rules$sz,
 				2,
@@ -6153,7 +6077,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 						-180,
 						_Utils_update(
 							$author$project$Rules$eqi,
-							{col: $author$project$ColorTheme$Secondary})))),
+							{col: $author$project$Util$Secondary})))),
 				A2(
 				$author$project$Rules$sz,
 				2,
@@ -6165,7 +6089,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 						-240,
 						_Utils_update(
 							$author$project$Rules$eqi,
-							{col: $author$project$ColorTheme$Ternary}))))
+							{col: $author$project$Util$Ternary}))))
 			]),
 		anchor: $author$project$Rules$hexv,
 		bounds: _Utils_Tuple2(
@@ -6187,7 +6111,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 		size: 20
 	};
 }();
-var $author$project$ColorTheme$Quart = {$: 'Quart'};
+var $author$project$Util$Quart = {$: 'Quart'};
 var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 	var hx = A2($author$project$Rules$sz, 2, $author$project$Rules$hexv);
 	var hexRule2 = {
@@ -6208,11 +6132,11 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 					-60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Quart})))
+						{col: $author$project$Util$Quart})))
 			]),
 		anchor: _Utils_update(
 			hx,
-			{col: $author$project$ColorTheme$Secondary}),
+			{col: $author$project$Util$Secondary}),
 		bounds: _Utils_Tuple2(
 			{x: -1.2, y: 0},
 			{x: 5, y: 7}),
@@ -6226,13 +6150,13 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 				60,
 				_Utils_update(
 					$author$project$Rules$eqi,
-					{col: $author$project$ColorTheme$Ternary})),
+					{col: $author$project$Util$Ternary})),
 				A2(
 				$author$project$Rules$tr,
 				A2($author$project$Rules$pt, 1, hx),
 				_Utils_update(
 					$author$project$Rules$eqi,
-					{col: $author$project$ColorTheme$Ternary})),
+					{col: $author$project$Util$Ternary})),
 				A2(
 				$author$project$Rules$tr,
 				A2($author$project$Rules$pt, 2, hx),
@@ -6241,7 +6165,7 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 					-60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Ternary}))),
+						{col: $author$project$Util$Ternary}))),
 				A2(
 				$author$project$Rules$tr,
 				A2($author$project$Rules$pt, 3, hx),
@@ -6250,7 +6174,7 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 					-120,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Ternary}))),
+						{col: $author$project$Util$Ternary}))),
 				A2(
 				$author$project$Rules$tr,
 				A2($author$project$Rules$pt, 4, hx),
@@ -6259,7 +6183,7 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 					-180,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Ternary}))),
+						{col: $author$project$Util$Ternary}))),
 				A2(
 				$author$project$Rules$tr,
 				A2($author$project$Rules$pt, 5, hx),
@@ -6268,7 +6192,7 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 					120,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Ternary})))
+						{col: $author$project$Util$Ternary})))
 			]),
 		anchor: hx,
 		bounds: _Utils_Tuple2(
@@ -6281,7 +6205,7 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 		180,
 		_Utils_update(
 			$author$project$Rules$eqi,
-			{col: $author$project$ColorTheme$Ternary}));
+			{col: $author$project$Util$Ternary}));
 	var triRule1 = {
 		additions: _List_fromArray(
 			[
@@ -6290,7 +6214,7 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 				A2($author$project$Rules$pt, 1, eq1),
 				_Utils_update(
 					hx,
-					{col: $author$project$ColorTheme$Secondary}))
+					{col: $author$project$Util$Secondary}))
 			]),
 		anchor: eq1,
 		bounds: _Utils_Tuple2(
@@ -6325,7 +6249,7 @@ var $author$project$Shapes$square = {
 };
 var $author$project$Rules$squ = {
 	centre: {x: 0.5, y: 0.5},
-	col: $author$project$ColorTheme$Primary,
+	col: $author$project$Util$Primary,
 	dist: 0.5,
 	poly: $author$project$Shapes$square
 };
@@ -6341,7 +6265,7 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 					3,
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$ColorTheme$Secondary}))),
+						{col: $author$project$Util$Secondary}))),
 				A2(
 				$author$project$Rules$tr,
 				{x: -2, y: -3},
@@ -6354,7 +6278,7 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 					3,
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$ColorTheme$Secondary}))),
+						{col: $author$project$Util$Secondary}))),
 				A2(
 				$author$project$Rules$tr,
 				{x: 0, y: 1},
@@ -6366,7 +6290,7 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 			90,
 			_Utils_update(
 				$author$project$Rules$squ,
-				{col: $author$project$ColorTheme$Ternary})),
+				{col: $author$project$Util$Ternary})),
 		bounds: _Utils_Tuple2(
 			{x: -3, y: -3},
 			{x: 7, y: 7}),
@@ -6387,7 +6311,7 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 					3,
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$ColorTheme$Secondary}))),
+						{col: $author$project$Util$Secondary}))),
 				A2(
 				$author$project$Rules$tr,
 				{x: -3, y: 0},
@@ -6400,11 +6324,11 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 					3,
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$ColorTheme$Secondary})))
+						{col: $author$project$Util$Secondary})))
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Ternary}),
+			{col: $author$project$Util$Ternary}),
 		bounds: _Utils_Tuple2(
 			{x: -3, y: -3},
 			{x: 7, y: 7}),
@@ -6418,7 +6342,7 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 				{x: 3, y: 0},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary})),
+					{col: $author$project$Util$Ternary})),
 				A3(
 				$author$project$Rules$rt,
 				{x: 2.5, y: 3.5},
@@ -6428,13 +6352,13 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 					{x: 2, y: 3},
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$ColorTheme$Ternary}))),
+						{col: $author$project$Util$Ternary}))),
 				A2(
 				$author$project$Rules$tr,
 				{x: -1, y: 2},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary})),
+					{col: $author$project$Util$Ternary})),
 				A3(
 				$author$project$Rules$rt,
 				{x: 0.5, y: -0.5},
@@ -6444,7 +6368,7 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 					{x: 0, y: -1},
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$ColorTheme$Ternary})))
+						{col: $author$project$Util$Ternary})))
 			]),
 		anchor: A2($author$project$Rules$sz, 3, $author$project$Rules$squ),
 		bounds: _Utils_Tuple2(
@@ -6477,7 +6401,7 @@ var $author$project$RuleBased$Isogonal$squareRowsTessellation = function () {
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Ternary}),
+			{col: $author$project$Util$Ternary}),
 		bounds: _Utils_Tuple2(
 			{x: 0, y: 0},
 			{x: 2, y: 3}),
@@ -6491,7 +6415,7 @@ var $author$project$RuleBased$Isogonal$squareRowsTessellation = function () {
 				{x: -0.5, y: 1},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary}))
+					{col: $author$project$Util$Ternary}))
 			]),
 		anchor: $author$project$Rules$squ,
 		bounds: _Utils_Tuple2(
@@ -6507,17 +6431,17 @@ var $author$project$RuleBased$Isogonal$squareRowsTessellation = function () {
 				{x: 1, y: 0},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Secondary})),
+					{col: $author$project$Util$Secondary})),
 				A2(
 				$author$project$Rules$tr,
 				{x: 2, y: 0},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary}))
+					{col: $author$project$Util$Ternary}))
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Ternary}),
+			{col: $author$project$Util$Ternary}),
 		bounds: _Utils_Tuple2(
 			{x: 0, y: 0},
 			{x: 3, y: 1}),
@@ -6531,7 +6455,7 @@ var $author$project$RuleBased$Isogonal$squareRowsTessellation = function () {
 				{x: 1, y: 0},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Quart})),
+					{col: $author$project$Util$Quart})),
 				A2(
 				$author$project$Rules$tr,
 				{x: 2, y: 0},
@@ -6581,7 +6505,7 @@ var $author$project$RuleBased$Isogonal$triangularRowsTessellation = function () 
 					60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Secondary}))),
+						{col: $author$project$Util$Secondary}))),
 				A2(
 				$author$project$Rules$tr,
 				{x: 1, y: 0},
@@ -6648,7 +6572,7 @@ var $author$project$RuleBased$Isogonal$trithagoreanTessellation = function () {
 				2,
 				_Utils_update(
 					$author$project$Rules$eqi,
-					{col: $author$project$ColorTheme$Secondary}))),
+					{col: $author$project$Util$Secondary}))),
 		bounds: _Utils_Tuple2(
 			{x: -1.7, y: -2.5},
 			{x: 5, y: 5}),
@@ -6668,7 +6592,7 @@ var $author$project$RuleBased$Isogonal$trithagoreanTessellation = function () {
 						2,
 						_Utils_update(
 							$author$project$Rules$eqi,
-							{col: $author$project$ColorTheme$Secondary})))),
+							{col: $author$project$Util$Secondary})))),
 				A2(
 				$author$project$Rules$tr,
 				A2(
@@ -6683,7 +6607,7 @@ var $author$project$RuleBased$Isogonal$trithagoreanTessellation = function () {
 						2,
 						_Utils_update(
 							$author$project$Rules$eqi,
-							{col: $author$project$ColorTheme$Secondary})))),
+							{col: $author$project$Util$Secondary})))),
 				A2(
 				$author$project$Rules$tr,
 				$author$project$Util$neg(
@@ -6708,14 +6632,14 @@ var $author$project$RuleBased$Isogonal$trithagoreanTessellation = function () {
 							2,
 							_Utils_update(
 								$author$project$Rules$eqi,
-								{col: $author$project$ColorTheme$Secondary})))))
+								{col: $author$project$Util$Secondary})))))
 			]),
 		anchor: A2(
 			$author$project$Rules$rto,
 			60,
 			_Utils_update(
 				$author$project$Rules$eqi,
-				{col: $author$project$ColorTheme$Ternary})),
+				{col: $author$project$Util$Ternary})),
 		bounds: _Utils_Tuple2(
 			{x: -1.7, y: -2.3},
 			{x: 4, y: 4}),
@@ -6732,7 +6656,7 @@ var $author$project$RuleBased$Isogonal$trithagoreanTessellation = function () {
 					60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Ternary}))),
+						{col: $author$project$Util$Ternary}))),
 				A2(
 				$author$project$Rules$tr,
 				A2(
@@ -6744,7 +6668,7 @@ var $author$project$RuleBased$Isogonal$trithagoreanTessellation = function () {
 					60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Ternary}))),
+						{col: $author$project$Util$Ternary}))),
 				A2(
 				$author$project$Rules$tr,
 				$author$project$Util$neg(
@@ -6757,7 +6681,7 @@ var $author$project$RuleBased$Isogonal$trithagoreanTessellation = function () {
 					60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Ternary})))
+						{col: $author$project$Util$Ternary})))
 			]),
 		anchor: A2($author$project$Rules$sz, 3, $author$project$Rules$eqi),
 		bounds: _Utils_Tuple2(
@@ -6794,7 +6718,7 @@ var $author$project$Rules$hex = A3(
 	30,
 	{
 		centre: {x: 0.5, y: 0.86},
-		col: $author$project$ColorTheme$Primary,
+		col: $author$project$Util$Primary,
 		dist: 0.86,
 		poly: $author$project$Shapes$hexagon
 	});
@@ -6813,7 +6737,7 @@ var $author$project$RuleBased$Regular$hexagonalTessellation = function () {
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$hex,
-			{col: $author$project$ColorTheme$Ternary}),
+			{col: $author$project$Util$Ternary}),
 		bounds: _Utils_Tuple2(
 			{x: -1, y: -0.2},
 			{x: 3.2, y: 3.2}),
@@ -6831,7 +6755,7 @@ var $author$project$RuleBased$Regular$hexagonalTessellation = function () {
 					A2($author$project$Polygon$getPoint, 4, $author$project$Rules$hex.poly),
 					_Utils_update(
 						$author$project$Rules$hex,
-						{col: $author$project$ColorTheme$Secondary})))
+						{col: $author$project$Util$Secondary})))
 			]),
 		anchor: $author$project$Rules$hex,
 		bounds: _Utils_Tuple2(
@@ -6849,7 +6773,7 @@ var $author$project$RuleBased$Regular$hexagonalTessellation = function () {
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$hex,
-			{col: $author$project$ColorTheme$Ternary}),
+			{col: $author$project$Util$Ternary}),
 		bounds: _Utils_Tuple2(
 			{x: 0, y: -0.2},
 			{x: 3.2, y: 3}),
@@ -6863,11 +6787,11 @@ var $author$project$RuleBased$Regular$hexagonalTessellation = function () {
 				A2($author$project$Polygon$getPoint, 2, $author$project$Rules$hex.poly),
 				_Utils_update(
 					$author$project$Rules$hex,
-					{col: $author$project$ColorTheme$Ternary}))
+					{col: $author$project$Util$Ternary}))
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$hex,
-			{col: $author$project$ColorTheme$Secondary}),
+			{col: $author$project$Util$Secondary}),
 		bounds: _Utils_Tuple2(
 			{x: 0, y: -0.2},
 			{x: 3.2, y: 3}),
@@ -6881,7 +6805,7 @@ var $author$project$RuleBased$Regular$hexagonalTessellation = function () {
 				A2($author$project$Polygon$getPoint, 2, $author$project$Rules$hex.poly),
 				_Utils_update(
 					$author$project$Rules$hex,
-					{col: $author$project$ColorTheme$Secondary}))
+					{col: $author$project$Util$Secondary}))
 			]),
 		anchor: $author$project$Rules$hex,
 		bounds: _Utils_Tuple2(
@@ -6942,7 +6866,7 @@ var $author$project$RuleBased$Regular$rotatedSquareTessellation = function () {
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Ternary}),
+			{col: $author$project$Util$Ternary}),
 		bounds: _Utils_Tuple2(
 			{x: 0, y: 0},
 			{x: 2.8, y: 2}),
@@ -6956,17 +6880,17 @@ var $author$project$RuleBased$Regular$rotatedSquareTessellation = function () {
 				{x: 1, y: 0},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary})),
+					{col: $author$project$Util$Ternary})),
 				A2(
 				$author$project$Rules$tr,
 				{x: 0, y: 1},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary}))
+					{col: $author$project$Util$Ternary}))
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Secondary}),
+			{col: $author$project$Util$Secondary}),
 		bounds: _Utils_Tuple2(
 			{x: 0, y: 0},
 			{x: 2.8, y: 2}),
@@ -6980,13 +6904,13 @@ var $author$project$RuleBased$Regular$rotatedSquareTessellation = function () {
 				{x: 1, y: 0},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Secondary})),
+					{col: $author$project$Util$Secondary})),
 				A2(
 				$author$project$Rules$tr,
 				{x: 0, y: 1},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Secondary}))
+					{col: $author$project$Util$Secondary}))
 			]),
 		anchor: $author$project$Rules$squ,
 		bounds: _Utils_Tuple2(
@@ -7031,7 +6955,7 @@ var $author$project$RuleBased$Regular$rotatedTriangularTessellation = function (
 				-60,
 				_Utils_update(
 					$author$project$Rules$eqi,
-					{col: $author$project$ColorTheme$Secondary}))),
+					{col: $author$project$Util$Secondary}))),
 		bounds: _Utils_Tuple2(
 			{x: -0.5, y: 0},
 			{x: 1, y: 2}),
@@ -7045,7 +6969,7 @@ var $author$project$RuleBased$Regular$rotatedTriangularTessellation = function (
 				{x: 0.5, y: 0},
 				_Utils_update(
 					$author$project$Rules$eqi,
-					{col: $author$project$ColorTheme$Ternary}))
+					{col: $author$project$Util$Ternary}))
 			]),
 		anchor: A2(
 			$author$project$Rules$tr,
@@ -7055,7 +6979,7 @@ var $author$project$RuleBased$Regular$rotatedTriangularTessellation = function (
 				-60,
 				_Utils_update(
 					$author$project$Rules$eqi,
-					{col: $author$project$ColorTheme$Secondary}))),
+					{col: $author$project$Util$Secondary}))),
 		bounds: _Utils_Tuple2(
 			{x: -0.5, y: 0},
 			{x: 2, y: 1}),
@@ -7075,7 +6999,7 @@ var $author$project$RuleBased$Regular$rotatedTriangularTessellation = function (
 						-60,
 						_Utils_update(
 							$author$project$Rules$eqi,
-							{col: $author$project$ColorTheme$Secondary}))))
+							{col: $author$project$Util$Secondary}))))
 			]),
 		anchor: A2(
 			$author$project$Rules$tr,
@@ -7097,7 +7021,7 @@ var $author$project$RuleBased$Regular$rotatedTriangularTessellation = function (
 					60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Quart}))),
+						{col: $author$project$Util$Quart}))),
 				A2(
 				$author$project$Rules$tr,
 				{x: 1, y: 0},
@@ -7132,11 +7056,11 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 				{x: 0, y: -1},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary}))
+					{col: $author$project$Util$Ternary}))
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Ternary}),
+			{col: $author$project$Util$Ternary}),
 		bounds: _Utils_Tuple2(
 			{x: -1, y: -2},
 			{x: 3, y: 3}),
@@ -7150,11 +7074,11 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 				{x: 0, y: -1},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Secondary}))
+					{col: $author$project$Util$Secondary}))
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Secondary}),
+			{col: $author$project$Util$Secondary}),
 		bounds: _Utils_Tuple2(
 			{x: -1, y: -2},
 			{x: 3, y: 3}),
@@ -7184,7 +7108,7 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Ternary}),
+			{col: $author$project$Util$Ternary}),
 		bounds: _Utils_Tuple2(
 			{x: -1, y: -1},
 			{x: 3, y: 3}),
@@ -7198,11 +7122,11 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 				{x: 1, y: 1},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary}))
+					{col: $author$project$Util$Ternary}))
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Secondary}),
+			{col: $author$project$Util$Secondary}),
 		bounds: _Utils_Tuple2(
 			{x: -1, y: -1},
 			{x: 3, y: 3}),
@@ -7216,7 +7140,7 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 				{x: 1, y: 1},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Secondary}))
+					{col: $author$project$Util$Secondary}))
 			]),
 		anchor: $author$project$Rules$squ,
 		bounds: _Utils_Tuple2(
@@ -7237,7 +7161,7 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 					180,
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$ColorTheme$Secondary})),
+						{col: $author$project$Util$Secondary})),
 					A2(
 					$author$project$Rules$tr,
 					{x: 1, y: 0},
@@ -7246,13 +7170,13 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 						90,
 						_Utils_update(
 							$author$project$Rules$squ,
-							{col: $author$project$ColorTheme$Secondary}))),
+							{col: $author$project$Util$Secondary}))),
 					A2(
 					$author$project$Rules$tr,
 					{x: 1, y: 1},
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$ColorTheme$Secondary})),
+						{col: $author$project$Util$Secondary})),
 					A2(
 					$author$project$Rules$tr,
 					{x: 0, y: 1},
@@ -7261,7 +7185,7 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 						-90,
 						_Utils_update(
 							$author$project$Rules$squ,
-							{col: $author$project$ColorTheme$Secondary}))),
+							{col: $author$project$Util$Secondary}))),
 					$author$project$Rules$squ
 				])),
 		rules: _List_fromArray(
@@ -7284,7 +7208,7 @@ var $author$project$RuleBased$Regular$squareTessellation = function () {
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Ternary}),
+			{col: $author$project$Util$Ternary}),
 		bounds: _Utils_Tuple2(
 			{x: 0, y: 0},
 			{x: 3, y: 3}),
@@ -7298,17 +7222,17 @@ var $author$project$RuleBased$Regular$squareTessellation = function () {
 				{x: 1, y: 0},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary})),
+					{col: $author$project$Util$Ternary})),
 				A2(
 				$author$project$Rules$tr,
 				{x: 0, y: 1},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary}))
+					{col: $author$project$Util$Ternary}))
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$squ,
-			{col: $author$project$ColorTheme$Secondary}),
+			{col: $author$project$Util$Secondary}),
 		bounds: _Utils_Tuple2(
 			{x: 0, y: 0},
 			{x: 3, y: 3}),
@@ -7322,13 +7246,13 @@ var $author$project$RuleBased$Regular$squareTessellation = function () {
 				{x: 1, y: 0},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Secondary})),
+					{col: $author$project$Util$Secondary})),
 				A2(
 				$author$project$Rules$tr,
 				{x: 0, y: 1},
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Secondary}))
+					{col: $author$project$Util$Secondary}))
 			]),
 		anchor: $author$project$Rules$squ,
 		bounds: _Utils_Tuple2(
@@ -7362,7 +7286,7 @@ var $author$project$RuleBased$Regular$triangularTessellation = function () {
 			-60,
 			_Utils_update(
 				$author$project$Rules$eqi,
-				{col: $author$project$ColorTheme$Secondary})),
+				{col: $author$project$Util$Secondary})),
 		bounds: _Utils_Tuple2(
 			{x: -0.5, y: 0},
 			{x: 1, y: 2}),
@@ -7373,14 +7297,14 @@ var $author$project$RuleBased$Regular$triangularTessellation = function () {
 			[
 				_Utils_update(
 				$author$project$Rules$eqi,
-				{col: $author$project$ColorTheme$Ternary})
+				{col: $author$project$Util$Ternary})
 			]),
 		anchor: A2(
 			$author$project$Rules$rto,
 			-60,
 			_Utils_update(
 				$author$project$Rules$eqi,
-				{col: $author$project$ColorTheme$Secondary})),
+				{col: $author$project$Util$Secondary})),
 		bounds: _Utils_Tuple2(
 			{x: -1, y: 0},
 			{x: 2, y: 1}),
@@ -7397,7 +7321,7 @@ var $author$project$RuleBased$Regular$triangularTessellation = function () {
 					-60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Secondary})))
+						{col: $author$project$Util$Secondary})))
 			]),
 		anchor: $author$project$Rules$eqi,
 		bounds: _Utils_Tuple2(
@@ -7416,7 +7340,7 @@ var $author$project$RuleBased$Regular$triangularTessellation = function () {
 					60,
 					_Utils_update(
 						$author$project$Rules$eqi,
-						{col: $author$project$ColorTheme$Quart}))),
+						{col: $author$project$Util$Quart}))),
 				A2(
 				$author$project$Rules$tr,
 				{x: 1, y: 0},
@@ -7464,7 +7388,7 @@ var $author$project$Rules$oct = {
 		x: 0.5,
 		y: 0.5 + $elm$core$Basics$sqrt(0.5)
 	},
-	col: $author$project$ColorTheme$Primary,
+	col: $author$project$Util$Primary,
 	dist: 0.5 + $elm$core$Basics$sqrt(0.5),
 	poly: $author$project$Shapes$octagon
 };
@@ -7477,14 +7401,14 @@ var $author$project$RuleBased$Semiregular$truncatedSquareTiling = function () {
 				A2($author$project$Rules$pt, 5, $author$project$Rules$oct),
 				_Utils_update(
 					$author$project$Rules$oct,
-					{col: $author$project$ColorTheme$Secondary})),
+					{col: $author$project$Util$Secondary})),
 				A2(
 				$author$project$Rules$tr,
 				$author$project$Util$neg(
 					A2($author$project$Rules$pt, 5, $author$project$Rules$oct)),
 				_Utils_update(
 					$author$project$Rules$oct,
-					{col: $author$project$ColorTheme$Secondary}))
+					{col: $author$project$Util$Secondary}))
 			]),
 		anchor: $author$project$Rules$oct,
 		bounds: _Utils_Tuple2(
@@ -7519,7 +7443,7 @@ var $author$project$RuleBased$Semiregular$truncatedSquareTiling = function () {
 			]),
 		anchor: _Utils_update(
 			$author$project$Rules$oct,
-			{col: $author$project$ColorTheme$Secondary}),
+			{col: $author$project$Util$Secondary}),
 		bounds: _Utils_Tuple2(
 			{x: -2.8, y: 0},
 			{x: 6.8, y: 3}),
@@ -7539,7 +7463,7 @@ var $author$project$RuleBased$Semiregular$truncatedSquareTiling = function () {
 						A2($author$project$Rules$rto, 45, $author$project$Rules$squ)),
 					_Utils_update(
 						$author$project$Rules$oct,
-						{col: $author$project$ColorTheme$Secondary}))),
+						{col: $author$project$Util$Secondary}))),
 				A2(
 				$author$project$Rules$tr,
 				{x: -1, y: 0},
@@ -7552,7 +7476,7 @@ var $author$project$RuleBased$Semiregular$truncatedSquareTiling = function () {
 							A2($author$project$Rules$rto, 45, $author$project$Rules$squ))),
 					_Utils_update(
 						$author$project$Rules$oct,
-						{col: $author$project$ColorTheme$Secondary})))
+						{col: $author$project$Util$Secondary})))
 			]),
 		anchor: $author$project$Rules$oct,
 		bounds: _Utils_Tuple2(
@@ -7571,13 +7495,13 @@ var $author$project$RuleBased$Semiregular$truncatedSquareTiling = function () {
 					45,
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$ColorTheme$Ternary}))),
+						{col: $author$project$Util$Ternary}))),
 				A2(
 				$author$project$Rules$rto,
 				-135,
 				_Utils_update(
 					$author$project$Rules$squ,
-					{col: $author$project$ColorTheme$Ternary}))
+					{col: $author$project$Util$Ternary}))
 			]),
 		anchor: $author$project$Rules$oct,
 		bounds: _Utils_Tuple2(
@@ -7614,20 +7538,8 @@ var $author$project$Main$currentSvg = F3(
 			return A2($elm$html$Html$div, _List_Nil, _List_Nil);
 		} else {
 			var tess = _v0.a;
-			return A4(
-				$author$project$Main$showTess,
-				tess,
-				w,
-				h,
-				$author$project$Main$getTheme(model));
+			return A3($author$project$Main$showTess, tess, w, h);
 		}
-	});
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $author$project$Main$downloadDisplay = function (model) {
@@ -7672,72 +7584,69 @@ var $author$project$Polygon$pointSvg = F4(
 				]),
 			_List_Nil);
 	});
-var $author$project$Rules$renderRule = F2(
-	function (_v0, theme) {
-		var anchor = _v0.anchor;
-		var additions = _v0.additions;
-		var bounds = _v0.bounds;
-		var _v1 = bounds;
-		var tl1 = _v1.a;
-		var br1 = _v1.b;
-		var br = A2(
-			$author$project$Util$add,
-			br1,
-			{x: 0.8, y: 0.8});
-		var tl = A2(
-			$author$project$Util$sub,
-			tl1,
-			{x: 0.4, y: 0.4});
-		return A2(
-			$elm$svg$Svg$svg,
+var $author$project$Rules$renderRule = function (_v0) {
+	var anchor = _v0.anchor;
+	var additions = _v0.additions;
+	var bounds = _v0.bounds;
+	var _v1 = bounds;
+	var tl1 = _v1.a;
+	var br1 = _v1.b;
+	var br = A2(
+		$author$project$Util$add,
+		br1,
+		{x: 0.8, y: 0.8});
+	var tl = A2(
+		$author$project$Util$sub,
+		tl1,
+		{x: 0.4, y: 0.4});
+	return A2(
+		$elm$svg$Svg$svg,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$viewBox(
+				$elm$core$String$fromFloat(tl.x) + (' ' + ($elm$core$String$fromFloat(tl.y) + (' ' + ($elm$core$String$fromFloat(br.x) + (' ' + $elm$core$String$fromFloat(br.y))))))),
+				$elm$svg$Svg$Attributes$width('200'),
+				$elm$svg$Svg$Attributes$height('200')
+			]),
+		_Utils_ap(
+			A2(
+				$elm$core$List$concatMap,
+				function (addition) {
+					return _List_fromArray(
+						[
+							A5(
+							$author$project$Polygon$polygonSvg,
+							addition.poly,
+							1,
+							{x: 0, y: 0},
+							addition.col,
+							0.04),
+							A4(
+							$author$project$Polygon$pointSvg,
+							addition.centre,
+							1,
+							{x: 0, y: 0},
+							0.04)
+						]);
+				},
+				additions),
 			_List_fromArray(
 				[
-					$elm$svg$Svg$Attributes$viewBox(
-					$elm$core$String$fromFloat(tl.x) + (' ' + ($elm$core$String$fromFloat(tl.y) + (' ' + ($elm$core$String$fromFloat(br.x) + (' ' + $elm$core$String$fromFloat(br.y))))))),
-					$elm$svg$Svg$Attributes$width('200'),
-					$elm$svg$Svg$Attributes$height('200')
-				]),
-			_Utils_ap(
-				A2(
-					$elm$core$List$concatMap,
-					function (addition) {
-						return _List_fromArray(
-							[
-								A6(
-								$author$project$Polygon$polygonSvg,
-								addition.poly,
-								1,
-								{x: 0, y: 0},
-								theme,
-								addition.col,
-								0.04),
-								A4(
-								$author$project$Polygon$pointSvg,
-								addition.centre,
-								1,
-								{x: 0, y: 0},
-								0.04)
-							]);
-					},
-					additions),
-				_List_fromArray(
-					[
-						A6(
-						$author$project$Polygon$polygonSvg,
-						anchor.poly,
-						1,
-						{x: 0, y: 0},
-						theme,
-						anchor.col,
-						0.08),
-						A4(
-						$author$project$Polygon$pointSvg,
-						anchor.centre,
-						1,
-						{x: 0, y: 0},
-						0.04)
-					])));
-	});
+					A5(
+					$author$project$Polygon$polygonSvg,
+					anchor.poly,
+					1,
+					{x: 0, y: 0},
+					anchor.col,
+					0.08),
+					A4(
+					$author$project$Polygon$pointSvg,
+					anchor.centre,
+					1,
+					{x: 0, y: 0},
+					0.04)
+				])));
+};
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$rulesDisplay = function (model) {
@@ -7771,10 +7680,7 @@ var $author$project$Main$rulesDisplay = function (model) {
 						return A2(
 							$elm$core$List$map,
 							function (r) {
-								return A2(
-									$author$project$Rules$renderRule,
-									r,
-									$author$project$Main$getTheme(model));
+								return $author$project$Rules$renderRule(r);
 							},
 							tess.rules);
 					}
@@ -7783,7 +7689,6 @@ var $author$project$Main$rulesDisplay = function (model) {
 };
 var $author$project$Main$DownloadSvg = {$: 'DownloadSvg'};
 var $elm$html$Html$a = _VirtualDom_node('a');
-var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
@@ -7908,6 +7813,7 @@ var $author$project$Main$tessMenu = function (model) {
 					$author$project$Main$tessOptions))
 			]));
 };
+var $author$project$Util$Stroke = {$: 'Stroke'};
 var $author$project$Main$PickPrimary = function (a) {
 	return {$: 'PickPrimary', a: a};
 };
@@ -8057,11 +7963,11 @@ var $author$project$Main$themeMenu = function (model) {
 					$author$project$Main$themeOptions),
 				(model.selectedTheme === 'Custom') ? _List_fromArray(
 					[
-						A3($author$project$Main$colorPicker, $author$project$ColorTheme$Primary, 'Primary', model),
-						A3($author$project$Main$colorPicker, $author$project$ColorTheme$Secondary, 'Secondary', model),
-						A3($author$project$Main$colorPicker, $author$project$ColorTheme$Ternary, 'Ternary', model),
-						A3($author$project$Main$colorPicker, $author$project$ColorTheme$Quart, 'Quart', model),
-						A3($author$project$Main$colorPicker, $author$project$ColorTheme$Stroke, 'Stroke', model)
+						A3($author$project$Main$colorPicker, $author$project$Util$Primary, 'Primary', model),
+						A3($author$project$Main$colorPicker, $author$project$Util$Secondary, 'Secondary', model),
+						A3($author$project$Main$colorPicker, $author$project$Util$Ternary, 'Ternary', model),
+						A3($author$project$Main$colorPicker, $author$project$Util$Quart, 'Quart', model),
+						A3($author$project$Main$colorPicker, $author$project$Util$Stroke, 'Stroke', model)
 					]) : _List_Nil)));
 };
 var $author$project$Main$view = function (model) {
@@ -8069,7 +7975,8 @@ var $author$project$Main$view = function (model) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$id('container')
+				$elm$html$Html$Attributes$id('container'),
+				$elm$html$Html$Attributes$class('theme' + model.selectedTheme)
 			]),
 		_List_fromArray(
 			[

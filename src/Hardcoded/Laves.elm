@@ -1,6 +1,5 @@
 module Hardcoded.Laves exposing (cairoTiling, deltoidalTriHexagonalTiling, disdyakisRhombileTiling, floretPentagonalTiling, prismaticPentagonalTiling, rhombileTiling, tetrakisSquareTiling, triakisTriangularTiling)
 
-import ColorTheme exposing (..)
 import List exposing (repeat)
 import Polygon exposing (..)
 import Shapes exposing (..)
@@ -15,8 +14,8 @@ import Util exposing (..)
   - Symmetry: hexagonal
 
 -}
-triakisTriangularTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-triakisTriangularTiling theme n m origin =
+triakisTriangularTiling : Int -> Int -> Point -> List (Svg msg)
+triakisTriangularTiling n m origin =
     if m <= 0 then
         []
 
@@ -40,11 +39,11 @@ triakisTriangularTiling theme n m origin =
                     |> mul size
                     |> add origin
         in
-        triakisTriLine theme n origin size ++ triakisTriangularTiling theme n (m - 1) next_origin
+        triakisTriLine n origin size ++ triakisTriangularTiling n (m - 1) next_origin
 
 
-triakisTriLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-triakisTriLine theme n origin size =
+triakisTriLine : Int -> Point -> Float -> List (Svg msg)
+triakisTriLine n origin size =
     if n <= 0 then
         []
 
@@ -63,9 +62,9 @@ triakisTriLine theme n origin size =
             next_origin =
                 { x = origin.x + size * 2 * cos (degrees 30), y = origin.y }
         in
-        renderShape triakisTriDownShape size downOrigin theme [ Secondary, Primary, Ternary ]
-            ++ renderShape triakisTriUpShape size upOrigin theme [ Secondary, Ternary, Primary ]
-            ++ triakisTriLine theme (n - 1) next_origin size
+        renderShape triakisTriDownShape size downOrigin [ Secondary, Primary, Ternary ]
+            ++ renderShape triakisTriUpShape size upOrigin [ Secondary, Ternary, Primary ]
+            ++ triakisTriLine (n - 1) next_origin size
 
 
 triakisTriDownShape : Shape
@@ -92,8 +91,8 @@ triakisTriUpShape =
   - Symmetry: hexagonal
 
 -}
-rhombileTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-rhombileTiling theme n m origin =
+rhombileTiling : Int -> Int -> Point -> List (Svg msg)
+rhombileTiling n m origin =
     if m <= 0 then
         []
 
@@ -117,11 +116,11 @@ rhombileTiling theme n m origin =
                     |> mul size
                     |> add origin
         in
-        rhombileLine theme n origin size ++ rhombileTiling theme n (m - 1) next_origin
+        rhombileLine n origin size ++ rhombileTiling n (m - 1) next_origin
 
 
-rhombileLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-rhombileLine theme n origin size =
+rhombileLine : Int -> Point -> Float -> List (Svg msg)
+rhombileLine n origin size =
     if n <= 0 then
         []
 
@@ -135,8 +134,8 @@ rhombileLine theme n origin size =
             next_origin =
                 add origin { x = upSlope.x * 2 * size, y = 0 }
         in
-        renderShape rhombileShape size origin theme [ Secondary, Ternary, Primary ]
-            ++ rhombileLine theme (n - 1) next_origin size
+        renderShape rhombileShape size origin [ Secondary, Ternary, Primary ]
+            ++ rhombileLine (n - 1) next_origin size
 
 
 rhombileShape : Shape
@@ -154,8 +153,8 @@ rhombileShape =
   - Symmetry: square
 
 -}
-tetrakisSquareTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-tetrakisSquareTiling theme n m origin =
+tetrakisSquareTiling : Int -> Int -> Point -> List (Svg msg)
+tetrakisSquareTiling n m origin =
     if m <= 0 then
         []
 
@@ -167,11 +166,11 @@ tetrakisSquareTiling theme n m origin =
             next_origin =
                 { x = origin.x, y = origin.y + size * 2 * sin (degrees 45) }
         in
-        tetrakisSquareLine theme n origin size ++ tetrakisSquareTiling theme n (m - 1) next_origin
+        tetrakisSquareLine n origin size ++ tetrakisSquareTiling n (m - 1) next_origin
 
 
-tetrakisSquareLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-tetrakisSquareLine theme n origin size =
+tetrakisSquareLine : Int -> Point -> Float -> List (Svg msg)
+tetrakisSquareLine n origin size =
     if n <= 0 then
         []
 
@@ -180,8 +179,8 @@ tetrakisSquareLine theme n origin size =
             next_origin =
                 { x = origin.x + size * 2 * sin (degrees 45), y = origin.y }
         in
-        renderShape tetrakisSquareShape size origin theme [ Primary, Ternary, Secondary, Quart ]
-            ++ tetrakisSquareLine theme (n - 1) next_origin size
+        renderShape tetrakisSquareShape size origin [ Primary, Ternary, Secondary, Quart ]
+            ++ tetrakisSquareLine (n - 1) next_origin size
 
 
 tetrakisSquareShape : Shape
@@ -200,8 +199,8 @@ tetrakisSquareShape =
   - Symmetry: hexagonal
 
 -}
-disdyakisRhombileTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-disdyakisRhombileTiling theme n m origin =
+disdyakisRhombileTiling : Int -> Int -> Point -> List (Svg msg)
+disdyakisRhombileTiling n m origin =
     if m <= 0 then
         []
 
@@ -220,11 +219,11 @@ disdyakisRhombileTiling theme n m origin =
             next_origin =
                 add slant slant |> mul size |> add origin
         in
-        disdyakisRhombileLine theme n origin size ++ disdyakisRhombileTiling theme n (m - 1) next_origin
+        disdyakisRhombileLine n origin size ++ disdyakisRhombileTiling n (m - 1) next_origin
 
 
-disdyakisRhombileLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-disdyakisRhombileLine theme n origin size =
+disdyakisRhombileLine : Int -> Point -> Float -> List (Svg msg)
+disdyakisRhombileLine n origin size =
     if n <= 0 then
         []
 
@@ -236,9 +235,8 @@ disdyakisRhombileLine theme n origin size =
         renderShape disdyakisRhombileShape
             size
             origin
-            theme
             ([ Secondary, Primary ] |> repeat 6 |> List.concat)
-            ++ disdyakisRhombileLine theme (n - 1) next_origin size
+            ++ disdyakisRhombileLine (n - 1) next_origin size
 
 
 disdyakisRhombileShape : Shape
@@ -265,8 +263,8 @@ disdyakisRhombileShape =
   - Symmetry: hexagonal
 
 -}
-deltoidalTriHexagonalTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-deltoidalTriHexagonalTiling theme n m origin =
+deltoidalTriHexagonalTiling : Int -> Int -> Point -> List (Svg msg)
+deltoidalTriHexagonalTiling n m origin =
     if m <= 0 then
         []
 
@@ -289,11 +287,11 @@ deltoidalTriHexagonalTiling theme n m origin =
                     _ ->
                         -1
         in
-        deltoidalTriHexagonalLine theme n origin size ++ deltoidalTriHexagonalTiling theme (n + color_offset) (m - 1) next_origin
+        deltoidalTriHexagonalLine n origin size ++ deltoidalTriHexagonalTiling (n + color_offset) (m - 1) next_origin
 
 
-deltoidalTriHexagonalLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-deltoidalTriHexagonalLine theme n origin size =
+deltoidalTriHexagonalLine : Int -> Point -> Float -> List (Svg msg)
+deltoidalTriHexagonalLine n origin size =
     if n <= 0 then
         []
 
@@ -302,8 +300,8 @@ deltoidalTriHexagonalLine theme n origin size =
             next_origin =
                 { x = origin.x + size * 2 * cos (degrees 30), y = origin.y }
         in
-        renderShape deltoidalTriHexagonalShape size origin theme (mix3Color n |> repeat 6)
-            ++ deltoidalTriHexagonalLine theme (n - 1) next_origin size
+        renderShape deltoidalTriHexagonalShape size origin (mix3Color n |> repeat 6)
+            ++ deltoidalTriHexagonalLine (n - 1) next_origin size
 
 
 deltoidalTriHexagonalShape : Shape
@@ -324,8 +322,8 @@ deltoidalTriHexagonalShape =
   - Symmetry: hex twist
 
 -}
-floretPentagonalTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-floretPentagonalTiling theme n m origin =
+floretPentagonalTiling : Int -> Int -> Point -> List (Svg msg)
+floretPentagonalTiling n m origin =
     if m <= 0 then
         []
 
@@ -352,11 +350,11 @@ floretPentagonalTiling theme n m origin =
                     _ ->
                         1
         in
-        floretPentagonalLine theme n color_offset origin size ++ floretPentagonalTiling theme n (m - 1) next_origin
+        floretPentagonalLine n color_offset origin size ++ floretPentagonalTiling n (m - 1) next_origin
 
 
-floretPentagonalLine : Theme -> Int -> Int -> Point -> Float -> List (Svg msg)
-floretPentagonalLine theme n offset origin size =
+floretPentagonalLine : Int -> Int -> Point -> Float -> List (Svg msg)
+floretPentagonalLine n offset origin size =
     if n <= 0 then
         []
 
@@ -369,8 +367,8 @@ floretPentagonalLine theme n offset origin size =
                     |> mul size
                     |> add origin
         in
-        renderShape floretPentagonalShape size origin theme (mix3Color (n + offset) |> repeat 6)
-            ++ floretPentagonalLine theme (n - 1) offset next_origin size
+        renderShape floretPentagonalShape size origin (mix3Color (n + offset) |> repeat 6)
+            ++ floretPentagonalLine (n - 1) offset next_origin size
 
 
 floretPentagonalShape : Shape
@@ -391,8 +389,8 @@ floretPentagonalShape =
   - Symmetry: crosshatch
 
 -}
-cairoTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-cairoTiling theme n m origin =
+cairoTiling : Int -> Int -> Point -> List (Svg msg)
+cairoTiling n m origin =
     if m <= 0 then
         []
 
@@ -421,11 +419,11 @@ cairoTiling theme n m origin =
                     |> mul size
                     |> add origin
         in
-        cairoLine theme n origin size ++ cairoTiling theme n (m - 1) next_origin
+        cairoLine n origin size ++ cairoTiling n (m - 1) next_origin
 
 
-cairoLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-cairoLine theme n origin size =
+cairoLine : Int -> Point -> Float -> List (Svg msg)
+cairoLine n origin size =
     if n <= 0 then
         []
 
@@ -444,9 +442,8 @@ cairoLine theme n origin size =
             cairoShape
             size
             origin
-            theme
             [ Primary, Secondary, Secondary, Primary ]
-            ++ cairoLine theme (n - 1) next_origin size
+            ++ cairoLine (n - 1) next_origin size
 
 
 cairoShape : Shape
@@ -472,8 +469,8 @@ cairoShape =
   - Symmetry: running bond
 
 -}
-prismaticPentagonalTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-prismaticPentagonalTiling theme n m origin =
+prismaticPentagonalTiling : Int -> Int -> Point -> List (Svg msg)
+prismaticPentagonalTiling n m origin =
     if m <= 0 then
         []
 
@@ -504,11 +501,11 @@ prismaticPentagonalTiling theme n m origin =
                     |> mul size
                     |> add origin
         in
-        prismaticPentagonalLine theme n origin size ++ prismaticPentagonalTiling theme n (m - 1) next_origin
+        prismaticPentagonalLine n origin size ++ prismaticPentagonalTiling n (m - 1) next_origin
 
 
-prismaticPentagonalLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-prismaticPentagonalLine theme n origin size =
+prismaticPentagonalLine : Int -> Point -> Float -> List (Svg msg)
+prismaticPentagonalLine n origin size =
     if n <= 0 then
         []
 
@@ -517,8 +514,8 @@ prismaticPentagonalLine theme n origin size =
             next_origin =
                 { x = origin.x + size, y = origin.y }
         in
-        renderShape prismaticPentagonalShape size origin theme [ Primary, Secondary ]
-            ++ prismaticPentagonalLine theme (n - 1) next_origin size
+        renderShape prismaticPentagonalShape size origin [ Primary, Secondary ]
+            ++ prismaticPentagonalLine (n - 1) next_origin size
 
 
 prismaticPentagonalShape : Shape

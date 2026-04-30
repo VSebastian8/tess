@@ -1,6 +1,5 @@
 module Polygon exposing (..)
 
-import ColorTheme exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Util exposing (..)
@@ -100,8 +99,8 @@ scaleWith size points =
     points |> List.map (\p -> mul size p)
 
 
-polygonSvg : Polygon -> Float -> Point -> Theme -> Color -> Float -> Svg msg
-polygonSvg poly size origin theme color w =
+polygonSvg : Polygon -> Float -> Point -> Color -> Float -> Svg msg
+polygonSvg poly size origin color w =
     let
         svgPoints =
             asPoints poly
@@ -112,9 +111,10 @@ polygonSvg poly size origin theme color w =
     in
     polygon
         [ points svgPoints
-        , fill (theme.getColor color)
-        , stroke (theme.getColor Stroke)
+        , fill ("var(" ++ getVar color ++ ")")
+        , stroke "var(--stroke-color)"
         , strokeWidth (String.fromFloat w)
+        , class "poly"
         ]
         []
 

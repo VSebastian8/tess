@@ -1,6 +1,5 @@
 module RuleBased.Isogonal exposing (..)
 
-import ColorTheme exposing (..)
 import Polygon exposing (..)
 import Rules exposing (..)
 import Shapes exposing (..)

@@ -1,6 +1,5 @@
 module Rules exposing (..)
 
-import ColorTheme exposing (..)
 import Html exposing (Html)
 import Polygon exposing (..)
 import Shapes exposing (..)
@@ -78,8 +77,8 @@ pt alfa pc =
     add nextP (mul (toFloat (ceiling alfa) - alfa) (sub prevP nextP))
 
 
-renderRule : Rule -> Theme -> Html msg
-renderRule { anchor, additions, bounds } theme =
+renderRule : Rule -> Html msg
+renderRule { anchor, additions, bounds } =
     let
         ( tl1, br1 ) =
             bounds
@@ -98,12 +97,12 @@ renderRule { anchor, additions, bounds } theme =
         ((additions
             |> List.concatMap
                 (\addition ->
-                    [ polygonSvg addition.poly 1 { x = 0, y = 0 } theme addition.col 0.04
+                    [ polygonSvg addition.poly 1 { x = 0, y = 0 } addition.col 0.04
                     , pointSvg addition.centre 1 { x = 0, y = 0 } 0.04
                     ]
                 )
          )
-            ++ [ polygonSvg anchor.poly 1 { x = 0, y = 0 } theme anchor.col 0.08, pointSvg anchor.centre 1 { x = 0, y = 0 } 0.04 ]
+            ++ [ polygonSvg anchor.poly 1 { x = 0, y = 0 } anchor.col 0.08, pointSvg anchor.centre 1 { x = 0, y = 0 } 0.04 ]
         )
 
 
@@ -115,9 +114,9 @@ type alias Tess =
     }
 
 
-renderTess : Tess -> Theme -> List (Svg msg)
-renderTess { closed, size } theme =
-    closed |> List.map (\p -> polygonSvg p.poly size { x = 0, y = 0 } theme p.col 2)
+renderTess : Tess -> List (Svg msg)
+renderTess { closed, size } =
+    closed |> List.map (\p -> polygonSvg p.poly size { x = 0, y = 0 } p.col 2)
 
 
 step : Tess -> ( Point, Point ) -> Tess

@@ -1,6 +1,5 @@
 module Hardcoded.Regular exposing (hexagonalTiling, squareTiling, triangularTiling)
 
-import ColorTheme exposing (..)
 import Polygon exposing (setRotation)
 import Shapes exposing (..)
 import Svg exposing (..)
@@ -15,8 +14,8 @@ import Util exposing (..)
   - Symmetry: square
 
 -}
-squareTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-squareTiling theme n m origin =
+squareTiling : Int -> Int -> Point -> List (Svg msg)
+squareTiling n m origin =
     let
         size =
             30.0
@@ -26,7 +25,7 @@ squareTiling theme n m origin =
             (\y ->
                 List.range 0 n
                     |> List.map (\x -> ( add origin { x = size * toFloat x, y = size * toFloat y }, mix3Color (y + x) ))
-                    |> List.concatMap (\( point, color ) -> renderShape squareShape size point theme [ color ])
+                    |> List.concatMap (\( point, color ) -> renderShape squareShape size point [ color ])
             )
         |> List.concat
 
@@ -44,8 +43,8 @@ squareShape =
   - Symmetry: hexagonal
 
 -}
-triangularTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-triangularTiling theme n m origin =
+triangularTiling : Int -> Int -> Point -> List (Svg msg)
+triangularTiling n m origin =
     let
         size =
             40.0
@@ -67,10 +66,10 @@ triangularTiling theme n m origin =
                         (\( point, color ) ->
                             case modBy 2 y of
                                 0 ->
-                                    renderShape (asShape [ equilateral ]) size point theme [ color ]
+                                    renderShape (asShape [ equilateral ]) size point [ color ]
 
                                 _ ->
-                                    renderShape (asShape [ setRotation 60 equilateral ]) size point theme [ color ]
+                                    renderShape (asShape [ setRotation 60 equilateral ]) size point [ color ]
                         )
             )
         |> List.concat
@@ -83,8 +82,8 @@ triangularTiling theme n m origin =
   - Symmetry: hexagonal
 
 -}
-hexagonalTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-hexagonalTiling theme n m origin =
+hexagonalTiling : Int -> Int -> Point -> List (Svg msg)
+hexagonalTiling n m origin =
     let
         size =
             30.0
@@ -103,6 +102,6 @@ hexagonalTiling theme n m origin =
                             )
                         )
                     |> List.concatMap
-                        (\( point, color ) -> renderShape (asShape [ setRotation 30 hexagon ]) size point theme [ color ])
+                        (\( point, color ) -> renderShape (asShape [ setRotation 30 hexagon ]) size point [ color ])
             )
         |> List.concat

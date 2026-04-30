@@ -1,0 +1,31 @@
+.themeForest {
+  --primary-color: #8ab2a6;
+  --secondary-color: #acd3a8;
+  --ternary-color: #f6f1de;
+  --quart-color: #3e3f5b;
+  --stroke-color: #3e3f5b;
+}
+
+.themeAqua {
+  --primary-color: #f2efe7;
+  --secondary-color: #9acbd0;
+  --ternary-color: #48a6a7;
+  --quart-color: #006a71;
+  --stroke-color: #006a71;
+}
+
+.themeAmethyst {
+  --primary-color: #810ea9;
+  --secondary-color: #bc7ad2;
+  --ternary-color: #51185c;
+  --quart-color: #e9cdf6;
+  --stroke-color: #000000;
+}
+
+.themeHoney {
+  --primary-color: #ff9a0a;
+  --secondary-color: #fecb09;
+  --ternary-color: #feed0d;
+  --quart-color: #ce7c00;
+  --stroke-color: #ce7c00;
+}

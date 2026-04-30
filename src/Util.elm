@@ -1,6 +1,31 @@
 module Util exposing (..)
 
-import ColorTheme exposing (..)
+
+type Color
+    = Primary
+    | Secondary
+    | Ternary
+    | Quart
+    | Stroke
+
+
+getVar : Color -> String
+getVar color =
+    case color of
+        Primary ->
+            "--primary-color"
+
+        Secondary ->
+            "--secondary-color"
+
+        Ternary ->
+            "--ternary-color"
+
+        Quart ->
+            "--quart-color"
+
+        Stroke ->
+            "--stroke-color"
 
 
 type alias Point =

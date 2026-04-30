@@ -1,6 +1,5 @@
 module Hardcoded.Semiregular exposing (elongatedTriangular, rhombiTriHexagonalTiling, snubSquareTiling, snubTriHexagonalTiling, triHexagonalTiling, truncatedHexagonalTiling, truncatedSquareTiling, truncatedTriHexagonalTiling)
 
-import ColorTheme exposing (..)
 import Polygon exposing (..)
 import Shapes exposing (..)
 import Svg exposing (..)
@@ -15,8 +14,8 @@ import Util exposing (..)
   - Symmetry: hexagonal
 
 -}
-truncatedHexagonalTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-truncatedHexagonalTiling theme n m origin =
+truncatedHexagonalTiling : Int -> Int -> Point -> List (Svg msg)
+truncatedHexagonalTiling n m origin =
     if m <= 0 then
         []
 
@@ -35,11 +34,11 @@ truncatedHexagonalTiling theme n m origin =
                 else
                     sub (add origin (getPoint 8 dodecagon |> mul size)) decagon_width
         in
-        truncatedHexagonalLine theme n origin ++ truncatedHexagonalTiling theme n (m - 1) next_origin
+        truncatedHexagonalLine n origin ++ truncatedHexagonalTiling n (m - 1) next_origin
 
 
-truncatedHexagonalLine : Theme -> Int -> Point -> List (Svg msg)
-truncatedHexagonalLine theme n origin =
+truncatedHexagonalLine : Int -> Point -> List (Svg msg)
+truncatedHexagonalLine n origin =
     if n <= 0 then
         []
 
@@ -55,8 +54,8 @@ truncatedHexagonalLine theme n origin =
                 add origin
                     (add first_trig (getPoint 1 equilateral) |> mul size)
         in
-        renderShape truncatedHexagonalShape size origin theme [ Primary, Secondary, Secondary ]
-            ++ truncatedHexagonalLine theme (n - 1) next_origin
+        renderShape truncatedHexagonalShape size origin [ Primary, Secondary, Secondary ]
+            ++ truncatedHexagonalLine (n - 1) next_origin
 
 
 truncatedHexagonalShape : Shape
@@ -82,8 +81,8 @@ truncatedHexagonalShape =
   - Symmetry: hexagonal
 
 -}
-triHexagonalTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-triHexagonalTiling theme n m origin =
+triHexagonalTiling : Int -> Int -> Point -> List (Svg msg)
+triHexagonalTiling n m origin =
     if m <= 0 then
         []
 
@@ -102,11 +101,11 @@ triHexagonalTiling theme n m origin =
                 else
                     sub (add origin (getPoint 3 hexagon |> mul size)) hexagon_translate
         in
-        triHexagonalLine theme n origin ++ triHexagonalTiling theme n (m - 1) next_origin
+        triHexagonalLine n origin ++ triHexagonalTiling n (m - 1) next_origin
 
 
-triHexagonalLine : Theme -> Int -> Point -> List (Svg msg)
-triHexagonalLine theme n origin =
+triHexagonalLine : Int -> Point -> List (Svg msg)
+triHexagonalLine n origin =
     if n <= 0 then
         []
 
@@ -122,8 +121,8 @@ triHexagonalLine theme n origin =
                 add origin
                     (add first_trig (getPoint 1 equilateral) |> mul size)
         in
-        renderShape triHexagonalShape size origin theme [ Primary, Secondary, Secondary ]
-            ++ triHexagonalLine theme (n - 1) next_origin
+        renderShape triHexagonalShape size origin [ Primary, Secondary, Secondary ]
+            ++ triHexagonalLine (n - 1) next_origin
 
 
 triHexagonalShape : Shape
@@ -149,8 +148,8 @@ triHexagonalShape =
   - Symmetry: square
 
 -}
-truncatedSquareTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-truncatedSquareTiling theme n m origin =
+truncatedSquareTiling : Int -> Int -> Point -> List (Svg msg)
+truncatedSquareTiling n m origin =
     if m <= 0 then
         []
 
@@ -162,11 +161,11 @@ truncatedSquareTiling theme n m origin =
             next_origin =
                 add origin (getPoint 5 octagon |> mul size)
         in
-        truncatedSquareLine theme n origin ++ truncatedSquareTiling theme n (m - 1) next_origin
+        truncatedSquareLine n origin ++ truncatedSquareTiling n (m - 1) next_origin
 
 
-truncatedSquareLine : Theme -> Int -> Point -> List (Svg msg)
-truncatedSquareLine theme n origin =
+truncatedSquareLine : Int -> Point -> List (Svg msg)
+truncatedSquareLine n origin =
     if n <= 0 then
         []
 
@@ -185,8 +184,8 @@ truncatedSquareLine theme n origin =
                         |> mul size
                     )
         in
-        renderShape truncatedSquareShape size origin theme [ Primary, Secondary ]
-            ++ truncatedSquareLine theme (n - 1) next_origin
+        renderShape truncatedSquareShape size origin [ Primary, Secondary ]
+            ++ truncatedSquareLine (n - 1) next_origin
 
 
 truncatedSquareShape : Shape
@@ -208,8 +207,8 @@ truncatedSquareShape =
      - Symmetry: hexagonal
 
 -}
-rhombiTriHexagonalTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-rhombiTriHexagonalTiling theme n m origin =
+rhombiTriHexagonalTiling : Int -> Int -> Point -> List (Svg msg)
+rhombiTriHexagonalTiling n m origin =
     if m <= 0 then
         []
 
@@ -228,11 +227,11 @@ rhombiTriHexagonalTiling theme n m origin =
             next_origin =
                 next_point |> mul size |> add origin
         in
-        rhombiTriHexaLine theme n origin size ++ rhombiTriHexagonalTiling theme n (m - 1) next_origin
+        rhombiTriHexaLine n origin size ++ rhombiTriHexagonalTiling n (m - 1) next_origin
 
 
-rhombiTriHexaLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-rhombiTriHexaLine theme n origin size =
+rhombiTriHexaLine : Int -> Point -> Float -> List (Svg msg)
+rhombiTriHexaLine n origin size =
     if n <= 0 then
         []
 
@@ -251,8 +250,8 @@ rhombiTriHexaLine theme n origin size =
             next_origin =
                 add origin (add hexagon_width (add square_slant (add { x = size, y = 0 } square_slant)))
         in
-        renderShape rhombiTriHexaShape size origin theme [ Primary, Ternary, Secondary, Ternary, Secondary, Ternary ]
-            ++ rhombiTriHexaLine theme (n - 1) next_origin size
+        renderShape rhombiTriHexaShape size origin [ Primary, Ternary, Secondary, Ternary, Secondary, Ternary ]
+            ++ rhombiTriHexaLine (n - 1) next_origin size
 
 
 rhombiTriHexaShape : Shape
@@ -290,8 +289,8 @@ rhombiTriHexaShape =
      - Symmetry: hexagonal
 
 -}
-truncatedTriHexagonalTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-truncatedTriHexagonalTiling theme n m origin =
+truncatedTriHexagonalTiling : Int -> Int -> Point -> List (Svg msg)
+truncatedTriHexagonalTiling n m origin =
     if m <= 0 then
         []
 
@@ -314,11 +313,11 @@ truncatedTriHexagonalTiling theme n m origin =
             next_origin =
                 next_point |> mul size |> add origin
         in
-        truncTriHexaLine theme n origin size ++ truncatedTriHexagonalTiling theme n (m - 1) next_origin
+        truncTriHexaLine n origin size ++ truncatedTriHexagonalTiling n (m - 1) next_origin
 
 
-truncTriHexaLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-truncTriHexaLine theme n origin size =
+truncTriHexaLine : Int -> Point -> Float -> List (Svg msg)
+truncTriHexaLine n origin size =
     if n <= 0 then
         []
 
@@ -333,8 +332,8 @@ truncTriHexaLine theme n origin size =
             next_origin =
                 dodecagon_width |> add hexagon_width |> add hexagon_width |> add { x = 1, y = 0 } |> mul size |> add origin
         in
-        renderShape truncTriHexaShape size origin theme [ Primary, Ternary, Ternary, Ternary, Secondary, Secondary ]
-            ++ truncTriHexaLine theme (n - 1) next_origin size
+        renderShape truncTriHexaShape size origin [ Primary, Ternary, Ternary, Ternary, Secondary, Secondary ]
+            ++ truncTriHexaLine (n - 1) next_origin size
 
 
 truncTriHexaShape : Shape
@@ -372,8 +371,8 @@ truncTriHexaShape =
      - Symmetry: crosshatch
 
 -}
-snubSquareTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-snubSquareTiling theme n m origin =
+snubSquareTiling : Int -> Int -> Point -> List (Svg msg)
+snubSquareTiling n m origin =
     if m <= 0 then
         []
 
@@ -395,11 +394,11 @@ snubSquareTiling theme n m origin =
                     |> mul size
                     |> add origin
         in
-        snubSquareLine theme n origin size ++ snubSquareTiling theme n (m - 1) next_origin
+        snubSquareLine n origin size ++ snubSquareTiling n (m - 1) next_origin
 
 
-snubSquareLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-snubSquareLine theme n origin size =
+snubSquareLine : Int -> Point -> Float -> List (Svg msg)
+snubSquareLine n origin size =
     if n <= 0 then
         []
 
@@ -411,8 +410,8 @@ snubSquareLine theme n origin size =
             next_origin =
                 { x = origin.x + 2 * size * triangle_slant.x + size, y = origin.y }
         in
-        renderShape snubSquareShape size origin theme [ Primary, Secondary, Primary, Primary, Primary, Secondary ]
-            ++ snubSquareLine theme (n - 1) next_origin size
+        renderShape snubSquareShape size origin [ Primary, Secondary, Primary, Primary, Primary, Secondary ]
+            ++ snubSquareLine (n - 1) next_origin size
 
 
 snubSquareShape : Shape
@@ -441,8 +440,8 @@ snubSquareShape =
   - Symmetry: hex twist
 
 -}
-snubTriHexagonalTiling : Theme -> Int -> Int -> Point -> List (Svg msg)
-snubTriHexagonalTiling theme n m origin =
+snubTriHexagonalTiling : Int -> Int -> Point -> List (Svg msg)
+snubTriHexagonalTiling n m origin =
     if m <= 0 then
         []
 
@@ -465,11 +464,11 @@ snubTriHexagonalTiling theme n m origin =
                     |> mul size
                     |> add origin
         in
-        snubTriHexagonalLine theme n origin size ++ snubTriHexagonalTiling theme n (m - 1) next_origin
+        snubTriHexagonalLine n origin size ++ snubTriHexagonalTiling n (m - 1) next_origin
 
 
-snubTriHexagonalLine : Theme -> Int -> Point -> Float -> List (Svg msg)
-snubTriHexagonalLine theme n origin size =
+snubTriHexagonalLine : Int -> Point -> Float -> List (Svg msg)
+snubTriHexagonalLine n origin size =
     if n <= 0 then
         []
 
@@ -481,9 +480,8 @@ snubTriHexagonalLine theme n origin size =
         renderShape snubTriHexagonalShape
             size
             origin
-            theme
             [ Primary, Secondary, Secondary, Secondary, Secondary, Secondary, Secondary, Secondary, Secondary ]
-            ++ snubTriHexagonalLine theme (n - 1) next_origin size
+            ++ snubTriHexagonalLine (n - 1) next_origin size
 
 
 snubTriHexagonalShape : Shape
@@ -518,8 +516,8 @@ snubTriHexagonalShape =
      - Symmetry: running bond
 
 -}
-elongatedTriangular : Theme -> Int -> Int -> Point -> List (Svg msg)
-elongatedTriangular theme n m origin =
+elongatedTriangular : Int -> Int -> Point -> List (Svg msg)
+elongatedTriangular n m origin =
     if m <= 0 then
         []
 
@@ -529,14 +527,14 @@ elongatedTriangular theme n m origin =
                 30
 
             squareLine =
-                List.range 0 n |> List.concatMap (\i -> renderShape (asShape [ square ]) size { x = origin.x + toFloat i * size, y = origin.y } theme [ Secondary ])
+                List.range 0 n |> List.concatMap (\i -> renderShape (asShape [ square ]) size { x = origin.x + toFloat i * size, y = origin.y } [ Secondary ])
 
             triangleLine =
                 List.range 0 n
                     |> List.concatMap
                         (\i ->
-                            renderShape (asShape [ equilateral |> setRotation -60 ]) size { x = origin.x + toFloat i * size, y = origin.y } theme [ Primary ]
-                                ++ renderShape (asShape [ equilateral ]) size { x = origin.x + toFloat i * size, y = origin.y } theme [ Ternary ]
+                            renderShape (asShape [ equilateral |> setRotation -60 ]) size { x = origin.x + toFloat i * size, y = origin.y } [ Primary ]
+                                ++ renderShape (asShape [ equilateral ]) size { x = origin.x + toFloat i * size, y = origin.y } [ Ternary ]
                         )
 
             selectedLine =
@@ -563,4 +561,4 @@ elongatedTriangular theme n m origin =
                     |> mul size
                     |> add origin
         in
-        selectedLine ++ elongatedTriangular theme n (m - 1) next_origin
+        selectedLine ++ elongatedTriangular n (m - 1) next_origin
