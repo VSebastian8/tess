@@ -114,9 +114,25 @@ type alias Tess =
     }
 
 
-renderTess : Tess -> List (Svg msg)
-renderTess { closed, size } =
+renderTess : Tess -> Bool -> List (Svg msg)
+renderTess tess animated =
+    if animated then
+        renderAnimatedTess tess
+
+    else
+        renderStaticTess tess
+
+
+renderStaticTess : Tess -> List (Svg msg)
+renderStaticTess { closed, size } =
     closed |> List.map (\p -> polygonSvg p.poly size { x = 0, y = 0 } p.col 2)
+
+
+renderAnimatedTess : Tess -> List (Svg msg)
+renderAnimatedTess { closed, size } =
+    closed
+        |> List.indexedMap
+            (\i p -> polygonAnimatedSvg p.poly size { x = 0, y = 0 } p.col 2 i (List.length closed))
 
 
 step : Tess -> ( Point, Point ) -> Tess

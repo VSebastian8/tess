@@ -61,7 +61,7 @@ truncatedSquareTiling =
         , rule4
         , rule3
         ]
-    , open = [ oct |> tr { x = 25, y = 25 } ]
+    , open = [ oct |> tr { x = 26, y = 26 } ]
     , closed = []
     , size = 15
     }

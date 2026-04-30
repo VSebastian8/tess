@@ -3,8 +3,9 @@ port module Main exposing (..)
 import Browser
 import Dict exposing (Dict)
 import Html exposing (..)
-import Html.Attributes exposing (class, id, name, src, style, type_, value)
+import Html.Attributes exposing (class, id, name, style, type_, value)
 import Html.Events exposing (onClick, onInput)
+import Html.Keyed
 import RuleBased.Isogonal exposing (isogonalTesselations)
 import RuleBased.Regular exposing (regularTesselations)
 import RuleBased.Semiregular exposing (semiregularTesselations)
@@ -52,6 +53,8 @@ type alias Model =
     , customSecondary : String
     , customTernary : String
     , customQuart : String
+    , animationKey : Int
+    , animated : Bool
     }
 
 
@@ -68,6 +71,8 @@ init { tessellation, theme, stroke, primary, secondary, ternary, quart } =
       , customTernary = ternary
       , customQuart = quart
       , selectedTess = tessellation
+      , animationKey = 0
+      , animated = False
       }
     , Cmd.none
     )
@@ -87,6 +92,7 @@ type Msg
     | PickQuart String
     | DownloadSvg
     | SetLocal String String
+    | RunAnimation
 
 
 run : msg -> Cmd msg
@@ -123,6 +129,11 @@ update msg model =
 
         SetLocal key val ->
             ( model, setLocal ( key, val ) )
+
+        RunAnimation ->
+            ( { model | animationKey = model.animationKey + 1, animated = True }
+            , Cmd.none
+            )
 
 
 
@@ -282,39 +293,41 @@ settingsMenu : Html Msg
 settingsMenu =
     div
         [ id "settingsContainer" ]
-        [ a
-            [ onClick DownloadSvg
-            , class "icon"
+        [ button
+            [ class "action-btn", onClick RunAnimation ]
+            [ span [ class "icon" ] [ text "|>" ]
+            , span [ class "tooltip" ] [ text "Run animation" ]
             ]
-            [ img
-                [ src "assets/save.svg"
-                , width "50"
-                , height "50"
-                ]
-                []
+        , button
+            [ class "action-btn", onClick DownloadSvg ]
+            [ span [ class "icon", class "overline" ] [ text "v" ]
+            , span [ class "tooltip" ] [ text "Download SVG" ]
             ]
         ]
 
 
-showTess : Tess -> Float -> Float -> Html msg
-showTess tess w h =
+showTess : Tess -> Bool -> Float -> Float -> Html msg
+showTess tess animated w h =
     svg
         [ viewBox ("0 0 " ++ fromFloat w ++ " " ++ fromFloat h)
         , width (fromFloat w)
         , height (fromFloat h)
         , style "margin-bottom" "-5px"
         ]
-        (renderTess (fix tess ( { x = -3, y = -3 }, { x = w / tess.size + 2, y = h / tess.size + 2 } )))
+        (renderTess
+            (fix tess ( { x = -3, y = -3 }, { x = w / tess.size + 2, y = h / tess.size + 2 } ))
+            animated
+        )
 
 
-currentSvg : Model -> Float -> Float -> Html msg
-currentSvg model w h =
+currentSvg : Model -> Bool -> Float -> Float -> Html msg
+currentSvg model animated w h =
     case Dict.get model.selectedTess tessDict of
         Nothing ->
             div [] []
 
         Just tess ->
-            showTess tess w h
+            showTess tess animated w h
 
 
 tessDisplay : Model -> Html msg
@@ -322,8 +335,11 @@ tessDisplay model =
     div
         [ id "tessContainer" ]
         [ h2 [] [ text (model.selectedTess ++ " Tessellation") ]
-        , div [ id "tess" ]
-            [ currentSvg model 800 800
+        , Html.Keyed.node "div"
+            [ id "tess" ]
+            [ ( String.fromInt model.animationKey
+              , currentSvg model model.animated 800 800
+              )
             ]
         ]
 
@@ -350,6 +366,6 @@ downloadDisplay model =
     div
         [ id "tilingDownload", style "display" "none" ]
         [ div [ id "tess" ]
-            [ currentSvg model 1920 1080
+            [ currentSvg model False 1920 1080
             ]
         ]

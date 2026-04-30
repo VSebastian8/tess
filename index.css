@@ -163,18 +163,49 @@ body {
   height: 800px;
 }
 
-.icon {
-  filter: brightness(0) saturate(100%) invert(74%) sepia(16%) saturate(409%)
-    hue-rotate(111deg) brightness(89%) contrast(92%);
-  cursor: pointer;
-}
-
-.icon:hover {
-  filter: brightness(0) saturate(100%) invert(92%) sepia(14%) saturate(618%)
-    hue-rotate(58deg) brightness(90%) contrast(83%);
-}
-
 .customColor {
   display: inline-block;
   margin-right: 10px;
+}
+
+.overline {
+  display: inline-block;
+  border-top: 3px solid #3e3f5b;
+}
+
+.action-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: xx-large;
+  color: #3e3f5b;
+}
+.action-btn:hover {
+  background: #e8e8e8;
+}
+.action-btn .tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #555;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.action-btn:hover .tooltip {
+  opacity: 1;
 }

@@ -5172,7 +5172,7 @@ var $author$project$Main$init = function (_v0) {
 	var ternary = _v0.ternary;
 	var quart = _v0.quart;
 	return _Utils_Tuple2(
-		{customPrimary: primary, customQuart: quart, customSecondary: secondary, customStroke: stroke, customTernary: ternary, selectedTess: tessellation, selectedTheme: theme},
+		{animated: false, animationKey: 0, customPrimary: primary, customQuart: quart, customSecondary: secondary, customStroke: stroke, customTernary: ternary, selectedTess: tessellation, selectedTheme: theme},
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -5280,13 +5280,19 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					model,
 					$author$project$Main$downloadSvg(model.selectedTess + (' ' + model.selectedTheme)));
-			default:
+			case 'SetLocal':
 				var key = msg.a;
 				var val = msg.b;
 				return _Utils_Tuple2(
 					model,
 					$author$project$Main$setLocal(
 						_Utils_Tuple2(key, val)));
+			default:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{animated: true, animationKey: model.animationKey + 1}),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $elm$html$Html$Attributes$stringProperty = F2(
@@ -5560,6 +5566,8 @@ var $author$project$Rules$fix = F2(
 	});
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var $elm$svg$Svg$animate = $elm$svg$Svg$trustedNode('animate');
 var $elm$core$Tuple$pair = F2(
 	function (a, b) {
 		return _Utils_Tuple2(a, b);
@@ -5604,6 +5612,16 @@ var $author$project$Polygon$asPoints = function (_v0) {
 				lengths,
 				A2($elm$core$List$cons, rotation + 180, angles))));
 };
+var $elm$svg$Svg$Attributes$attributeName = _VirtualDom_attribute('attributeName');
+var $elm$svg$Svg$Attributes$begin = _VirtualDom_attribute('begin');
+var $author$project$Polygon$calcDelay = F2(
+	function (index, total) {
+		var t = index / total;
+		var stretch = 800;
+		var maxDelay = 5.0;
+		var cumulativeDelay = A2($elm$core$Basics$logBase, 10, 1 + (t * stretch)) / A2($elm$core$Basics$logBase, 10, 1 + stretch);
+		return $elm$core$String$fromFloat(cumulativeDelay * maxDelay) + 's';
+	});
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $author$project$Polygon$drawAt = F2(
 	function (origin, points) {
@@ -5612,7 +5630,14 @@ var $author$project$Polygon$drawAt = F2(
 			$author$project$Util$add(origin),
 			points);
 	});
+var $elm$svg$Svg$Attributes$dur = _VirtualDom_attribute('dur');
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
+var $elm$svg$Svg$Attributes$from = function (value) {
+	return A2(
+		_VirtualDom_attribute,
+		'from',
+		_VirtualDom_noJavaScriptUri(value));
+};
 var $author$project$Util$getVar = function (color) {
 	switch (color.$) {
 		case 'Primary':
@@ -5627,8 +5652,9 @@ var $author$project$Util$getVar = function (color) {
 			return '--stroke-color';
 	}
 };
+var $elm$core$Debug$log = _Debug_log;
+var $elm$svg$Svg$Attributes$opacity = _VirtualDom_attribute('opacity');
 var $elm$svg$Svg$Attributes$points = _VirtualDom_attribute('points');
-var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$polygon = $elm$svg$Svg$trustedNode('polygon');
 var $author$project$Util$mul = F2(
 	function (s, p) {
@@ -5645,6 +5671,81 @@ var $author$project$Polygon$scaleWith = F2(
 	});
 var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
 var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
+var $elm$svg$Svg$Attributes$to = function (value) {
+	return A2(
+		_VirtualDom_attribute,
+		'to',
+		_VirtualDom_noJavaScriptUri(value));
+};
+var $author$project$Polygon$polygonAnimatedSvg = F7(
+	function (poly, size, origin, color, w, index, total) {
+		var svgPoints = A2(
+			$elm$core$String$join,
+			' ',
+			A2(
+				$elm$core$List$map,
+				function (p) {
+					return $elm$core$String$fromFloat(p.x) + (',' + $elm$core$String$fromFloat(p.y));
+				},
+				A2(
+					$author$project$Polygon$drawAt,
+					origin,
+					A2(
+						$author$project$Polygon$scaleWith,
+						size,
+						$author$project$Polygon$asPoints(poly)))));
+		var delay = A2(
+			$elm$core$Debug$log,
+			'delay',
+			A2($author$project$Polygon$calcDelay, index, total));
+		return A2(
+			$elm$svg$Svg$polygon,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$points(svgPoints),
+					$elm$svg$Svg$Attributes$fill(
+					'var(' + ($author$project$Util$getVar(color) + ')')),
+					$elm$svg$Svg$Attributes$stroke('var(--stroke-color)'),
+					$elm$svg$Svg$Attributes$strokeWidth(
+					$elm$core$String$fromFloat(w)),
+					$elm$svg$Svg$Attributes$class('poly'),
+					$elm$svg$Svg$Attributes$opacity('0')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$animate,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$attributeName('opacity'),
+							$elm$svg$Svg$Attributes$from('1'),
+							$elm$svg$Svg$Attributes$to('1'),
+							$elm$svg$Svg$Attributes$begin(delay),
+							$elm$svg$Svg$Attributes$dur('0.001s'),
+							$elm$svg$Svg$Attributes$fill('freeze')
+						]),
+					_List_Nil)
+				]));
+	});
+var $author$project$Rules$renderAnimatedTess = function (_v0) {
+	var closed = _v0.closed;
+	var size = _v0.size;
+	return A2(
+		$elm$core$List$indexedMap,
+		F2(
+			function (i, p) {
+				return A7(
+					$author$project$Polygon$polygonAnimatedSvg,
+					p.poly,
+					size,
+					{x: 0, y: 0},
+					p.col,
+					2,
+					i,
+					$elm$core$List$length(closed));
+			}),
+		closed);
+};
 var $author$project$Polygon$polygonSvg = F5(
 	function (poly, size, origin, color, w) {
 		var svgPoints = A2(
@@ -5671,12 +5772,11 @@ var $author$project$Polygon$polygonSvg = F5(
 					'var(' + ($author$project$Util$getVar(color) + ')')),
 					$elm$svg$Svg$Attributes$stroke('var(--stroke-color)'),
 					$elm$svg$Svg$Attributes$strokeWidth(
-					$elm$core$String$fromFloat(w)),
-					$elm$svg$Svg$Attributes$class('poly')
+					$elm$core$String$fromFloat(w))
 				]),
 			_List_Nil);
 	});
-var $author$project$Rules$renderTess = function (_v0) {
+var $author$project$Rules$renderStaticTess = function (_v0) {
 	var closed = _v0.closed;
 	var size = _v0.size;
 	return A2(
@@ -5692,13 +5792,17 @@ var $author$project$Rules$renderTess = function (_v0) {
 		},
 		closed);
 };
+var $author$project$Rules$renderTess = F2(
+	function (tess, animated) {
+		return animated ? $author$project$Rules$renderAnimatedTess(tess) : $author$project$Rules$renderStaticTess(tess);
+	});
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
-var $author$project$Main$showTess = F3(
-	function (tess, w, h) {
+var $author$project$Main$showTess = F4(
+	function (tess, animated, w, h) {
 		return A2(
 			$elm$svg$Svg$svg,
 			_List_fromArray(
@@ -5711,13 +5815,15 @@ var $author$project$Main$showTess = F3(
 					$elm$core$String$fromFloat(h)),
 					A2($elm$html$Html$Attributes$style, 'margin-bottom', '-5px')
 				]),
-			$author$project$Rules$renderTess(
+			A2(
+				$author$project$Rules$renderTess,
 				A2(
 					$author$project$Rules$fix,
 					tess,
 					_Utils_Tuple2(
 						{x: -3, y: -3},
-						{x: (w / tess.size) + 2, y: (h / tess.size) + 2}))));
+						{x: (w / tess.size) + 2, y: (h / tess.size) + 2})),
+				animated));
 	});
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
@@ -6228,7 +6334,7 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 			[
 				A2(
 				$author$project$Rules$tr,
-				{x: 20, y: 20},
+				{x: 26, y: 26},
 				A2(
 					$author$project$Rules$sz,
 					2,
@@ -6382,7 +6488,7 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 			[
 				A2(
 				$author$project$Rules$tr,
-				{x: 25, y: 25},
+				{x: 39.5, y: 39.5},
 				A2($author$project$Rules$sz, 3, $author$project$Rules$squ))
 			]),
 		rules: _List_fromArray(
@@ -7515,7 +7621,7 @@ var $author$project$RuleBased$Semiregular$truncatedSquareTiling = function () {
 			[
 				A2(
 				$author$project$Rules$tr,
-				{x: 25, y: 25},
+				{x: 26, y: 26},
 				$author$project$Rules$oct)
 			]),
 		rules: _List_fromArray(
@@ -7531,14 +7637,14 @@ var $author$project$Main$tessellations = _Utils_ap(
 	$author$project$RuleBased$Regular$regularTesselations,
 	_Utils_ap($author$project$RuleBased$Isogonal$isogonalTesselations, $author$project$RuleBased$Semiregular$semiregularTesselations));
 var $author$project$Main$tessDict = $elm$core$Dict$fromList($author$project$Main$tessellations);
-var $author$project$Main$currentSvg = F3(
-	function (model, w, h) {
+var $author$project$Main$currentSvg = F4(
+	function (model, animated, w, h) {
 		var _v0 = A2($elm$core$Dict$get, model.selectedTess, $author$project$Main$tessDict);
 		if (_v0.$ === 'Nothing') {
 			return A2($elm$html$Html$div, _List_Nil, _List_Nil);
 		} else {
 			var tess = _v0.a;
-			return A3($author$project$Main$showTess, tess, w, h);
+			return A4($author$project$Main$showTess, tess, animated, w, h);
 		}
 	});
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
@@ -7560,7 +7666,7 @@ var $author$project$Main$downloadDisplay = function (model) {
 					]),
 				_List_fromArray(
 					[
-						A3($author$project$Main$currentSvg, model, 1920, 1080)
+						A4($author$project$Main$currentSvg, model, false, 1920, 1080)
 					]))
 			]));
 };
@@ -7688,8 +7794,8 @@ var $author$project$Main$rulesDisplay = function (model) {
 			]));
 };
 var $author$project$Main$DownloadSvg = {$: 'DownloadSvg'};
-var $elm$html$Html$a = _VirtualDom_node('a');
-var $elm$html$Html$img = _VirtualDom_node('img');
+var $author$project$Main$RunAnimation = {$: 'RunAnimation'};
+var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -7707,12 +7813,7 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
-var $elm$html$Html$Attributes$src = function (url) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'src',
-		_VirtualDom_noJavaScriptOrHtmlUri(url));
-};
+var $elm$html$Html$span = _VirtualDom_node('span');
 var $author$project$Main$settingsMenu = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -7722,25 +7823,72 @@ var $author$project$Main$settingsMenu = A2(
 	_List_fromArray(
 		[
 			A2(
-			$elm$html$Html$a,
+			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Events$onClick($author$project$Main$DownloadSvg),
-					$elm$html$Html$Attributes$class('icon')
+					$elm$html$Html$Attributes$class('action-btn'),
+					$elm$html$Html$Events$onClick($author$project$Main$RunAnimation)
 				]),
 			_List_fromArray(
 				[
 					A2(
-					$elm$html$Html$img,
+					$elm$html$Html$span,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$src('assets/save.svg'),
-							$elm$svg$Svg$Attributes$width('50'),
-							$elm$svg$Svg$Attributes$height('50')
+							$elm$html$Html$Attributes$class('icon')
 						]),
-					_List_Nil)
+					_List_fromArray(
+						[
+							$elm$html$Html$text('|>')
+						])),
+					A2(
+					$elm$html$Html$span,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('tooltip')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Run animation')
+						]))
+				])),
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('action-btn'),
+					$elm$html$Html$Events$onClick($author$project$Main$DownloadSvg)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$span,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('icon'),
+							$elm$html$Html$Attributes$class('overline')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('v')
+						])),
+					A2(
+					$elm$html$Html$span,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('tooltip')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Download SVG')
+						]))
 				]))
 		]));
+var $elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
+	return _VirtualDom_keyedNode(
+		_VirtualDom_noScript(tag));
+};
+var $elm$html$Html$Keyed$node = $elm$virtual_dom$VirtualDom$keyedNode;
 var $author$project$Main$tessDisplay = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -7757,21 +7905,25 @@ var $author$project$Main$tessDisplay = function (model) {
 					[
 						$elm$html$Html$text(model.selectedTess + ' Tessellation')
 					])),
-				A2(
-				$elm$html$Html$div,
+				A3(
+				$elm$html$Html$Keyed$node,
+				'div',
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$id('tess')
 					]),
 				_List_fromArray(
 					[
-						A3($author$project$Main$currentSvg, model, 800, 800)
+						_Utils_Tuple2(
+						$elm$core$String$fromInt(model.animationKey),
+						A4($author$project$Main$currentSvg, model, model.animated, 800, 800))
 					]))
 			]));
 };
 var $author$project$Main$SelectTess = function (a) {
 	return {$: 'SelectTess', a: a};
 };
+var $elm$html$Html$a = _VirtualDom_node('a');
 var $author$project$Main$tessOption = F2(
 	function (tessName, model) {
 		return A2(

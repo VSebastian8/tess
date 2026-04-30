@@ -114,9 +114,60 @@ polygonSvg poly size origin color w =
         , fill ("var(" ++ getVar color ++ ")")
         , stroke "var(--stroke-color)"
         , strokeWidth (String.fromFloat w)
-        , class "poly"
         ]
         []
+
+
+calcDelay : Int -> Int -> String
+calcDelay index total =
+    let
+        t =
+            toFloat index / toFloat total
+
+        stretch =
+            800
+
+        cumulativeDelay =
+            logBase 10 (1 + t * stretch) / logBase 10 (1 + stretch)
+
+        -- 0 to 1 range
+        maxDelay =
+            5.0
+    in
+    String.fromFloat (cumulativeDelay * maxDelay) ++ "s"
+
+
+polygonAnimatedSvg : Polygon -> Float -> Point -> Color -> Float -> Int -> Int -> Svg msg
+polygonAnimatedSvg poly size origin color w index total =
+    let
+        svgPoints =
+            asPoints poly
+                |> scaleWith size
+                |> drawAt origin
+                |> List.map (\p -> String.fromFloat p.x ++ "," ++ String.fromFloat p.y)
+                |> String.join " "
+
+        delay =
+            Debug.log "delay" (calcDelay index total)
+    in
+    polygon
+        [ points svgPoints
+        , fill ("var(" ++ getVar color ++ ")")
+        , stroke "var(--stroke-color)"
+        , strokeWidth (String.fromFloat w)
+        , class "poly"
+        , opacity "0"
+        ]
+        [ Svg.animate
+            [ Svg.Attributes.attributeName "opacity"
+            , Svg.Attributes.from "1"
+            , Svg.Attributes.to "1"
+            , Svg.Attributes.begin delay
+            , Svg.Attributes.dur "0.001s"
+            , Svg.Attributes.fill "freeze"
+            ]
+            []
+        ]
 
 
 pointSvg : Point -> Float -> Point -> Float -> Svg msg
