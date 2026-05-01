@@ -191,7 +191,7 @@ squ =
 
 eqi : PC
 eqi =
-    { poly = equilateral, col = Primary, centre = { x = 0.5, y = 0.28 }, dist = 0.28 }
+    { poly = equilateral, col = Primary, centre = { x = 0.5, y = sqrt 3 / 6 }, dist = sqrt 3 / 6 }
 
 
 hex : PC
@@ -207,3 +207,8 @@ hexv =
 oct : PC
 oct =
     { poly = octagon, col = Primary, centre = { x = 0.5, y = 0.5 + sqrt 0.5 }, dist = 0.5 + sqrt 0.5 }
+
+
+dod : PC
+dod =
+    { poly = dodecagon, col = Primary, centre = { x = 0.5 + sqrt 3 / 2, y = 0.5 + sqrt 3 / 2 }, dist = 1 + sqrt 3 / 2 }

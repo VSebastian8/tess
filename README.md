@@ -1,8 +1,8 @@
-# Tiling the Plane
+# Tess - Procedural Tilings of the Plane
 
-This project contains various procedural svg tessellations (or tilings) implemented in Elm
+This project contains various procedural svg tessellations (or tilings) implemented in Elm. Now with animations!
 
-Website deployed [here](https://vsebastian8.github.io/Tessellation/)
+Website deployed [here](https://vsebastian8.github.io/tess/)
 
 Inspiration: [The Sacred Geometry of Tilings](https://www.youtube.com/watch?v=wiWEP5Kf8sk&t=398s)
 

@@ -5959,9 +5959,12 @@ var $author$project$Shapes$equilateral = {
 	rotation: 0
 };
 var $author$project$Rules$eqi = {
-	centre: {x: 0.5, y: 0.28},
+	centre: {
+		x: 0.5,
+		y: $elm$core$Basics$sqrt(3) / 6
+	},
 	col: $author$project$Util$Primary,
-	dist: 0.28,
+	dist: $elm$core$Basics$sqrt(3) / 6,
 	poly: $author$project$Shapes$equilateral
 };
 var $author$project$Shapes$hexagon = {
@@ -7741,6 +7744,149 @@ var $author$project$RuleBased$Regular$regularTesselations = _List_fromArray(
 		_Utils_Tuple2('Hexagonal', $author$project$RuleBased$Regular$hexagonalTessellation),
 		_Utils_Tuple2('Hexa Flower', $author$project$RuleBased$Regular$hexagonalFlowerTessellation)
 	]);
+var $author$project$Shapes$dodecagon = {
+	angles: _List_fromArray(
+		[150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150]),
+	lengths: _List_fromArray(
+		[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
+	origin: {x: 0, y: 0},
+	rotation: 30
+};
+var $author$project$Rules$dod = {
+	centre: {
+		x: 0.5 + ($elm$core$Basics$sqrt(3) / 2),
+		y: 0.5 + ($elm$core$Basics$sqrt(3) / 2)
+	},
+	col: $author$project$Util$Primary,
+	dist: 1 + ($elm$core$Basics$sqrt(3) / 2),
+	poly: $author$project$Shapes$dodecagon
+};
+var $author$project$RuleBased$Semiregular$truncatedHexagonalTessellation = function () {
+	var rule3 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				A2(
+					$author$project$Util$sub,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$dod),
+					A2($author$project$Rules$pt, 8, $author$project$Rules$dod)),
+				A3($author$project$Rules$rt, $author$project$Rules$dod.centre, 30, $author$project$Rules$dod)),
+				A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 4, $author$project$Rules$dod),
+				A2(
+					$author$project$Rules$rto,
+					-30,
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Quart})))
+			]),
+		anchor: _Utils_update(
+			$author$project$Rules$dod,
+			{col: $author$project$Util$Secondary}),
+		bounds: _Utils_Tuple2(
+			{x: 0, y: -4},
+			{x: 4, y: 8}),
+		rotatable: true
+	};
+	var rule2 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				{x: 1, y: 0},
+				A3(
+					$author$project$Rules$rt,
+					$author$project$Rules$dod.centre,
+					-90,
+					_Utils_update(
+						$author$project$Rules$dod,
+						{col: $author$project$Util$Secondary})))
+			]),
+		anchor: _Utils_update(
+			$author$project$Rules$eqi,
+			{col: $author$project$Util$Ternary}),
+		bounds: _Utils_Tuple2(
+			{x: 0, y: -1},
+			{x: 4, y: 5}),
+		rotatable: true
+	};
+	var rule1 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 1, $author$project$Rules$dod),
+				A2(
+					$author$project$Rules$rto,
+					60,
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Ternary}))),
+				A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 3, $author$project$Rules$dod),
+				_Utils_update(
+					$author$project$Rules$eqi,
+					{col: $author$project$Util$Ternary})),
+				A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 5, $author$project$Rules$dod),
+				A2(
+					$author$project$Rules$rto,
+					-60,
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Ternary}))),
+				A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 7, $author$project$Rules$dod),
+				A2(
+					$author$project$Rules$rto,
+					-120,
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Ternary}))),
+				A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 9, $author$project$Rules$dod),
+				A2(
+					$author$project$Rules$rto,
+					180,
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Ternary}))),
+				A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 11, $author$project$Rules$dod),
+				A2(
+					$author$project$Rules$rto,
+					120,
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Ternary})))
+			]),
+		anchor: $author$project$Rules$dod,
+		bounds: _Utils_Tuple2(
+			{x: -1.5, y: -1},
+			{x: 5, y: 5}),
+		rotatable: true
+	};
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				{x: 25.5, y: 25.5},
+				$author$project$Rules$dod)
+			]),
+		rules: _List_fromArray(
+			[rule1, rule2, rule3]),
+		size: 15
+	};
+}();
 var $author$project$Shapes$octagon = {
 	angles: _List_fromArray(
 		[135, 135, 135, 135, 135, 135, 135, 135]),
@@ -7758,7 +7904,7 @@ var $author$project$Rules$oct = {
 	dist: 0.5 + $elm$core$Basics$sqrt(0.5),
 	poly: $author$project$Shapes$octagon
 };
-var $author$project$RuleBased$Semiregular$truncatedSquareTiling = function () {
+var $author$project$RuleBased$Semiregular$truncatedSquareTessellation = function () {
 	var rule4 = {
 		additions: _List_fromArray(
 			[
@@ -7891,7 +8037,8 @@ var $author$project$RuleBased$Semiregular$truncatedSquareTiling = function () {
 }();
 var $author$project$RuleBased$Semiregular$semiregularTesselations = _List_fromArray(
 	[
-		_Utils_Tuple2('Truncated Square', $author$project$RuleBased$Semiregular$truncatedSquareTiling)
+		_Utils_Tuple2('Truncated Square', $author$project$RuleBased$Semiregular$truncatedSquareTessellation),
+		_Utils_Tuple2('Truncated Hexagonal', $author$project$RuleBased$Semiregular$truncatedHexagonalTessellation)
 	]);
 var $author$project$Main$tessellations = _Utils_ap(
 	$author$project$RuleBased$Regular$regularTesselations,
