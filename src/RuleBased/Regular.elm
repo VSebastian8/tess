@@ -14,6 +14,7 @@ regularTesselations =
     , ( "Triangular", triangularTessellation )
     , ( "Rotated Triangular", rotatedTriangularTessellation )
     , ( "Hexagonal", hexagonalTessellation )
+    , ( "Hexa Flower", hexagonalFlowerTessellation )
     ]
 
 
@@ -305,13 +306,71 @@ squareFlowerTessellation =
         , fill3
         ]
     , open =
-        [ { squ | col = Secondary } |> rto 180
-        , { squ | col = Secondary } |> rto 90 |> tr { x = 1, y = 0 }
+        [ { squ | col = Secondary } |> rto -90 |> tr { x = 0, y = 1 }
         , { squ | col = Secondary } |> tr { x = 1, y = 1 }
-        , { squ | col = Secondary } |> rto -90 |> tr { x = 0, y = 1 }
-        , squ
+        , { squ | col = Secondary } |> rto 90 |> tr { x = 1, y = 0 }
+        , { squ | col = Secondary } |> rto 180
         ]
             |> List.map (tr { x = 12.8, y = 12.8 })
-    , closed = []
+    , closed = [ squ |> tr { x = 12.8, y = 12.8 } ]
     , size = 30
+    }
+
+
+hexagonalFlowerTessellation : Tess
+hexagonalFlowerTessellation =
+    let
+        diag1 =
+            { anchor = hex, additions = [ { hex | col = Secondary } |> tr (hex |> pt 4 |> neg) ], rotatable = True, bounds = ( { x = -1, y = -2 }, { x = 3, y = 4 } ) }
+
+        diag2 =
+            { anchor = { hex | col = Secondary }, additions = [ { hex | col = Ternary } |> tr (hex |> pt 4 |> neg) ], rotatable = True, bounds = ( { x = -1, y = -2 }, { x = 3, y = 4 } ) }
+
+        diag3 =
+            { anchor = { hex | col = Ternary }, additions = [ { hex | col = Quart } |> tr (hex |> pt 4 |> neg) ], rotatable = True, bounds = ( { x = -1, y = -2 }, { x = 3, y = 4 } ) }
+
+        diag4 =
+            { anchor = { hex | col = Quart }, additions = [ { hex | col = Primary } |> tr (hex |> pt 4 |> neg) ], rotatable = True, bounds = ( { x = -1, y = -2 }, { x = 3, y = 4 } ) }
+
+        fill1 =
+            { anchor = hex
+            , additions = [ hex |> tr (hex |> pt 5) |> tr (hex |> pt 1 |> neg) ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -1 }, { x = 3, y = 4 } )
+            }
+
+        fill2 =
+            { anchor = { hex | col = Secondary }
+            , additions = [ { hex | col = Secondary } |> tr (hex |> pt 5) |> tr (hex |> pt 1 |> neg) ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -1 }, { x = 3, y = 4 } )
+            }
+
+        fill3 =
+            { anchor = { hex | col = Ternary }
+            , additions = [ { hex | col = Ternary } |> tr (hex |> pt 5) |> tr (hex |> pt 1 |> neg) ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -1 }, { x = 3, y = 4 } )
+            }
+
+        fill4 =
+            { anchor = { hex | col = Quart }
+            , additions = [ { hex | col = Quart } |> tr (hex |> pt 5) |> tr (hex |> pt 1 |> neg) ]
+            , rotatable = True
+            , bounds = ( { x = -1, y = -1 }, { x = 3, y = 4 } )
+            }
+    in
+    { rules = [ diag1, diag2, diag3, diag4, fill1, fill2, fill3, fill4 ]
+    , open =
+        [ { hex | col = Secondary } |> tr (hex |> pt 4 |> neg)
+        , { hex | col = Secondary } |> rt hex.centre -60 |> tr (hex |> pt 1) |> tr (hex |> pt 5 |> neg)
+        , { hex | col = Secondary } |> rt hex.centre -120 |> tr (hex |> pt 2)
+        , { hex | col = Secondary } |> rt hex.centre 180 |> tr (hex |> pt 4)
+        , { hex | col = Secondary } |> rt hex.centre 120 |> tr (hex |> pt 5) |> tr (hex |> pt 1 |> neg)
+        , { hex | col = Secondary } |> rt hex.centre 60 |> tr (hex |> pt 2 |> neg)
+        ]
+            |> List.map (rt hex.centre 30)
+            |> List.map (tr { x = 20 - sqrt 3 / 2, y = 19.5 })
+    , closed = [ hex |> rt hex.centre 30 |> tr { x = 20 - sqrt 3 / 2, y = 19.5 } ]
+    , size = 20
     }

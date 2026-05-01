@@ -6828,6 +6828,260 @@ var $author$project$Rules$hex = A3(
 		dist: 0.86,
 		poly: $author$project$Shapes$hexagon
 	});
+var $author$project$RuleBased$Regular$hexagonalFlowerTessellation = function () {
+	var fill4 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2($author$project$Rules$pt, 1, $author$project$Rules$hex)),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 5, $author$project$Rules$hex),
+					_Utils_update(
+						$author$project$Rules$hex,
+						{col: $author$project$Util$Quart})))
+			]),
+		anchor: _Utils_update(
+			$author$project$Rules$hex,
+			{col: $author$project$Util$Quart}),
+		bounds: _Utils_Tuple2(
+			{x: -1, y: -1},
+			{x: 3, y: 4}),
+		rotatable: true
+	};
+	var fill3 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2($author$project$Rules$pt, 1, $author$project$Rules$hex)),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 5, $author$project$Rules$hex),
+					_Utils_update(
+						$author$project$Rules$hex,
+						{col: $author$project$Util$Ternary})))
+			]),
+		anchor: _Utils_update(
+			$author$project$Rules$hex,
+			{col: $author$project$Util$Ternary}),
+		bounds: _Utils_Tuple2(
+			{x: -1, y: -1},
+			{x: 3, y: 4}),
+		rotatable: true
+	};
+	var fill2 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2($author$project$Rules$pt, 1, $author$project$Rules$hex)),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 5, $author$project$Rules$hex),
+					_Utils_update(
+						$author$project$Rules$hex,
+						{col: $author$project$Util$Secondary})))
+			]),
+		anchor: _Utils_update(
+			$author$project$Rules$hex,
+			{col: $author$project$Util$Secondary}),
+		bounds: _Utils_Tuple2(
+			{x: -1, y: -1},
+			{x: 3, y: 4}),
+		rotatable: true
+	};
+	var fill1 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2($author$project$Rules$pt, 1, $author$project$Rules$hex)),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 5, $author$project$Rules$hex),
+					$author$project$Rules$hex))
+			]),
+		anchor: $author$project$Rules$hex,
+		bounds: _Utils_Tuple2(
+			{x: -1, y: -1},
+			{x: 3, y: 4}),
+		rotatable: true
+	};
+	var diag4 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2($author$project$Rules$pt, 4, $author$project$Rules$hex)),
+				_Utils_update(
+					$author$project$Rules$hex,
+					{col: $author$project$Util$Primary}))
+			]),
+		anchor: _Utils_update(
+			$author$project$Rules$hex,
+			{col: $author$project$Util$Quart}),
+		bounds: _Utils_Tuple2(
+			{x: -1, y: -2},
+			{x: 3, y: 4}),
+		rotatable: true
+	};
+	var diag3 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2($author$project$Rules$pt, 4, $author$project$Rules$hex)),
+				_Utils_update(
+					$author$project$Rules$hex,
+					{col: $author$project$Util$Quart}))
+			]),
+		anchor: _Utils_update(
+			$author$project$Rules$hex,
+			{col: $author$project$Util$Ternary}),
+		bounds: _Utils_Tuple2(
+			{x: -1, y: -2},
+			{x: 3, y: 4}),
+		rotatable: true
+	};
+	var diag2 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2($author$project$Rules$pt, 4, $author$project$Rules$hex)),
+				_Utils_update(
+					$author$project$Rules$hex,
+					{col: $author$project$Util$Ternary}))
+			]),
+		anchor: _Utils_update(
+			$author$project$Rules$hex,
+			{col: $author$project$Util$Secondary}),
+		bounds: _Utils_Tuple2(
+			{x: -1, y: -2},
+			{x: 3, y: 4}),
+		rotatable: true
+	};
+	var diag1 = {
+		additions: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2($author$project$Rules$pt, 4, $author$project$Rules$hex)),
+				_Utils_update(
+					$author$project$Rules$hex,
+					{col: $author$project$Util$Secondary}))
+			]),
+		anchor: $author$project$Rules$hex,
+		bounds: _Utils_Tuple2(
+			{x: -1, y: -2},
+			{x: 3, y: 4}),
+		rotatable: true
+	};
+	return {
+		closed: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				{
+					x: 20 - ($elm$core$Basics$sqrt(3) / 2),
+					y: 19.5
+				},
+				A3($author$project$Rules$rt, $author$project$Rules$hex.centre, 30, $author$project$Rules$hex))
+			]),
+		open: A2(
+			$elm$core$List$map,
+			$author$project$Rules$tr(
+				{
+					x: 20 - ($elm$core$Basics$sqrt(3) / 2),
+					y: 19.5
+				}),
+			A2(
+				$elm$core$List$map,
+				A2($author$project$Rules$rt, $author$project$Rules$hex.centre, 30),
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Rules$tr,
+						$author$project$Util$neg(
+							A2($author$project$Rules$pt, 4, $author$project$Rules$hex)),
+						_Utils_update(
+							$author$project$Rules$hex,
+							{col: $author$project$Util$Secondary})),
+						A2(
+						$author$project$Rules$tr,
+						$author$project$Util$neg(
+							A2($author$project$Rules$pt, 5, $author$project$Rules$hex)),
+						A2(
+							$author$project$Rules$tr,
+							A2($author$project$Rules$pt, 1, $author$project$Rules$hex),
+							A3(
+								$author$project$Rules$rt,
+								$author$project$Rules$hex.centre,
+								-60,
+								_Utils_update(
+									$author$project$Rules$hex,
+									{col: $author$project$Util$Secondary})))),
+						A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$hex),
+						A3(
+							$author$project$Rules$rt,
+							$author$project$Rules$hex.centre,
+							-120,
+							_Utils_update(
+								$author$project$Rules$hex,
+								{col: $author$project$Util$Secondary}))),
+						A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 4, $author$project$Rules$hex),
+						A3(
+							$author$project$Rules$rt,
+							$author$project$Rules$hex.centre,
+							180,
+							_Utils_update(
+								$author$project$Rules$hex,
+								{col: $author$project$Util$Secondary}))),
+						A2(
+						$author$project$Rules$tr,
+						$author$project$Util$neg(
+							A2($author$project$Rules$pt, 1, $author$project$Rules$hex)),
+						A2(
+							$author$project$Rules$tr,
+							A2($author$project$Rules$pt, 5, $author$project$Rules$hex),
+							A3(
+								$author$project$Rules$rt,
+								$author$project$Rules$hex.centre,
+								120,
+								_Utils_update(
+									$author$project$Rules$hex,
+									{col: $author$project$Util$Secondary})))),
+						A2(
+						$author$project$Rules$tr,
+						$author$project$Util$neg(
+							A2($author$project$Rules$pt, 2, $author$project$Rules$hex)),
+						A3(
+							$author$project$Rules$rt,
+							$author$project$Rules$hex.centre,
+							60,
+							_Utils_update(
+								$author$project$Rules$hex,
+								{col: $author$project$Util$Secondary})))
+					]))),
+		rules: _List_fromArray(
+			[diag1, diag2, diag3, diag4, fill1, fill2, fill3, fill4]),
+		size: 20
+	};
+}();
 var $author$project$RuleBased$Regular$hexagonalTessellation = function () {
 	var hexRule5 = {
 		additions: _List_fromArray(
@@ -7255,7 +7509,13 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 		rotatable: true
 	};
 	return {
-		closed: _List_Nil,
+		closed: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				{x: 12.8, y: 12.8},
+				$author$project$Rules$squ)
+			]),
 		open: A2(
 			$elm$core$List$map,
 			$author$project$Rules$tr(
@@ -7263,8 +7523,17 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 			_List_fromArray(
 				[
 					A2(
-					$author$project$Rules$rto,
-					180,
+					$author$project$Rules$tr,
+					{x: 0, y: 1},
+					A2(
+						$author$project$Rules$rto,
+						-90,
+						_Utils_update(
+							$author$project$Rules$squ,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 1},
 					_Utils_update(
 						$author$project$Rules$squ,
 						{col: $author$project$Util$Secondary})),
@@ -7278,21 +7547,11 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 							$author$project$Rules$squ,
 							{col: $author$project$Util$Secondary}))),
 					A2(
-					$author$project$Rules$tr,
-					{x: 1, y: 1},
+					$author$project$Rules$rto,
+					180,
 					_Utils_update(
 						$author$project$Rules$squ,
-						{col: $author$project$Util$Secondary})),
-					A2(
-					$author$project$Rules$tr,
-					{x: 0, y: 1},
-					A2(
-						$author$project$Rules$rto,
-						-90,
-						_Utils_update(
-							$author$project$Rules$squ,
-							{col: $author$project$Util$Secondary}))),
-					$author$project$Rules$squ
+						{col: $author$project$Util$Secondary}))
 				])),
 		rules: _List_fromArray(
 			[diag1, diag2, diag3, fill1, fill2, fill3]),
@@ -7479,7 +7738,8 @@ var $author$project$RuleBased$Regular$regularTesselations = _List_fromArray(
 		_Utils_Tuple2('Square Flower', $author$project$RuleBased$Regular$squareFlowerTessellation),
 		_Utils_Tuple2('Triangular', $author$project$RuleBased$Regular$triangularTessellation),
 		_Utils_Tuple2('Rotated Triangular', $author$project$RuleBased$Regular$rotatedTriangularTessellation),
-		_Utils_Tuple2('Hexagonal', $author$project$RuleBased$Regular$hexagonalTessellation)
+		_Utils_Tuple2('Hexagonal', $author$project$RuleBased$Regular$hexagonalTessellation),
+		_Utils_Tuple2('Hexa Flower', $author$project$RuleBased$Regular$hexagonalFlowerTessellation)
 	]);
 var $author$project$Shapes$octagon = {
 	angles: _List_fromArray(
