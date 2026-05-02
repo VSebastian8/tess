@@ -12,22 +12,28 @@
   color: #3e3f5b;
 }
 
+#tessContainer .tess-svg {
+  width: 800px;
+  height: auto;
+}
+
 @media screen and (max-width: 840px) {
   body {
     font-size: large;
   }
 
   #container {
-    grid-template-columns: 2fr 1fr 1fr !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
     grid-template-areas:
       "_ _ settings"
       "tess tess tess"
       "rules rules rules"
-      "menu theme theme" !important;
+      "menu menu theme" !important;
     row-gap: 2vh;
     padding: 0 !important;
     height: fit-content !important;
     width: 100vw !important;
+    overflow-x: hidden;
   }
 
   #menuContainer,
@@ -37,18 +43,26 @@
     margin: 0 !important;
   }
   #tessContainer {
-    width: auto !important;
+    width: 100vw !important;
+    overflow: hidden !important;
+  }
+  #tessContainer .tess-svg {
+    width: 90vw;
   }
   #rulesContainer {
     width: auto !important;
+    width: 100vw !important;
   }
   #rules {
     flex-direction: row !important;
-    width: 800px !important;
+    width: 100vw !important;
     height: auto !important;
   }
   #tess {
     border-bottom: 5px solid #3e3f5b !important;
+  }
+  .action-btn .tooltip {
+    bottom: -25px !important;
   }
 }
 
@@ -137,6 +151,10 @@ body {
   border-bottom: 6px solid #3e3f5b;
   padding-bottom: 0;
   height: fit-content;
+}
+
+#tess-text {
+  text-align: center;
 }
 
 #tilingDownload {

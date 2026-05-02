@@ -313,9 +313,10 @@ showTess tess animated w h =
         , width (fromFloat w)
         , height (fromFloat h)
         , style "margin-bottom" "-5px"
+        , Svg.Attributes.class "tess-svg"
         ]
         (renderTess
-            (fix tess ( { x = -3, y = -3 }, { x = w / tess.size + 2, y = h / tess.size + 2 } ))
+            (fix tess ( { x = -3, y = -3 }, { x = w / tess.size + 3, y = h / tess.size + 3 } ))
             animated
         )
 
@@ -334,7 +335,7 @@ tessDisplay : Model -> Html msg
 tessDisplay model =
     div
         [ id "tessContainer" ]
-        [ h2 [] [ text (model.selectedTess ++ " Tessellation") ]
+        [ h2 [ id "tess-text" ] [ text (model.selectedTess ++ " Tessellation") ]
         , Html.Keyed.node "div"
             [ id "tess" ]
             [ ( String.fromInt model.animationKey

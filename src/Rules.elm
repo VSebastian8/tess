@@ -10,7 +10,7 @@ import Util exposing (..)
 
 
 type alias PC =
-    { poly : Polygon, col : Color, centre : Point, dist : Float }
+    { poly : Polygon, col : Color, centre : Point, dist : Float, scale : Float }
 
 
 collides : PC -> PC -> Bool
@@ -19,17 +19,34 @@ collides p1 p2 =
 
 
 type alias Rule =
-    { anchor : PC, additions : List PC, rotatable : Bool, bounds : ( Point, Point ) }
+    { anchor : PC
+    , additions : List PC
+    , rotatable : Bool
+    , subdivide : Bool
+    , fragment : Float
+    , bounds : ( Point, Point )
+    }
+
+
+r : Rule
+r =
+    { anchor = squ
+    , additions = []
+    , rotatable = True
+    , subdivide = False
+    , fragment = 1
+    , bounds = ( { x = 0, y = 0 }, { x = 1, y = 1 } )
+    }
 
 
 eq : PC -> PC -> Bool
 eq p1 p2 =
-    equals p1.poly p2.poly && (p1.col == p2.col)
+    equals p1.poly p2.poly && (p1.col == p2.col) && (p1.scale == p2.scale)
 
 
 eq2 : PC -> PC -> Bool
 eq2 p1 p2 =
-    (p1.poly.lengths == p2.poly.lengths) && (p1.poly.angles == p2.poly.angles) && (p1.col == p2.col)
+    (p1.poly.lengths == p2.poly.lengths) && (p1.poly.angles == p2.poly.angles) && (p1.col == p2.col) && (p1.scale == p2.scale)
 
 
 applies : Rule -> PC -> Bool
@@ -69,12 +86,26 @@ pt : Float -> PC -> Point
 pt alfa pc =
     let
         nextP =
-            getPoint (floor alfa) pc.poly
+            getPoint (floor alfa) (rescale pc).poly
 
         prevP =
-            getPoint (ceiling alfa) pc.poly
+            getPoint (ceiling alfa) (rescale pc).poly
     in
     add nextP (mul (toFloat (ceiling alfa) - alfa) (sub prevP nextP))
+
+
+sc : Float -> PC -> PC
+sc scalar pc =
+    { pc | scale = pc.scale * scalar, centre = mul scalar (sub pc.centre pc.poly.origin) |> add pc.poly.origin, dist = pc.dist * scalar }
+
+
+rescale : PC -> PC
+rescale pc =
+    let
+        p =
+            pc.poly
+    in
+    { pc | poly = { p | lengths = List.map (\l -> l * pc.scale) p.lengths } }
 
 
 renderRule : Rule -> Html msg
@@ -95,6 +126,7 @@ renderRule { anchor, additions, bounds } =
         , height "200"
         ]
         ((additions
+            |> List.map rescale
             |> List.concatMap
                 (\addition ->
                     [ polygonSvg addition.poly 1 { x = 0, y = 0 } addition.col 0.04
@@ -102,7 +134,7 @@ renderRule { anchor, additions, bounds } =
                     ]
                 )
          )
-            ++ [ polygonSvg anchor.poly 1 { x = 0, y = 0 } anchor.col 0.08, pointSvg anchor.centre 1 { x = 0, y = 0 } 0.04 ]
+            ++ [ polygonSvg (rescale anchor).poly 1 { x = 0, y = 0 } anchor.col 0.08, pointSvg anchor.centre 1 { x = 0, y = 0 } 0.04 ]
         )
 
 
@@ -125,12 +157,13 @@ renderTess tess animated =
 
 renderStaticTess : Tess -> List (Svg msg)
 renderStaticTess { closed, size } =
-    closed |> List.map (\p -> polygonSvg p.poly size { x = 0, y = 0 } p.col 2)
+    closed |> List.map rescale |> List.map (\p -> polygonSvg p.poly size { x = 0, y = 0 } p.col 2)
 
 
 renderAnimatedTess : Tess -> List (Svg msg)
 renderAnimatedTess { closed, size } =
     closed
+        |> List.map rescale
         |> List.indexedMap
             (\i p -> polygonAnimatedSvg p.poly size { x = 0, y = 0 } p.col 2 i (List.length closed))
 
@@ -143,7 +176,7 @@ step tess bounds =
 
         -- Pick the first open polygon, check its validity and apply all rules to it
         p :: rest ->
-            if not (inside p.poly.origin bounds) || List.any (collides p) tess.closed then
+            if not (inside p.centre bounds) || List.any (collides p) tess.closed then
                 { tess
                     | open = rest
                 }
@@ -186,29 +219,29 @@ fix tess bounds =
 
 squ : PC
 squ =
-    { poly = square, col = Primary, centre = { x = 0.5, y = 0.5 }, dist = 0.5 }
+    { poly = square, col = Primary, centre = { x = 0.5, y = 0.5 }, dist = 0.5, scale = 1 }
 
 
 eqi : PC
 eqi =
-    { poly = equilateral, col = Primary, centre = { x = 0.5, y = sqrt 3 / 6 }, dist = sqrt 3 / 6 }
+    { poly = equilateral, col = Primary, centre = { x = 0.5, y = sqrt 3 / 6 }, dist = sqrt 3 / 6, scale = 1 }
 
 
 hex : PC
 hex =
-    { poly = hexagon, col = Primary, centre = { x = 0.5, y = 0.86 }, dist = 0.86 } |> rt { x = 0, y = 0 } 30
+    { poly = hexagon, col = Primary, centre = { x = 0.5, y = 0.86 }, dist = 0.86, scale = 1 } |> rt { x = 0, y = 0 } 30
 
 
 hexv : PC
 hexv =
-    { poly = hexagon, col = Primary, centre = { x = 0.5, y = 0.86 }, dist = 0.86 }
+    { poly = hexagon, col = Primary, centre = { x = 0.5, y = 0.86 }, dist = 0.86, scale = 1 }
 
 
 oct : PC
 oct =
-    { poly = octagon, col = Primary, centre = { x = 0.5, y = 0.5 + sqrt 0.5 }, dist = 0.5 + sqrt 0.5 }
+    { poly = octagon, col = Primary, centre = { x = 0.5, y = 0.5 + sqrt 0.5 }, dist = 0.5 + sqrt 0.5, scale = 1 }
 
 
 dod : PC
 dod =
-    { poly = dodecagon, col = Primary, centre = { x = 0.5 + sqrt 3 / 2, y = 0.5 + sqrt 3 / 2 }, dist = 1 + sqrt 3 / 2 }
+    { poly = dodecagon, col = Primary, centre = { x = 0.5 + sqrt 3 / 2, y = 0.5 + sqrt 3 / 2 }, dist = 1 + sqrt 3 / 2, scale = 1 }
