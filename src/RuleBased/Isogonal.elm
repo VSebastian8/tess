@@ -67,6 +67,7 @@ squareRowsTessellation =
     , open = [ squ ]
     , closed = []
     , size = 30
+    , start = { x = 0, y = 0 }
     }
 
 
@@ -97,6 +98,7 @@ triangularRowsTessellation =
     , open = [ eqi |> tr { x = -0.5, y = 0 } ]
     , closed = []
     , size = 30
+    , start = { x = 0, y = 0 }
     }
 
 
@@ -147,9 +149,10 @@ pythagoreanTessellation =
         , squareRule1
         , squareRule3
         ]
-    , open = [ squ |> sc 3 |> tr { x = 39.5, y = 39.5 } ]
+    , open = [ squ |> sc 3 ]
     , closed = []
     , size = 10
+    , start = { x = 0.5, y = 0.5 }
     }
 
 
@@ -201,9 +204,10 @@ trithagoreanTessellation =
         , triRule2
         , triRule3
         ]
-    , open = [ eqi |> sc 3 |> tr { x = 25, y = 25 } ]
+    , open = [ eqi |> sc 3 ]
     , closed = []
     , size = 15
+    , start = { x = 0.5, y = 0.5 }
     }
 
 
@@ -253,9 +257,10 @@ hexaStarTessellation =
         , triRule1
         , hexRule2
         ]
-    , open = [ hexv |> rto 0 |> sc 2 |> tr { x = 26, y = 26 } ]
+    , open = [ hexv |> rto 0 |> sc 2 ]
     , closed = []
     , size = 15
+    , start = { x = 0.5, y = 0.5 }
     }
 
 
@@ -297,7 +302,8 @@ hexaGyraTessellation =
         , triRule1
         , triRule2
         ]
-    , open = [ hexv |> rto 0 |> tr { x = 20, y = 20 } ]
+    , open = [ hexv |> rto 0 ]
     , closed = []
     , size = 20
+    , start = { x = 0.5, y = 0.5 }
     }

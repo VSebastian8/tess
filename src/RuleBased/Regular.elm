@@ -59,6 +59,7 @@ squareTessellation =
     , open = [ squ ]
     , closed = []
     , size = 30
+    , start = { x = 0, y = 0 }
     }
 
 
@@ -105,6 +106,7 @@ triangularTessellation =
     , open = [ eqi |> tr { x = -0.5, y = 0 } ]
     , closed = []
     , size = 30
+    , start = { x = 0, y = 0 }
     }
 
 
@@ -158,6 +160,7 @@ hexagonalTessellation =
         ]
     , closed = []
     , size = 30
+    , start = { x = 0, y = 0 }
     }
 
 
@@ -208,6 +211,7 @@ rotatedSquareTessellation =
     , open = [ squ |> rto 45 |> tr { x = -1, y = 0 } ]
     , closed = []
     , size = 30
+    , start = { x = 0, y = 0 }
     }
 
 
@@ -250,6 +254,7 @@ rotatedTriangularTessellation =
     , open = [ eqi |> rto 45 |> tr { x = -1, y = 0 } ]
     , closed = []
     , size = 30
+    , start = { x = 0, y = 0 }
     }
 
 
@@ -318,9 +323,9 @@ squareFlowerTessellation =
         , { squ | col = Secondary } |> rto 90 |> tr { x = 1, y = 0 }
         , { squ | col = Secondary } |> rto 180
         ]
-            |> List.map (tr { x = 12.8, y = 12.8 })
-    , closed = [ squ |> tr { x = 12.8, y = 12.8 } ]
+    , closed = [ squ ]
     , size = 30
+    , start = { x = 0.5, y = 0.5 }
     }
 
 
@@ -377,7 +382,7 @@ hexagonalFlowerTessellation =
         , { hex | col = Secondary } |> rt hex.centre 60 |> tr (hex |> pt 2 |> neg)
         ]
             |> List.map (rt hex.centre 30)
-            |> List.map (tr { x = 20 - sqrt 3 / 2, y = 19.5 })
-    , closed = [ hex |> rt hex.centre 30 |> tr { x = 20 - sqrt 3 / 2, y = 19.5 } ]
+    , closed = [ hex |> rt hex.centre 30 ]
     , size = 20
+    , start = { x = 0.5, y = 0.5 }
     }

@@ -148,7 +148,7 @@ polygonAnimatedSvg poly size origin color w index total =
                 |> String.join " "
 
         delay =
-            Debug.log "delay" (calcDelay index total)
+            calcDelay index total
     in
     polygon
         [ points svgPoints

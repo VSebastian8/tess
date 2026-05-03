@@ -35,7 +35,7 @@ r =
     , rotatable = True
     , subdivide = False
     , fragment = 1
-    , bounds = ( { x = 0, y = 0 }, { x = 1, y = 1 } )
+    , bounds = ( { x = -5, y = -5 }, { x = 10, y = 10 } )
     }
 
 
@@ -143,6 +143,7 @@ type alias Tess =
     , open : List PC
     , closed : List PC
     , size : Float
+    , start : Point
     }
 
 
@@ -215,6 +216,37 @@ fix tess bounds =
 
         _ ->
             fix (step tess bounds) bounds
+
+
+keep0 : Float -> a -> a -> a
+keep0 val x y =
+    if val == 0 then
+        x
+
+    else
+        y
+
+
+placeStart : Tess -> Float -> Float -> Tess
+placeStart tess w h =
+    let
+        centre =
+            case tess.rules |> List.head of
+                Nothing ->
+                    { x = 0, y = 0 }
+
+                Just rule ->
+                    rule.anchor.centre
+
+        distance =
+            { x = keep0 tess.start.x 0 (tess.start.x * w / tess.size - centre.x)
+            , y = keep0 tess.start.y 0 (tess.start.y * h / tess.size - centre.y)
+            }
+    in
+    { tess
+        | open = tess.open |> List.map (tr distance)
+        , closed = tess.closed |> List.map (tr distance)
+    }
 
 
 squ : PC

@@ -316,7 +316,7 @@ showTess tess animated w h =
         , Svg.Attributes.class "tess-svg"
         ]
         (renderTess
-            (fix tess ( { x = -3, y = -3 }, { x = w / tess.size + 3, y = h / tess.size + 3 } ))
+            (fix (placeStart tess w h) ( { x = -3, y = -3 }, { x = w / tess.size + 3, y = h / tess.size + 3 } ))
             animated
         )
 
