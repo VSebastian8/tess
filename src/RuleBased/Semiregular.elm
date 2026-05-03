@@ -13,6 +13,9 @@ semiregularTesselations =
     , ( "Trihexagonal", triHexagonalTessellation )
     , ( "Rhombitrihexagonal", rhombiTriHexagonalTessellation )
     , ( "Truncated Trihexagonal", truncatedTriHexagonalTessellation )
+    , ( "Snub Trihexagonal", snubTriHexagonalTessellation )
+    , ( "Snub Square", snubSquareTessellation )
+    , ( "Elongated Triangular", elongatedTriangularTessellation )
     ]
 
 
@@ -262,4 +265,139 @@ truncatedTriHexagonalTessellation =
     , closed = []
     , size = 15
     , start = { x = 0.5, y = 0.5 }
+    }
+
+
+snubTriHexagonalTessellation : Tess
+snubTriHexagonalTessellation =
+    let
+        hexRule1 =
+            { r
+                | anchor = hexv
+                , additions =
+                    [ { eqi | col = Secondary } |> rto 60
+                    , { eqi | col = Ternary } |> rto 120 |> tr (hexv |> pt 1)
+                    , { eqi | col = Secondary } |> rto 60 |> tr (hexv |> pt 1)
+                    , { eqi | col = Ternary } |> tr (eqi |> pt 1)
+                    , { eqi | col = Secondary } |> rto 60 |> tr (hexv |> pt 2)
+                    , { eqi | col = Ternary } |> tr (hexv |> pt 2)
+                    , { eqi | col = Secondary } |> rto 60 |> tr (hexv |> pt 3)
+                    , { eqi | col = Ternary } |> tr (hexv |> pt 3)
+                    , { eqi | col = Secondary } |> rto -60 |> tr (hexv |> pt 3)
+                    , { eqi | col = Ternary } |> tr (hexv |> pt 4)
+                    , { eqi | col = Secondary } |> rto -60 |> tr (hexv |> pt 4)
+                    , { eqi | col = Ternary } |> rto -120 |> tr (hexv |> pt 4)
+                    , { eqi | col = Secondary } |> rto -60 |> tr (hexv |> pt 5)
+                    , { eqi | col = Ternary } |> rto -120 |> tr (hexv |> pt 5)
+                    , { eqi | col = Secondary } |> rto -180 |> tr (hexv |> pt 5)
+                    , { eqi | col = Ternary } |> rto -120
+                    , { eqi | col = Secondary } |> rto -180
+                    , { eqi | col = Ternary } |> rto 120
+                    ]
+                , bounds = ( { x = -2, y = -2 }, { x = 5, y = 5 } )
+            }
+
+        diag =
+            hexv |> pt 5 |> neg
+
+        hexRule2 =
+            { r
+                | anchor = hexv
+                , additions =
+                    [ hexv |> tr diag |> tr (hexv |> pt 4 |> neg)
+                    , hexv |> tr diag |> tr { x = 2, y = 0 }
+                    , hexv |> tr (hexv |> pt 3) |> tr { x = 1, y = 0 }
+                    , hexv |> tr (diag |> neg) |> tr (hexv |> pt 4)
+                    , hexv |> tr (diag |> neg) |> tr { x = -2, y = 0 }
+                    , hexv |> tr (hexv |> pt 3 |> neg) |> tr { x = -1, y = 0 }
+                    ]
+                , bounds = ( { x = -3, y = -3 }, { x = 7, y = 7 } )
+            }
+    in
+    { rules = [ hexRule1, hexRule2 ], open = [ hexv ], closed = [], size = 30, start = { x = 0.5, y = 0.5 } }
+
+
+snubSquareTessellation : Tess
+snubSquareTessellation =
+    let
+        triRight =
+            { r
+                | anchor = eqi |> rto -30
+                , additions =
+                    [ { squ | col = Ternary } |> rto 60
+                    , { squ | col = Ternary } |> rto 30 |> tr { x = 0, y = 1 }
+                    , { eqi | col = Secondary } |> rto 60 |> tr (eqi |> rto -30 |> pt 1)
+                    , { eqi | col = Secondary } |> rto -120 |> tr (eqi |> rto -30 |> pt 1) |> tr { x = 1, y = 0 }
+                    ]
+                , bounds = ( { x = 0, y = -1 }, { x = 2, y = 3 } )
+            }
+
+        triUp =
+            { r
+                | anchor = { eqi | col = Secondary } |> rto 60
+                , additions = [ eqi |> rto -30 |> tr (eqi |> rto 60 |> pt 1) |> tr { x = 0, y = -1 }, eqi |> rto 150 |> tr (eqi |> rto 60 |> pt 1) ]
+                , bounds = ( { x = 0, y = -2 }, { x = 1, y = 2 } )
+            }
+    in
+    { rules = [ triRight, triUp ]
+    , open =
+        [ eqi |> rto -30 |> tr { x = (eqi |> rto -30).centre.x, y = 0 }
+        , eqi |> rto 150 |> tr { x = (eqi |> rto -30).centre.x, y = 0 } |> tr { x = 0, y = 1 }
+        ]
+    , closed = []
+    , size = 30
+    , start = { x = 0.5, y = 0.5 }
+    }
+
+
+elongatedTriangularTessellation : Tess
+elongatedTriangularTessellation =
+    let
+        squareRule1 =
+            { r
+                | anchor = squ
+                , additions =
+                    [ tr { x = 1, y = 0 } { squ | col = Quart }
+                    , tr { x = 2, y = 0 } squ
+                    ]
+                , rotatable = False
+                , bounds = ( { x = 0, y = 0 }, { x = 3, y = 1 } )
+            }
+
+        squareRule2 =
+            { r
+                | anchor = squ
+                , additions =
+                    [ { eqi | col = Secondary } |> rto -60 |> tr { x = 0, y = 1 }
+                    , { eqi | col = Ternary } |> tr { x = 0, y = 1 }
+                    , { eqi | col = Secondary } |> rto -60 |> tr { x = 1, y = 1 }
+                    ]
+                , rotatable = False
+                , bounds = ( { x = -1, y = 0 }, { x = 3, y = 1 } )
+            }
+
+        squareRule3 =
+            { r
+                | anchor = { squ | col = Quart }
+                , additions =
+                    [ { eqi | col = Ternary } |> tr { x = 0, y = 1 }
+                    ]
+                , rotatable = False
+                , bounds = ( { x = -1, y = 0 }, { x = 3, y = 1 } )
+            }
+
+        squareRule4 =
+            { r
+                | anchor = squ
+                , additions =
+                    [ squ |> tr { x = 0, y = 1 } |> tr (eqi |> rto -60 |> pt 2) ]
+                , rotatable = False
+                , bounds = ( { x = -1, y = 0 }, { x = 3, y = 3 } )
+            }
+    in
+    { rules = [ squareRule1, squareRule2, squareRule3, squareRule4 ]
+    , open = [ squ ]
+    , closed = []
+    , size = 30
+    , start = { x = 0, y = 0 }
     }
