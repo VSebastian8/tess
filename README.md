@@ -2,7 +2,9 @@
 
 This project contains various procedural svg tessellations (or tilings) implemented in Elm. Now with animations!
 
-Website deployed [here](https://vsebastian8.github.io/tess/)
+<img src ="./assets/logo.svg">
+
+Website deployed [here - Tess](https://vsebastian8.github.io/tess/)
 
 Inspiration: [The Sacred Geometry of Tilings](https://www.youtube.com/watch?v=wiWEP5Kf8sk&t=398s)
 
@@ -35,7 +37,7 @@ Inspiration: [The Sacred Geometry of Tilings](https://www.youtube.com/watch?v=wi
 |  <img src="./assets/laves/cairoPentagonal.png" width="200">  |  <img src="./assets/laves/prismaticPentagonal.png" width="200">  |
 |                      _Cairo Pentagonal_                      |                      _Prismatic Pentagonal_                      |
 
-## Experiments
+## Trial and Error (mostly error)
 
 |                                                                    |                                                                    |                                                                  |
 | :----------------------------------------------------------------: | :----------------------------------------------------------------: | :--------------------------------------------------------------: |
@@ -49,3 +51,5 @@ Inspiration: [The Sacred Geometry of Tilings](https://www.youtube.com/watch?v=wi
 |                         _Floret Hexagonal_                         |                        _Deltoidal Pattern_                         |                         _Floret Pattern_                         |
 |  <img src="./assets/experiments/type3Hexagon_2.png" width="200">   |  <img src="./assets/experiments/type3Hexagon_1.png" width="200">   | <img src="./assets/experiments/type3Hexagon_3.png" width="200">  |
 |                                                                    |                      _Type 3 Convex Hexagons_                      |                                                                  |
+|       <img src="./assets/fails/square-mess.png" width="200">       |          <img src="./assets/fails/corn.png" width="200">           |         <img src="./assets/fails/ring.png" width="200">          |
+|                          _Squares Galore_                          |                            _Candy Corn_                            |                            _The Ring_                            |

@@ -131,11 +131,11 @@ triHexagonalTessellation =
                 | anchor = hexv
                 , additions =
                     [ { eqi | col = Secondary } |> tr (hexv |> pt 1)
-                    , { eqi | col = Secondary } |> rto -60 |> tr (hexv |> pt 2) |> sz 2 |> sc 0.5
+                    , { eqi | col = Secondary } |> sz 2 |> sc 0.5 |> rto -60 |> tr (hexv |> pt 2)
                     , { eqi | col = Secondary } |> rto -120 |> tr (hexv |> pt 3)
-                    , { eqi | col = Secondary } |> rto 180 |> tr (hexv |> pt 4) |> sz 2 |> sc 0.5
+                    , { eqi | col = Secondary } |> sz 2 |> sc 0.5 |> rto 180 |> tr (hexv |> pt 4)
                     , { eqi | col = Secondary } |> rto 120 |> tr (hexv |> pt 5)
-                    , { eqi | col = Secondary } |> rto 60 |> sz 2 |> sc 0.5
+                    , { eqi | col = Secondary } |> sz 2 |> sc 0.5 |> rto 60
                     ]
                 , bounds = ( { x = -2, y = -1 }, { x = 5, y = 4 } )
             }

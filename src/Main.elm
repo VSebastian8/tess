@@ -7,6 +7,7 @@ import Html.Attributes exposing (class, id, name, style, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Html.Keyed
 import RuleBased.Isogonal exposing (isogonalTesselations)
+import RuleBased.Laves exposing (lavesTesselations)
 import RuleBased.Regular exposing (regularTesselations)
 import RuleBased.Semiregular exposing (semiregularTesselations)
 import Rules exposing (..)
@@ -55,6 +56,7 @@ type alias Model =
     , customQuart : String
     , animationKey : Int
     , animated : Bool
+    , downloadData : Html Never
     }
 
 
@@ -73,6 +75,7 @@ init { tessellation, theme, stroke, primary, secondary, ternary, quart } =
       , selectedTess = tessellation
       , animationKey = 0
       , animated = False
+      , downloadData = a [] [ text "loading" ]
       }
     , Cmd.none
     )
@@ -91,6 +94,7 @@ type Msg
     | PickTernary String
     | PickQuart String
     | DownloadSvg
+    | TriggerDownloadPort
     | SetLocal String String
     | RunAnimation
 
@@ -125,6 +129,9 @@ update msg model =
             ( { model | customQuart = color }, run (SetLocal "tess-quart" color) )
 
         DownloadSvg ->
+            ( { model | downloadData = currentSvg model False 1920 1080 }, run TriggerDownloadPort )
+
+        TriggerDownloadPort ->
             ( model, downloadSvg (model.selectedTess ++ " " ++ model.selectedTheme) )
 
         SetLocal key val ->
@@ -157,7 +164,7 @@ view model =
 
 tessellations : List ( String, Tess )
 tessellations =
-    regularTesselations ++ isogonalTesselations ++ semiregularTesselations
+    regularTesselations ++ isogonalTesselations ++ semiregularTesselations ++ lavesTesselations
 
 
 tessOptions : List String
@@ -316,12 +323,15 @@ showTess tess animated w h =
         , Svg.Attributes.class "tess-svg"
         ]
         (renderTess
-            (fix (placeStart tess w h) ( { x = -3, y = -3 }, { x = w / tess.size + 3, y = h / tess.size + 3 } ))
+            (fix
+                (placeStart tess w h)
+                ( { x = -3, y = -3 }, { x = w / tess.size + 3, y = h / tess.size + 3 } )
+            )
             animated
         )
 
 
-currentSvg : Model -> Bool -> Float -> Float -> Html msg
+currentSvg : Model -> Bool -> Float -> Float -> Html Never
 currentSvg model animated w h =
     case Dict.get model.selectedTess tessDict of
         Nothing ->
@@ -339,7 +349,7 @@ tessDisplay model =
         , Html.Keyed.node "div"
             [ id "tess" ]
             [ ( String.fromInt model.animationKey
-              , currentSvg model model.animated 800 800
+              , map never (currentSvg model model.animated 800 800)
               )
             ]
         ]
@@ -367,6 +377,6 @@ downloadDisplay model =
     div
         [ id "tilingDownload", style "display" "none" ]
         [ div [ id "tess" ]
-            [ currentSvg model False 1920 1080
+            [ map never model.downloadData
             ]
         ]

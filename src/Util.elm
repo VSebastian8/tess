@@ -62,6 +62,11 @@ neg { x, y } =
     { x = -x, y = -y }
 
 
+mag : Point -> Float
+mag { x, y } =
+    sqrt (x * x + y * y)
+
+
 mix2Color : Int -> Color
 mix2Color n =
     case modBy 2 n of

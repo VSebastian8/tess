@@ -41,21 +41,28 @@ r =
 
 eq : PC -> PC -> Bool
 eq p1 p2 =
-    equals p1.poly p2.poly && (p1.col == p2.col) && (p1.scale == p2.scale)
+    equals p1.poly p2.poly && (p1.col == p2.col)
 
 
 eq2 : PC -> PC -> Bool
 eq2 p1 p2 =
-    (p1.poly.lengths == p2.poly.lengths) && (p1.poly.angles == p2.poly.angles) && (p1.col == p2.col) && (p1.scale == p2.scale)
+    (p1.poly.lengths == p2.poly.lengths) && (p1.poly.angles == p2.poly.angles) && (p1.col == p2.col)
 
 
 applies : Rule -> PC -> Bool
 applies rule p =
-    if rule.rotatable then
-        eq2 rule.anchor p
+    (if rule.subdivide then
+        True
 
-    else
-        eq rule.anchor p
+     else
+        rule.anchor.scale == p.scale
+    )
+        && (if rule.rotatable then
+                eq2 rule.anchor p
+
+            else
+                eq rule.anchor p
+           )
 
 
 tr : Point -> PC -> PC
@@ -96,7 +103,11 @@ pt alfa pc =
 
 sc : Float -> PC -> PC
 sc scalar pc =
-    { pc | scale = pc.scale * scalar, centre = mul scalar (sub pc.centre pc.poly.origin) |> add pc.poly.origin, dist = pc.dist * scalar }
+    let
+        p =
+            pc.poly
+    in
+    { pc | poly = { p | origin = mul scalar p.origin }, scale = pc.scale * scalar, centre = mul scalar (sub pc.centre p.origin) |> add (mul scalar p.origin), dist = pc.dist * scalar }
 
 
 rescale : PC -> PC
@@ -109,7 +120,7 @@ rescale pc =
 
 
 renderRule : Rule -> Html msg
-renderRule { anchor, additions, bounds } =
+renderRule { anchor, additions, bounds, subdivide } =
     let
         ( tl1, br1 ) =
             bounds
@@ -119,22 +130,30 @@ renderRule { anchor, additions, bounds } =
 
         br =
             add br1 { x = 0.8, y = 0.8 }
+
+        anchorSvgs =
+            [ polygonSvg (rescale anchor).poly 1 { x = 0, y = 0 } anchor.col 0.08, pointSvg anchor.centre 1 { x = 0, y = 0 } 0.04 ]
+
+        addSvgs =
+            additions
+                |> List.map rescale
+                |> List.concatMap
+                    (\addition ->
+                        [ polygonSvg addition.poly 1 { x = 0, y = 0 } addition.col 0.04
+                        , pointSvg addition.centre 1 { x = 0, y = 0 } 0.04
+                        ]
+                    )
     in
     svg
         [ viewBox (fromFloat tl.x ++ " " ++ fromFloat tl.y ++ " " ++ fromFloat br.x ++ " " ++ fromFloat br.y)
         , width "200"
         , height "200"
         ]
-        ((additions
-            |> List.map rescale
-            |> List.concatMap
-                (\addition ->
-                    [ polygonSvg addition.poly 1 { x = 0, y = 0 } addition.col 0.04
-                    , pointSvg addition.centre 1 { x = 0, y = 0 } 0.04
-                    ]
-                )
-         )
-            ++ [ polygonSvg (rescale anchor).poly 1 { x = 0, y = 0 } anchor.col 0.08, pointSvg anchor.centre 1 { x = 0, y = 0 } 0.04 ]
+        (if subdivide then
+            anchorSvgs ++ addSvgs
+
+         else
+            addSvgs ++ anchorSvgs
         )
 
 
@@ -161,12 +180,73 @@ renderStaticTess { closed, size } =
     closed |> List.map rescale |> List.map (\p -> polygonSvg p.poly size { x = 0, y = 0 } p.col 2)
 
 
+
+-- Debug centres
+-- ++ (closed
+--         |> List.map rescale
+--         |> List.map
+--             (\p ->
+--                 pointSvg (mul size p.centre) 1 { x = 0, y = 0 } 2
+--             )
+--    )
+
+
 renderAnimatedTess : Tess -> List (Svg msg)
 renderAnimatedTess { closed, size } =
     closed
         |> List.map rescale
         |> List.indexedMap
             (\i p -> polygonAnimatedSvg p.poly size { x = 0, y = 0 } p.col 2 i (List.length closed))
+
+
+modify : Tess -> PC -> List PC -> Tess
+modify tess p rest =
+    let
+        adds =
+            tess.rules
+                |> List.filter (\rule -> not rule.subdivide)
+                |> List.filter (\rule -> applies rule p)
+                |> List.concatMap
+                    (\rule ->
+                        rule.additions
+                            |> List.map
+                                (\p2 ->
+                                    p2
+                                        |> rt rule.anchor.poly.origin
+                                            (p.poly.rotation - rule.anchor.poly.rotation)
+                                        |> tr p.poly.origin
+                                        |> tr (neg rule.anchor.poly.origin)
+                                )
+                    )
+
+        subs =
+            tess.rules
+                |> List.filter (\rule -> rule.subdivide)
+                |> List.filter (\rule -> rule.fragment <= p.scale)
+                |> List.filter (\rule -> applies rule p)
+                |> List.concatMap
+                    (\rule ->
+                        rule.additions
+                            |> List.map
+                                (\p2 ->
+                                    p2
+                                        |> sc (p.scale / rule.anchor.scale)
+                                        |> rt rule.anchor.poly.origin
+                                            (p.poly.rotation - rule.anchor.poly.rotation)
+                                        |> tr p.poly.origin
+                                        |> tr (neg rule.anchor.poly.origin)
+                                )
+                    )
+    in
+    { tess
+        | open = subs ++ rest ++ adds
+        , closed =
+            if List.isEmpty subs then
+                p :: tess.closed
+
+            else
+                tess.closed
+    }
 
 
 step : Tess -> ( Point, Point ) -> Tess
@@ -178,34 +258,19 @@ step tess bounds =
         -- Pick the first open polygon, check its validity and apply all rules to it
         p :: rest ->
             if not (inside p.centre bounds) || List.any (collides p) tess.closed then
-                { tess
-                    | open = rest
-                }
+                { tess | open = rest }
 
             else
-                let
-                    new_ps =
-                        tess.rules
-                            |> List.filter (\rule -> applies rule p)
-                            |> List.concatMap
-                                (\rule ->
-                                    rule.additions
-                                        |> List.map
-                                            (\p2 ->
-                                                p2
-                                                    |> rt rule.anchor.poly.origin
-                                                        (p.poly.rotation
-                                                            - rule.anchor.poly.rotation
-                                                        )
-                                                    |> tr p.poly.origin
-                                                    |> tr (neg rule.anchor.poly.origin)
-                                            )
-                                )
-                in
-                { tess
-                    | open = rest ++ new_ps
-                    , closed = p :: tess.closed
-                }
+                modify tess p rest
+
+
+stepN : Tess -> ( Point, Point ) -> Int -> Tess
+stepN tess bounds n =
+    if List.isEmpty tess.open || n == 0 then
+        { tess | closed = List.reverse tess.closed }
+
+    else
+        stepN (step tess bounds) bounds (n - 1)
 
 
 fix : Tess -> ( Point, Point ) -> Tess
@@ -277,3 +342,18 @@ oct =
 dod : PC
 dod =
     { poly = dodecagon, col = Primary, centre = { x = 0.5 + sqrt 3 / 2, y = 0.5 + sqrt 3 / 2 }, dist = 1 + sqrt 3 / 2, scale = 1 }
+
+
+iso : PC
+iso =
+    { poly = isosceles, col = Primary, centre = { x = 1 / 3, y = 1 / 3 }, dist = 1 / 6, scale = 1 }
+
+
+ois : PC
+ois =
+    { poly = obtuseIso, col = Primary, centre = mul (2 / 3) { x = 0.25, y = cos (degrees 30) / 2 }, dist = mag { x = 0.25, y = cos (degrees 30) / 2 } / 3, scale = 1 }
+
+
+rho : PC
+rho =
+    { poly = rhombus, col = Primary, centre = { x = cos (degrees 60) / 2, y = cos (degrees 30) / 2 }, dist = cos (degrees 30) * cos (degrees 30) / 2, scale = 1 }

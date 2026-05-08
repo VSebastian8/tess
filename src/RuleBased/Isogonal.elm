@@ -271,19 +271,19 @@ hexaGyraTessellation =
             { r
                 | anchor = hexv
                 , additions =
-                    [ { eqi | col = Secondary } |> rto 60 |> sc 2
-                    , { eqi | col = Ternary } |> tr (pt 1 hexv) |> sc 2
-                    , { eqi | col = Secondary } |> rto -60 |> tr (pt 2 hexv) |> sc 2
-                    , { eqi | col = Ternary } |> rto -120 |> tr (pt 3 hexv) |> sc 2
-                    , { eqi | col = Secondary } |> rto -180 |> tr (pt 4 hexv) |> sc 2
-                    , { eqi | col = Ternary } |> rto -240 |> tr (pt 5 hexv) |> sc 2
+                    [ { eqi | col = Secondary } |> sc 2 |> rto 60
+                    , { eqi | col = Ternary } |> sc 2 |> tr (pt 1 hexv)
+                    , { eqi | col = Secondary } |> sc 2 |> rto -60 |> tr (pt 2 hexv)
+                    , { eqi | col = Ternary } |> sc 2 |> rto -120 |> tr (pt 3 hexv)
+                    , { eqi | col = Secondary } |> sc 2 |> rto -180 |> tr (pt 4 hexv)
+                    , { eqi | col = Ternary } |> sc 2 |> rto -240 |> tr (pt 5 hexv)
                     ]
                 , bounds = ( { x = -2, y = -1.5 }, { x = 5, y = 5 } )
             }
 
         triRule1 =
             { r
-                | anchor = { eqi | col = Secondary } |> rto 60 |> sc 2
+                | anchor = { eqi | col = Secondary } |> sc 2 |> rto 60
                 , additions =
                     [ hexv |> tr (eqi |> rto 60 |> sz 2 |> pt 1) |> tr { x = 1, y = 0 } ]
                 , bounds = ( { x = -1, y = -3 }, { x = 5, y = 5 } )
