@@ -155,7 +155,7 @@ view model =
         ]
         [ tessMenu model
         , themeMenu model
-        , settingsMenu
+        , settingsMenu model
         , rulesDisplay model
         , tessDisplay model
         , downloadDisplay model
@@ -296,17 +296,23 @@ colorPicker colorType labelText model =
         ]
 
 
-settingsMenu : Html Msg
-settingsMenu =
+settingsMenu : Model -> Html Msg
+settingsMenu model =
     div
         [ id "settingsContainer" ]
         [ button
-            [ class "action-btn", onClick RunAnimation ]
+            [ class "action-btn"
+            , onClick RunAnimation
+            , class ("theme" ++ model.selectedTheme)
+            ]
             [ span [ class "icon" ] [ text "|>" ]
             , span [ class "tooltip" ] [ text "Run animation" ]
             ]
         , button
-            [ class "action-btn", onClick DownloadSvg ]
+            [ class "action-btn"
+            , onClick DownloadSvg
+            , class ("theme" ++ model.selectedTheme)
+            ]
             [ span [ class "icon", class "overline" ] [ text "v" ]
             , span [ class "tooltip" ] [ text "Download SVG" ]
             ]

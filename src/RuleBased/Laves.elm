@@ -11,6 +11,7 @@ lavesTesselations =
     [ ( "Triakis Triangular", triakisTriangularTessellation )
     , ( "Rhombile", rhombileTessellation )
     , ( "Tetrakis Square", tetrakisSquareTessellation )
+    , ( "Disdyakis Rhombile", disdyakisRhombileTessellation )
     ]
 
 
@@ -166,6 +167,58 @@ tetrakisSquareTessellation =
     , closed = []
     , open =
         [ squ
+        ]
+    , size = 40
+    , start = { x = 0.5, y = 0.5 }
+    }
+
+
+disdyakisRhombileTessellation : Tess
+disdyakisRhombileTessellation =
+    let
+        hexTile =
+            { r
+                | anchor = hex
+                , additions =
+                    [ hex |> tr (hex |> pt 4 |> neg)
+                    , hex |> tr (hex |> pt 1) |> tr { x = 0, y = -1 }
+                    , hex |> tr (hex |> pt 2)
+                    , hex |> tr (hex |> pt 4)
+                    , hex |> tr (hex |> pt 1 |> neg) |> tr { x = 0, y = 1 }
+                    , hex |> tr (hex |> pt 2 |> neg)
+                    ]
+                , bounds = ( { x = -1.6, y = -2 }, { x = 5, y = 5 } )
+            }
+
+        subRule1 =
+            { r
+                | anchor = hex
+                , additions =
+                    [ rgt |> rto -30
+                    , { lft | col = Secondary } |> rto 150 |> tr hex.centre
+                    , { rgt | col = Ternary } |> rto -90 |> tr (hex |> pt 1)
+                    , lft |> rto 90 |> tr hex.centre
+                    , { rgt | col = Secondary } |> rto -150 |> tr (hex |> pt 2)
+                    , { lft | col = Ternary } |> rto 30 |> tr hex.centre
+                    , rgt |> rto 150 |> tr (hex |> pt 3)
+                    , { lft | col = Secondary } |> rto -30 |> tr hex.centre
+                    , { rgt | col = Ternary } |> rto 90 |> tr (hex |> pt 4)
+                    , lft |> rto -90 |> tr hex.centre
+                    , { rgt | col = Secondary } |> rto 30 |> tr (hex |> pt 5)
+                    , { lft | col = Ternary } |> rto -150 |> tr hex.centre
+                    ]
+                , bounds = ( { x = 0, y = 0 }, { x = 1.7, y = 1 } )
+                , subdivide = True
+                , rotatable = False
+            }
+    in
+    { rules =
+        [ hexTile
+        , subRule1
+        ]
+    , closed = []
+    , open =
+        [ hex
         ]
     , size = 40
     , start = { x = 0.5, y = 0.5 }

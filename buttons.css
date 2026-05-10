@@ -1,0 +1,74 @@
+@property --angle {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.action-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: xx-large;
+  color: #3e3f5b;
+  background: transparent;
+}
+.action-btn .tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #555;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.action-btn:hover {
+  background: #e8e8e8;
+}
+.action-btn:hover .tooltip {
+  opacity: 1;
+}
+
+.action-btn::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 4px;
+  background: white;
+  z-index: 0;
+}
+
+.action-btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+.action-btn.drawing {
+  animation: border-draw 5s ease-in-out forwards;
+  background: conic-gradient(
+    from -45deg,
+    var(--primary-color, #3e3f5b) 0deg,
+    var(--primary-color, #3e3f5b) calc(var(--angle) * 1deg),
+    #ddd calc(var(--angle) * 1deg)
+  );
+}
+@keyframes border-draw {
+  from {
+    --angle: 0;
+  }
+  to {
+    --angle: 360;
+  }
+}

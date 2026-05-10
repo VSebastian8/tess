@@ -6893,6 +6893,219 @@ var $author$project$Rules$hex = A3(
 		poly: $author$project$Shapes$hexagon,
 		scale: 1
 	});
+var $author$project$Shapes$left = {
+	angles: _List_fromArray(
+		[60, 90, 30]),
+	lengths: _List_fromArray(
+		[
+			1,
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60)),
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30))
+		]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$lft = function () {
+	var c = A2(
+		$author$project$Util$mul,
+		2 / 3,
+		A2(
+			$author$project$Util$add,
+			A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$left),
+			A2(
+				$author$project$Util$mul,
+				0.5,
+				A2(
+					$author$project$Util$sub,
+					A2($author$project$Polygon$getPoint, 2, $author$project$Shapes$left),
+					A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$left)))));
+	return {centre: c, col: $author$project$Util$Primary, dist: 0.12, poly: $author$project$Shapes$left, scale: 1};
+}();
+var $author$project$Shapes$right = {
+	angles: _List_fromArray(
+		[30, 90, 60]),
+	lengths: _List_fromArray(
+		[
+			1,
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30)),
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60))
+		]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$rgt = function () {
+	var c = A2(
+		$author$project$Util$mul,
+		2 / 3,
+		A2(
+			$author$project$Util$add,
+			A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$right),
+			A2(
+				$author$project$Util$mul,
+				0.5,
+				A2(
+					$author$project$Util$sub,
+					A2($author$project$Polygon$getPoint, 2, $author$project$Shapes$right),
+					A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$right)))));
+	return {centre: c, col: $author$project$Util$Primary, dist: 0.12, poly: $author$project$Shapes$right, scale: 1};
+}();
+var $author$project$RuleBased$Laves$disdyakisRhombileTessellation = function () {
+	var subRule1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2($author$project$Rules$rto, -30, $author$project$Rules$rgt),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Rules$hex.centre,
+					A2(
+						$author$project$Rules$rto,
+						150,
+						_Utils_update(
+							$author$project$Rules$lft,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$hex),
+					A2(
+						$author$project$Rules$rto,
+						-90,
+						_Utils_update(
+							$author$project$Rules$rgt,
+							{col: $author$project$Util$Ternary}))),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Rules$hex.centre,
+					A2($author$project$Rules$rto, 90, $author$project$Rules$lft)),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, $author$project$Rules$hex),
+					A2(
+						$author$project$Rules$rto,
+						-150,
+						_Utils_update(
+							$author$project$Rules$rgt,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Rules$hex.centre,
+					A2(
+						$author$project$Rules$rto,
+						30,
+						_Utils_update(
+							$author$project$Rules$lft,
+							{col: $author$project$Util$Ternary}))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 3, $author$project$Rules$hex),
+					A2($author$project$Rules$rto, 150, $author$project$Rules$rgt)),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Rules$hex.centre,
+					A2(
+						$author$project$Rules$rto,
+						-30,
+						_Utils_update(
+							$author$project$Rules$lft,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, $author$project$Rules$hex),
+					A2(
+						$author$project$Rules$rto,
+						90,
+						_Utils_update(
+							$author$project$Rules$rgt,
+							{col: $author$project$Util$Ternary}))),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Rules$hex.centre,
+					A2($author$project$Rules$rto, -90, $author$project$Rules$lft)),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 5, $author$project$Rules$hex),
+					A2(
+						$author$project$Rules$rto,
+						30,
+						_Utils_update(
+							$author$project$Rules$rgt,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Rules$hex.centre,
+					A2(
+						$author$project$Rules$rto,
+						-150,
+						_Utils_update(
+							$author$project$Rules$lft,
+							{col: $author$project$Util$Ternary})))
+				]),
+			anchor: $author$project$Rules$hex,
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 1.7, y: 1}),
+			rotatable: false,
+			subdivide: true
+		});
+	var hexTile = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2($author$project$Rules$pt, 4, $author$project$Rules$hex)),
+					$author$project$Rules$hex),
+					A2(
+					$author$project$Rules$tr,
+					{x: 0, y: -1},
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 1, $author$project$Rules$hex),
+						$author$project$Rules$hex)),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, $author$project$Rules$hex),
+					$author$project$Rules$hex),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, $author$project$Rules$hex),
+					$author$project$Rules$hex),
+					A2(
+					$author$project$Rules$tr,
+					{x: 0, y: 1},
+					A2(
+						$author$project$Rules$tr,
+						$author$project$Util$neg(
+							A2($author$project$Rules$pt, 1, $author$project$Rules$hex)),
+						$author$project$Rules$hex)),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2($author$project$Rules$pt, 2, $author$project$Rules$hex)),
+					$author$project$Rules$hex)
+				]),
+			anchor: $author$project$Rules$hex,
+			bounds: _Utils_Tuple2(
+				{x: -1.6, y: -2},
+				{x: 5, y: 5})
+		});
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[$author$project$Rules$hex]),
+		rules: _List_fromArray(
+			[hexTile, subRule1]),
+		size: 40,
+		start: {x: 0.5, y: 0.5}
+	};
+}();
 var $author$project$Shapes$rhombus = {
 	angles: _List_fromArray(
 		[60, 120, 60, 120]),
@@ -7334,7 +7547,8 @@ var $author$project$RuleBased$Laves$lavesTesselations = _List_fromArray(
 	[
 		_Utils_Tuple2('Triakis Triangular', $author$project$RuleBased$Laves$triakisTriangularTessellation),
 		_Utils_Tuple2('Rhombile', $author$project$RuleBased$Laves$rhombileTessellation),
-		_Utils_Tuple2('Tetrakis Square', $author$project$RuleBased$Laves$tetrakisSquareTessellation)
+		_Utils_Tuple2('Tetrakis Square', $author$project$RuleBased$Laves$tetrakisSquareTessellation),
+		_Utils_Tuple2('Disdyakis Rhombile', $author$project$RuleBased$Laves$disdyakisRhombileTessellation)
 	]);
 var $author$project$RuleBased$Regular$hexagonalFlowerTessellation = function () {
 	var fill4 = _Utils_update(
@@ -9771,76 +9985,80 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$html$Html$span = _VirtualDom_node('span');
-var $author$project$Main$settingsMenu = A2(
-	$elm$html$Html$div,
-	_List_fromArray(
-		[
-			$elm$html$Html$Attributes$id('settingsContainer')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('action-btn'),
-					$elm$html$Html$Events$onClick($author$project$Main$RunAnimation)
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$span,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('icon')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('|>')
-						])),
-					A2(
-					$elm$html$Html$span,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('tooltip')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Run animation')
-						]))
-				])),
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('action-btn'),
-					$elm$html$Html$Events$onClick($author$project$Main$DownloadSvg)
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$span,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('icon'),
-							$elm$html$Html$Attributes$class('overline')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('v')
-						])),
-					A2(
-					$elm$html$Html$span,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('tooltip')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Download SVG')
-						]))
-				]))
-		]));
+var $author$project$Main$settingsMenu = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$id('settingsContainer')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('action-btn'),
+						$elm$html$Html$Events$onClick($author$project$Main$RunAnimation),
+						$elm$html$Html$Attributes$class('theme' + model.selectedTheme)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('icon')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('|>')
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('tooltip')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Run animation')
+							]))
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('action-btn'),
+						$elm$html$Html$Events$onClick($author$project$Main$DownloadSvg),
+						$elm$html$Html$Attributes$class('theme' + model.selectedTheme)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('icon'),
+								$elm$html$Html$Attributes$class('overline')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('v')
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('tooltip')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Download SVG')
+							]))
+					]))
+			]));
+};
 var $elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
 	return _VirtualDom_keyedNode(
 		_VirtualDom_noScript(tag));
@@ -10096,7 +10314,7 @@ var $author$project$Main$view = function (model) {
 			[
 				$author$project$Main$tessMenu(model),
 				$author$project$Main$themeMenu(model),
-				$author$project$Main$settingsMenu,
+				$author$project$Main$settingsMenu(model),
 				$author$project$Main$rulesDisplay(model),
 				$author$project$Main$tessDisplay(model),
 				$author$project$Main$downloadDisplay(model)

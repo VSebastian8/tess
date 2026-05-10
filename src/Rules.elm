@@ -357,3 +357,21 @@ ois =
 rho : PC
 rho =
     { poly = rhombus, col = Primary, centre = { x = cos (degrees 60) / 2, y = cos (degrees 30) / 2 }, dist = cos (degrees 30) * cos (degrees 30) / 2, scale = 1 }
+
+
+rgt : PC
+rgt =
+    let
+        c =
+            add (right |> getPoint 1) (sub (right |> getPoint 2) (right |> getPoint 1) |> mul 0.5) |> mul (2 / 3)
+    in
+    { poly = right, col = Primary, centre = c, dist = 0.12, scale = 1 }
+
+
+lft : PC
+lft =
+    let
+        c =
+            add (left |> getPoint 1) (sub (left |> getPoint 2) (left |> getPoint 1) |> mul 0.5) |> mul (2 / 3)
+    in
+    { poly = left, col = Primary, centre = c, dist = 0.12, scale = 1 }

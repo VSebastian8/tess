@@ -9,12 +9,27 @@
     <title>Tess</title>
     <link rel="stylesheet" href="index.css" />
     <link rel="stylesheet" href="themes.css" />
+    <link rel="stylesheet" href="buttons.css" />
     <link rel="icon" type="image/svg" href="assets/logo.svg" />
   </head>
   <body>
     <div id="app"></div>
     <script src="elm.js"></script>
     <script>
+      // Button animation
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".action-btn");
+        if (!btn) return;
+        btn.classList.remove("drawing");
+        void btn.offsetWidth;
+        btn.classList.add("drawing");
+        btn.style.setProperty("--angle", "0");
+        btn.addEventListener(
+          "animationend",
+          () => btn.classList.remove("drawing"),
+          { once: true },
+        );
+      });
       // Get local values
       let tessellation =
         localStorage.getItem("tess-tessellation") ?? "Hexagonal";
