@@ -5168,6 +5168,7 @@ var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$init = function (_v0) {
 	var tessellation = _v0.tessellation;
+	var categories = _v0.categories;
 	var theme = _v0.theme;
 	var stroke = _v0.stroke;
 	var primary = _v0.primary;
@@ -5191,10 +5192,12 @@ var $author$project$Main$init = function (_v0) {
 						$elm$html$Html$text('loading')
 					])),
 			selectedTess: tessellation,
-			selectedTheme: theme
+			selectedTheme: theme,
+			toggledCategories: categories
 		},
 		$elm$core$Platform$Cmd$none);
 };
+var $elm$json$Json$Decode$list = _Json_decodeList;
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $elm$json$Json$Decode$string = _Json_decodeString;
@@ -7939,8 +7942,8 @@ var $author$project$RuleBased$Regular$rotatedSquareTessellation = function () {
 				]),
 			anchor: A2($author$project$Rules$rto, 45, $author$project$Rules$squ),
 			bounds: _Utils_Tuple2(
-				{x: 0.5, y: -1},
-				{x: 1, y: 2.8}),
+				{x: -0.8, y: -0.8},
+				{x: 3, y: 2.8}),
 			rotatable: false
 		});
 	var squareRule3 = _Utils_update(
@@ -7961,8 +7964,8 @@ var $author$project$RuleBased$Regular$rotatedSquareTessellation = function () {
 				$author$project$Rules$squ,
 				{col: $author$project$Util$Ternary}),
 			bounds: _Utils_Tuple2(
-				{x: 0, y: 0},
-				{x: 2.8, y: 2})
+				{x: -0.5, y: -0.5},
+				{x: 3, y: 3})
 		});
 	var squareRule2 = _Utils_update(
 		$author$project$Rules$r,
@@ -7986,8 +7989,8 @@ var $author$project$RuleBased$Regular$rotatedSquareTessellation = function () {
 				$author$project$Rules$squ,
 				{col: $author$project$Util$Secondary}),
 			bounds: _Utils_Tuple2(
-				{x: 0, y: 0},
-				{x: 2.8, y: 2})
+				{x: -0.5, y: -0.5},
+				{x: 3, y: 3})
 		});
 	var squareRule1 = _Utils_update(
 		$author$project$Rules$r,
@@ -8009,8 +8012,8 @@ var $author$project$RuleBased$Regular$rotatedSquareTessellation = function () {
 				]),
 			anchor: $author$project$Rules$squ,
 			bounds: _Utils_Tuple2(
-				{x: 0, y: 0},
-				{x: 2.8, y: 2})
+				{x: -0.5, y: -0.5},
+				{x: 3, y: 3})
 		});
 	return {
 		closed: _List_Nil,
@@ -8054,8 +8057,8 @@ var $author$project$RuleBased$Regular$rotatedTriangularTessellation = function (
 						$author$project$Rules$eqi,
 						{col: $author$project$Util$Secondary}))),
 			bounds: _Utils_Tuple2(
-				{x: -0.5, y: 0},
-				{x: 1, y: 2})
+				{x: -1, y: -0.2},
+				{x: 2, y: 2})
 		});
 	var triRule3 = _Utils_update(
 		$author$project$Rules$r,
@@ -9672,11 +9675,18 @@ var $author$project$RuleBased$Semiregular$semiregularTesselations = _List_fromAr
 		_Utils_Tuple2('Snub Square', $author$project$RuleBased$Semiregular$snubSquareTessellation),
 		_Utils_Tuple2('Elongated Triangular', $author$project$RuleBased$Semiregular$elongatedTriangularTessellation)
 	]);
-var $author$project$Main$tessellations = _Utils_ap(
-	$author$project$RuleBased$Regular$regularTesselations,
-	_Utils_ap(
-		$author$project$RuleBased$Isogonal$isogonalTesselations,
-		_Utils_ap($author$project$RuleBased$Semiregular$semiregularTesselations, $author$project$RuleBased$Laves$lavesTesselations)));
+var $author$project$Main$categoryTessellations = _List_fromArray(
+	[
+		_Utils_Tuple2('Regular', $author$project$RuleBased$Regular$regularTesselations),
+		_Utils_Tuple2('Isogonal', $author$project$RuleBased$Isogonal$isogonalTesselations),
+		_Utils_Tuple2('Semiregular', $author$project$RuleBased$Semiregular$semiregularTesselations),
+		_Utils_Tuple2('Laves', $author$project$RuleBased$Laves$lavesTesselations)
+	]);
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $author$project$Main$tessellations = A2($elm$core$List$concatMap, $elm$core$Tuple$second, $author$project$Main$categoryTessellations);
 var $author$project$Main$tessDict = $elm$core$Dict$fromList($author$project$Main$tessellations);
 var $author$project$Main$currentSvg = F4(
 	function (model, animated, w, h) {
@@ -9709,6 +9719,9 @@ var $elm$json$Json$Encode$list = F2(
 				_Json_emptyArray(_Utils_Tuple0),
 				entries));
 	});
+var $author$project$Main$setCategories = _Platform_outgoingPort(
+	'setCategories',
+	$elm$json$Json$Encode$list($elm$json$Json$Encode$string));
 var $author$project$Main$setLocal = _Platform_outgoingPort(
 	'setLocal',
 	function ($) {
@@ -9723,6 +9736,25 @@ var $author$project$Main$setLocal = _Platform_outgoingPort(
 					$elm$json$Json$Encode$string(b)
 				]));
 	});
+var $elm$core$List$member = F2(
+	function (x, xs) {
+		return A2(
+			$elm$core$List$any,
+			function (a) {
+				return _Utils_eq(a, x);
+			},
+			xs);
+	});
+var $elm$core$Basics$neq = _Utils_notEqual;
+var $author$project$Main$toggle = F2(
+	function (x, xs) {
+		return A2($elm$core$List$member, x, xs) ? A2(
+			$elm$core$List$filter,
+			function (y) {
+				return !_Utils_eq(y, x);
+			},
+			xs) : A2($elm$core$List$cons, x, xs);
+	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -9734,6 +9766,16 @@ var $author$project$Main$update = F2(
 						{selectedTess: tessName}),
 					$author$project$Main$run(
 						A2($author$project$Main$SetLocal, 'tess-tessellation', tessName)));
+			case 'ToggleCategory':
+				var cat = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							toggledCategories: A2($author$project$Main$toggle, cat, model.toggledCategories)
+						}),
+					$author$project$Main$setCategories(
+						A2($author$project$Main$toggle, cat, model.toggledCategories)));
 			case 'SelectTheme':
 				var theme = msg.a;
 				return _Utils_Tuple2(
@@ -10101,6 +10143,25 @@ var $author$project$Main$tessDisplay = function (model) {
 					]))
 			]));
 };
+var $author$project$Main$ToggleCategory = function (a) {
+	return {$: 'ToggleCategory', a: a};
+};
+var $author$project$Main$categoryOption = F2(
+	function (category, model) {
+		return A2(
+			$elm$html$Html$a,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('categoryTitle'),
+					$elm$html$Html$Events$onClick(
+					$author$project$Main$ToggleCategory(category))
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					A2($elm$core$List$member, category, model.toggledCategories) ? ('∨ ' + category) : ('> ' + category))
+				]));
+	});
 var $author$project$Main$SelectTess = function (a) {
 	return {$: 'SelectTess', a: a};
 };
@@ -10121,7 +10182,6 @@ var $author$project$Main$tessOption = F2(
 					$elm$html$Html$text(tessName)
 				]));
 	});
-var $author$project$Main$tessOptions = A2($elm$core$List$map, $elm$core$Tuple$first, $author$project$Main$tessellations);
 var $author$project$Main$tessMenu = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -10139,10 +10199,27 @@ var $author$project$Main$tessMenu = function (model) {
 					]),
 				A2(
 					$elm$core$List$map,
-					function (t) {
-						return A2($author$project$Main$tessOption, t, model);
+					function (_v0) {
+						var cat = _v0.a;
+						var tessOptions = _v0.b;
+						return A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('categoryContainer'),
+									A2($elm$core$List$member, cat, model.toggledCategories) ? $elm$html$Html$Attributes$class('shownCategory') : $elm$html$Html$Attributes$class('hiddenCategory')
+								]),
+							A2(
+								$elm$core$List$cons,
+								A2($author$project$Main$categoryOption, cat, model),
+								A2(
+									$elm$core$List$map,
+									function (t) {
+										return A2($author$project$Main$tessOption, t, model);
+									},
+									A2($elm$core$List$map, $elm$core$Tuple$first, tessOptions))));
 					},
-					$author$project$Main$tessOptions))
+					$author$project$Main$categoryTessellations))
 			]));
 };
 var $author$project$Util$Stroke = {$: 'Stroke'};
@@ -10269,7 +10346,7 @@ var $author$project$Main$themeOption = F2(
 				]));
 	});
 var $author$project$Main$themeOptions = _List_fromArray(
-	['Forest', 'Aqua', 'Amethyst', 'Honey', 'Custom']);
+	['Forest', 'Aqua', 'Amethyst', 'Honey', 'Ruby', 'Custom']);
 var $author$project$Main$themeMenu = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -10351,8 +10428,16 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 													return A2(
 														$elm$json$Json$Decode$andThen,
 														function (primary) {
-															return $elm$json$Json$Decode$succeed(
-																{primary: primary, quart: quart, secondary: secondary, stroke: stroke, ternary: ternary, tessellation: tessellation, theme: theme});
+															return A2(
+																$elm$json$Json$Decode$andThen,
+																function (categories) {
+																	return $elm$json$Json$Decode$succeed(
+																		{categories: categories, primary: primary, quart: quart, secondary: secondary, stroke: stroke, ternary: ternary, tessellation: tessellation, theme: theme});
+																},
+																A2(
+																	$elm$json$Json$Decode$field,
+																	'categories',
+																	$elm$json$Json$Decode$list($elm$json$Json$Decode$string)));
 														},
 														A2($elm$json$Json$Decode$field, 'primary', $elm$json$Json$Decode$string));
 												},

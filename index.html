@@ -39,6 +39,9 @@
       let ternary = "#999999";
       let quart = "#555555";
       let stroke = "#000000";
+      let categories = JSON.parse(localStorage.getItem("tess-categories")) ?? [
+        "Regular",
+      ];
       // Custom theme style
       const styleCustomTheme = document.createElement("style");
       document.head.appendChild(styleCustomTheme);
@@ -62,6 +65,7 @@
         node: document.getElementById("app"),
         flags: {
           tessellation,
+          categories,
           theme,
           stroke,
           primary,
@@ -73,6 +77,10 @@
       // Save local values
       app.ports.setLocal.subscribe(function (pair) {
         localStorage.setItem(pair[0], pair[1]);
+        setCustomStyle();
+      });
+      app.ports.setCategories.subscribe(function (cats) {
+        localStorage.setItem("tess-categories", JSON.stringify(cats));
         setCustomStyle();
       });
       // Port for svg download
@@ -98,10 +106,12 @@
         const link = document.createElement("a");
         link.href = url;
         link.download = imageName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        setTimeout(() => {
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 2000);
       });
     </script>
   </body>

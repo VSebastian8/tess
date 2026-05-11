@@ -64,6 +64,10 @@
   .action-btn .tooltip {
     bottom: -25px !important;
   }
+  #menuContainer {
+    height: 500px !important;
+    border-radius: 8px !important;
+  }
 }
 
 body {
@@ -76,7 +80,7 @@ body {
   grid-area: menu;
   width: auto;
   height: auto;
-  padding-left: 20px;
+  padding-left: 10px;
   padding-bottom: 20px;
   background: white;
   border: 1px solid #e0e0e0;
@@ -93,12 +97,36 @@ body {
   gap: 5px;
 }
 
+.categoryContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.categoryTitle {
+  cursor: pointer;
+  margin-top: 20px;
+  width: fit-content;
+  font-size: large;
+  padding: 0;
+}
+
 .menuItem {
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 10px;
   width: fit-content;
   font-size: large;
   padding: 2px;
+  margin-bottom: 5px;
+}
+
+.shownCategory .menuItem {
+  margin-left: 40px;
+  margin-bottom: 0;
+}
+
+.hiddenCategory .menuItem {
+  display: none;
 }
 
 .selected {

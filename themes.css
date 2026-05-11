@@ -29,3 +29,11 @@
   --quart-color: #ff6200;
   --stroke-color: #ce7c00;
 }
+
+.themeRuby {
+  --primary-color: #b83a5e;
+  --secondary-color: #7a3050;
+  --ternary-color: #3d1830;
+  --quart-color: #6b2037;
+  --stroke-color: #1e0a14;
+}

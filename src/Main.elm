@@ -28,6 +28,9 @@ port downloadSvg : String -> Cmd msg
 port setLocal : ( String, String ) -> Cmd msg
 
 
+port setCategories : List String -> Cmd msg
+
+
 
 -- MAIN
 
@@ -48,6 +51,7 @@ main =
 
 type alias Model =
     { selectedTess : String
+    , toggledCategories : List String
     , selectedTheme : String
     , customStroke : String
     , customPrimary : String
@@ -61,12 +65,13 @@ type alias Model =
 
 
 type alias Flags =
-    { tessellation : String, theme : String, stroke : String, primary : String, secondary : String, ternary : String, quart : String }
+    { tessellation : String, categories : List String, theme : String, stroke : String, primary : String, secondary : String, ternary : String, quart : String }
 
 
 init : Flags -> ( Model, Cmd msg )
-init { tessellation, theme, stroke, primary, secondary, ternary, quart } =
+init { tessellation, categories, theme, stroke, primary, secondary, ternary, quart } =
     ( { selectedTheme = theme
+      , toggledCategories = categories
       , customStroke = stroke
       , customPrimary = primary
       , customSecondary = secondary
@@ -87,6 +92,7 @@ init { tessellation, theme, stroke, primary, secondary, ternary, quart } =
 
 type Msg
     = SelectTess String
+    | ToggleCategory String
     | SelectTheme String
     | PickStroke String
     | PickPrimary String
@@ -109,6 +115,9 @@ update msg model =
     case msg of
         SelectTess tessName ->
             ( { model | selectedTess = tessName }, run (SetLocal "tess-tessellation" tessName) )
+
+        ToggleCategory cat ->
+            ( { model | toggledCategories = toggle cat model.toggledCategories }, setCategories (toggle cat model.toggledCategories) )
 
         SelectTheme theme ->
             ( { model | selectedTheme = theme }, run (SetLocal "tess-theme" theme) )
@@ -143,6 +152,15 @@ update msg model =
             )
 
 
+toggle : a -> List a -> List a
+toggle x xs =
+    if List.member x xs then
+        List.filter (\y -> y /= x) xs
+
+    else
+        x :: xs
+
+
 
 -- VIEW
 
@@ -162,14 +180,14 @@ view model =
         ]
 
 
+categoryTessellations : List ( String, List ( String, Tess ) )
+categoryTessellations =
+    [ ( "Regular", regularTesselations ), ( "Isogonal", isogonalTesselations ), ( "Semiregular", semiregularTesselations ), ( "Laves", lavesTesselations ) ]
+
+
 tessellations : List ( String, Tess )
 tessellations =
-    regularTesselations ++ isogonalTesselations ++ semiregularTesselations ++ lavesTesselations
-
-
-tessOptions : List String
-tessOptions =
-    tessellations |> List.map Tuple.first
+    categoryTessellations |> List.concatMap Tuple.second
 
 
 tessDict : Dict String Tess
@@ -179,7 +197,7 @@ tessDict =
 
 themeOptions : List String
 themeOptions =
-    [ "Forest", "Aqua", "Amethyst", "Honey", "Custom" ]
+    [ "Forest", "Aqua", "Amethyst", "Honey", "Ruby", "Custom" ]
 
 
 tessMenu : Model -> Html Msg
@@ -187,8 +205,40 @@ tessMenu model =
     div
         [ id "menuContainer" ]
         [ div [ id "menuContent" ]
-            (tessOptions
-                |> List.map (\t -> tessOption t model)
+            (categoryTessellations
+                |> List.map
+                    (\( cat, tessOptions ) ->
+                        div
+                            [ class "categoryContainer"
+                            , if List.member cat model.toggledCategories then
+                                class "shownCategory"
+
+                              else
+                                class "hiddenCategory"
+                            ]
+                            (categoryOption cat model
+                                :: (tessOptions
+                                        |> List.map Tuple.first
+                                        |> List.map (\t -> tessOption t model)
+                                   )
+                            )
+                    )
+            )
+        ]
+
+
+categoryOption : String -> Model -> Html Msg
+categoryOption category model =
+    a
+        [ class "categoryTitle"
+        , onClick (ToggleCategory category)
+        ]
+        [ text
+            (if List.member category model.toggledCategories then
+                "∨ " ++ category
+
+             else
+                "> " ++ category
             )
         ]
 
