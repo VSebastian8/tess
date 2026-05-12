@@ -375,3 +375,27 @@ lft =
             add (left |> getPoint 1) (sub (left |> getPoint 2) (left |> getPoint 1) |> mul 0.5) |> mul (2 / 3)
     in
     { poly = left, col = Primary, centre = c, dist = 0.12, scale = 1 }
+
+
+kit : PC
+kit =
+    let
+        c =
+            add (sub (kite |> getPoint 3) (kite |> getPoint 1) |> mul 0.5) (kite |> getPoint 1)
+    in
+    { poly = kite, col = Primary, centre = c, dist = 0.21, scale = 1 }
+
+
+car : PC
+car =
+    { poly = cairo, col = Primary, centre = { x = sqrt 2 * cos (degrees 75), y = (cos (degrees 30) + sin (degrees 30)) / 2 }, dist = 0.5, scale = 1 }
+
+
+flr : PC
+flr =
+    { poly = floret, col = Primary, centre = { x = 1 + cos (degrees 60), y = sin (degrees 60) * (1 + 2 * cos (degrees 60)) / 2 }, dist = 0.5, scale = 1 }
+
+
+pri : PC
+pri =
+    { poly = prism, col = Primary, centre = { x = 0.5, y = 0.5 }, dist = 0.5, scale = 1 }

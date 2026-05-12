@@ -5282,9 +5282,17 @@ var $author$project$Util$inside = F2(
 		var p3 = _v0.b;
 		return (_Utils_cmp(p1.x, p2.x) > -1) && ((_Utils_cmp(p1.x, p3.x) < 1) && ((_Utils_cmp(p1.y, p2.y) > -1) && (_Utils_cmp(p1.y, p3.y) < 1)));
 	});
+var $author$project$Polygon$normalizeAngle = function (x) {
+	return x - (360 * $elm$core$Basics$floor(x / 360));
+};
+var $author$project$Polygon$anglesEqual = F2(
+	function (a, b) {
+		var diff = $author$project$Polygon$normalizeAngle(a - b);
+		return (_Utils_cmp(diff, $author$project$Util$epsilon) < 0) || (_Utils_cmp(diff, 360 - $author$project$Util$epsilon) > 0);
+	});
 var $author$project$Polygon$equals = F2(
 	function (p1, p2) {
-		return _Utils_eq(p1.lengths, p2.lengths) && (_Utils_eq(p1.angles, p2.angles) && _Utils_eq(p1.rotation, p2.rotation));
+		return _Utils_eq(p1.lengths, p2.lengths) && (_Utils_eq(p1.angles, p2.angles) && A2($author$project$Polygon$anglesEqual, p1.rotation, p2.rotation));
 	});
 var $author$project$Rules$eq = F2(
 	function (p1, p2) {
@@ -5825,8 +5833,6 @@ var $author$project$Rules$renderTess = F2(
 	function (tess, animated) {
 		return animated ? $author$project$Rules$renderAnimatedTess(tess) : $author$project$Rules$renderStaticTess(tess);
 	});
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
@@ -5842,7 +5848,6 @@ var $author$project$Main$showTess = F4(
 					$elm$core$String$fromFloat(w)),
 					$elm$svg$Svg$Attributes$height(
 					$elm$core$String$fromFloat(h)),
-					A2($elm$html$Html$Attributes$style, 'margin-bottom', '-5px'),
 					$elm$svg$Svg$Attributes$class('tess-svg')
 				]),
 			A2(
@@ -5852,7 +5857,7 @@ var $author$project$Main$showTess = F4(
 					A3($author$project$Rules$placeStart, tess, w, h),
 					_Utils_Tuple2(
 						{x: -3, y: -3},
-						{x: (w / tess.size) + 3, y: (h / tess.size) + 3})),
+						{x: (w / tess.size) + 4, y: (h / tess.size) + 4})),
 				animated));
 	});
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
@@ -6885,6 +6890,450 @@ var $author$project$RuleBased$Isogonal$isogonalTesselations = _List_fromArray(
 		_Utils_Tuple2('Hexa Star', $author$project$RuleBased$Isogonal$hexaStarTessellation),
 		_Utils_Tuple2('Hexa Gyra', $author$project$RuleBased$Isogonal$hexaGyraTessellation)
 	]);
+var $author$project$Shapes$cairo = {
+	angles: _List_fromArray(
+		[120, 90, 120, 90, 120]),
+	lengths: _List_fromArray(
+		[
+			($elm$core$Basics$sqrt(2) * 2) * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(75)),
+			1,
+			1,
+			1,
+			1
+		]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$car = {
+	centre: {
+		x: $elm$core$Basics$sqrt(2) * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(75)),
+		y: ($elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30)) + $elm$core$Basics$sin(
+			$elm$core$Basics$degrees(30))) / 2
+	},
+	col: $author$project$Util$Primary,
+	dist: 0.5,
+	poly: $author$project$Shapes$cairo,
+	scale: 1
+};
+var $author$project$RuleBased$Laves$cairoPentagonalTessellation = function () {
+	var upR = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						3,
+						A2($author$project$Rules$rto, 180, $author$project$Rules$car)),
+					A2($author$project$Rules$rto, 90, $author$project$Rules$car))
+				]),
+			anchor: A2(
+				$author$project$Rules$rto,
+				180,
+				_Utils_update(
+					$author$project$Rules$car,
+					{col: $author$project$Util$Ternary})),
+			bounds: _Utils_Tuple2(
+				{x: -1, y: -2.5},
+				{x: 2, y: 2.5})
+		});
+	var rightR = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						1,
+						A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+					A2($author$project$Rules$rto, 270, $author$project$Rules$car))
+				]),
+			anchor: A2(
+				$author$project$Rules$rto,
+				90,
+				_Utils_update(
+					$author$project$Rules$car,
+					{col: $author$project$Util$Secondary})),
+			bounds: _Utils_Tuple2(
+				{x: -1.25, y: -0.8},
+				{x: 2.5, y: 1})
+		});
+	var rhomb2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						3,
+						A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+					_Utils_update(
+						$author$project$Rules$car,
+						{col: $author$project$Util$Ternary})),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$car),
+					A2(
+						$author$project$Rules$tr,
+						A2(
+							$author$project$Rules$pt,
+							3,
+							A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+						A2(
+							$author$project$Rules$rto,
+							180,
+							_Utils_update(
+								$author$project$Rules$car,
+								{col: $author$project$Util$Quart})))),
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Util$sub,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$car),
+						A2($author$project$Rules$pt, 4, $author$project$Rules$car)),
+					A2(
+						$author$project$Rules$tr,
+						A2(
+							$author$project$Rules$pt,
+							4,
+							A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+						A2(
+							$author$project$Rules$tr,
+							A2(
+								$author$project$Rules$pt,
+								2,
+								A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+							A2($author$project$Rules$rto, -90, $author$project$Rules$car))))
+				]),
+			anchor: A2(
+				$author$project$Rules$rto,
+				90,
+				_Utils_update(
+					$author$project$Rules$car,
+					{col: $author$project$Util$Secondary})),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: -1.8},
+				{x: 3.5, y: 3})
+		});
+	var rhomb1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						3,
+						A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+					_Utils_update(
+						$author$project$Rules$car,
+						{col: $author$project$Util$Quart})),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$car),
+					A2(
+						$author$project$Rules$tr,
+						A2(
+							$author$project$Rules$pt,
+							3,
+							A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+						A2(
+							$author$project$Rules$rto,
+							180,
+							_Utils_update(
+								$author$project$Rules$car,
+								{col: $author$project$Util$Ternary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Util$sub,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$car),
+						A2($author$project$Rules$pt, 4, $author$project$Rules$car)),
+					A2(
+						$author$project$Rules$tr,
+						A2(
+							$author$project$Rules$pt,
+							4,
+							A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+						A2(
+							$author$project$Rules$tr,
+							A2(
+								$author$project$Rules$pt,
+								2,
+								A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+							A2(
+								$author$project$Rules$rto,
+								-90,
+								_Utils_update(
+									$author$project$Rules$car,
+									{col: $author$project$Util$Secondary})))))
+				]),
+			anchor: A2($author$project$Rules$rto, 90, $author$project$Rules$car),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: -1.8},
+				{x: 3.5, y: 3})
+		});
+	var leftR = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						1,
+						A2($author$project$Rules$rto, 90, $author$project$Rules$car)),
+					A2(
+						$author$project$Rules$rto,
+						270,
+						_Utils_update(
+							$author$project$Rules$car,
+							{col: $author$project$Util$Secondary})))
+				]),
+			anchor: A2($author$project$Rules$rto, 90, $author$project$Rules$car),
+			bounds: _Utils_Tuple2(
+				{x: -1.25, y: -0.8},
+				{x: 2.5, y: 1})
+		});
+	var downR = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						3,
+						A2($author$project$Rules$rto, 180, $author$project$Rules$car)),
+					A2(
+						$author$project$Rules$rto,
+						90,
+						_Utils_update(
+							$author$project$Rules$car,
+							{col: $author$project$Util$Secondary})))
+				]),
+			anchor: A2(
+				$author$project$Rules$rto,
+				180,
+				_Utils_update(
+					$author$project$Rules$car,
+					{col: $author$project$Util$Quart})),
+			bounds: _Utils_Tuple2(
+				{x: -1, y: -2.5},
+				{x: 2, y: 2.5})
+		});
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				{x: -1, y: 0},
+				A2($author$project$Rules$rto, 90, $author$project$Rules$car))
+			]),
+		rules: _List_fromArray(
+			[rhomb1, rhomb2, leftR, rightR, upR, downR]),
+		size: 20,
+		start: {x: 0.5, y: 0.5}
+	};
+}();
+var $author$project$Shapes$kite = {
+	angles: _List_fromArray(
+		[90, 120, 90, 60]),
+	lengths: _List_fromArray(
+		[
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30)),
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60)),
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60)),
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30))
+		]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$kit = function () {
+	var c = A2(
+		$author$project$Util$add,
+		A2(
+			$author$project$Util$mul,
+			0.5,
+			A2(
+				$author$project$Util$sub,
+				A2($author$project$Polygon$getPoint, 3, $author$project$Shapes$kite),
+				A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$kite))),
+		A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$kite));
+	return {centre: c, col: $author$project$Util$Primary, dist: 0.21, poly: $author$project$Shapes$kite, scale: 1};
+}();
+var $author$project$RuleBased$Laves$deltodailTriHexagonalTessellation = function () {
+	var triTile2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{x: -1, y: 0},
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$eqi),
+						$author$project$Rules$eqi)),
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 0},
+					A2(
+						$author$project$Rules$tr,
+						$author$project$Util$neg(
+							A2($author$project$Rules$pt, 2, $author$project$Rules$eqi)),
+						$author$project$Rules$eqi))
+				]),
+			anchor: $author$project$Rules$eqi,
+			bounds: _Utils_Tuple2(
+				{x: -1, y: 0},
+				{x: 3, y: 1}),
+			rotatable: false
+		});
+	var triTile1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$eqi),
+					A2(
+						$author$project$Rules$rto,
+						-60,
+						_Utils_update(
+							$author$project$Rules$eqi,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$rto,
+					-60,
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Secondary})),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$eqi),
+					$author$project$Rules$eqi),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2($author$project$Rules$pt, 1, $author$project$Rules$eqi)),
+					$author$project$Rules$eqi)
+				]),
+			anchor: $author$project$Rules$eqi,
+			bounds: _Utils_Tuple2(
+				{x: -1, y: 0},
+				{x: 3, y: 1}),
+			rotatable: false
+		});
+	var bigT = A2(
+		$author$project$Rules$sc,
+		2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30)),
+		$author$project$Rules$eqi);
+	var subRule1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					_Utils_update(
+					$author$project$Rules$kit,
+					{col: $author$project$Util$Secondary}),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, bigT),
+					A2(
+						$author$project$Rules$rto,
+						-120,
+						_Utils_update(
+							$author$project$Rules$kit,
+							{col: $author$project$Util$Ternary}))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, bigT),
+					A2($author$project$Rules$rto, 120, $author$project$Rules$kit))
+				]),
+			anchor: bigT,
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 1.7, y: 1}),
+			rotatable: false,
+			subdivide: true
+		});
+	var subRule2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2($author$project$Rules$rto, -60, $author$project$Rules$kit),
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						1,
+						A2($author$project$Rules$rto, -60, bigT)),
+					A2(
+						$author$project$Rules$rto,
+						-180,
+						_Utils_update(
+							$author$project$Rules$kit,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						2,
+						A2($author$project$Rules$rto, -60, bigT)),
+					A2(
+						$author$project$Rules$rto,
+						60,
+						_Utils_update(
+							$author$project$Rules$kit,
+							{col: $author$project$Util$Ternary})))
+				]),
+			anchor: A2(
+				$author$project$Rules$rto,
+				-60,
+				_Utils_update(
+					bigT,
+					{col: $author$project$Util$Secondary})),
+			bounds: _Utils_Tuple2(
+				{
+					x: -$elm$core$Basics$cos(
+						$elm$core$Basics$degrees(30)),
+					y: 0
+				},
+				{x: 1.7, y: 1}),
+			rotatable: false,
+			subdivide: true
+		});
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[$author$project$Rules$eqi]),
+		rules: _List_fromArray(
+			[triTile1, triTile2, subRule1, subRule2]),
+		size: 60,
+		start: {x: 0.5, y: 0.5}
+	};
+}();
 var $author$project$Rules$hex = A3(
 	$author$project$Rules$rt,
 	{x: 0, y: 0},
@@ -7106,6 +7555,498 @@ var $author$project$RuleBased$Laves$disdyakisRhombileTessellation = function () 
 		rules: _List_fromArray(
 			[hexTile, subRule1]),
 		size: 40,
+		start: {x: 0.5, y: 0.5}
+	};
+}();
+var $author$project$Shapes$floret = {
+	angles: _List_fromArray(
+		[120, 120, 120, 120, 60]),
+	lengths: _List_fromArray(
+		[
+			1 + (2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60))),
+			1,
+			1,
+			1,
+			1 + (2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60)))
+		]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$flr = {
+	centre: {
+		x: 1 + $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60)),
+		y: ($elm$core$Basics$sin(
+			$elm$core$Basics$degrees(60)) * (1 + (2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60))))) / 2
+	},
+	col: $author$project$Util$Primary,
+	dist: 0.5,
+	poly: $author$project$Shapes$floret,
+	scale: 1
+};
+var $author$project$RuleBased$Laves$floretPentagonalTessellation = function () {
+	var petal3 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$rto,
+					-60,
+					_Utils_update(
+						$author$project$Rules$flr,
+						{col: $author$project$Util$Ternary}))
+				]),
+			anchor: _Utils_update(
+				$author$project$Rules$flr,
+				{col: $author$project$Util$Ternary}),
+			bounds: _Utils_Tuple2(
+				{x: -0.75, y: 0},
+				{x: 3, y: 2.5})
+		});
+	var petal2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$rto,
+					-60,
+					_Utils_update(
+						$author$project$Rules$flr,
+						{col: $author$project$Util$Secondary}))
+				]),
+			anchor: _Utils_update(
+				$author$project$Rules$flr,
+				{col: $author$project$Util$Secondary}),
+			bounds: _Utils_Tuple2(
+				{x: -0.75, y: 0},
+				{x: 3, y: 2.5})
+		});
+	var petal1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2($author$project$Rules$rto, -60, $author$project$Rules$flr)
+				]),
+			anchor: $author$project$Rules$flr,
+			bounds: _Utils_Tuple2(
+				{x: -0.75, y: 0},
+				{x: 3, y: 2.5})
+		});
+	var next3 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					_Utils_update(
+					$author$project$Rules$flr,
+					{col: $author$project$Util$Ternary}),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+						A2(
+							$author$project$Rules$rto,
+							-120,
+							_Utils_update(
+								$author$project$Rules$flr,
+								{col: $author$project$Util$Secondary}))))
+				]),
+			anchor: A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2(
+						$author$project$Rules$pt,
+						2,
+						A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, $author$project$Rules$flr),
+					A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 4.5, y: 4.5}),
+			rotatable: false
+		});
+	var next2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2(
+							$author$project$Rules$pt,
+							2,
+							A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 4, $author$project$Rules$flr),
+						A2(
+							$author$project$Rules$rto,
+							120,
+							_Utils_update(
+								$author$project$Rules$flr,
+								{col: $author$project$Util$Ternary})))),
+					_Utils_update(
+					$author$project$Rules$flr,
+					{col: $author$project$Util$Secondary})
+				]),
+			anchor: A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+					A2($author$project$Rules$rto, -120, $author$project$Rules$flr))),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 4.5, y: 4.5}),
+			rotatable: false
+		});
+	var next1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+						A2(
+							$author$project$Rules$rto,
+							-120,
+							_Utils_update(
+								$author$project$Rules$flr,
+								{col: $author$project$Util$Ternary})))),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2(
+							$author$project$Rules$pt,
+							2,
+							A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 4, $author$project$Rules$flr),
+						A2(
+							$author$project$Rules$rto,
+							120,
+							_Utils_update(
+								$author$project$Rules$flr,
+								{col: $author$project$Util$Secondary}))))
+				]),
+			anchor: $author$project$Rules$flr,
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 4.5, y: 4.5}),
+			rotatable: false
+		});
+	var add3 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$rto,
+					-120,
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+						A2(
+							$author$project$Rules$tr,
+							A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+							A2($author$project$Rules$rto, 180, $author$project$Rules$flr))))
+				]),
+			anchor: A2(
+				$author$project$Rules$rto,
+				-120,
+				_Utils_update(
+					$author$project$Rules$flr,
+					{col: $author$project$Util$Secondary})),
+			bounds: _Utils_Tuple2(
+				{x: -3.5, y: 0},
+				{x: 3.5, y: 3.5}),
+			rotatable: false
+		});
+	var add2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$rto,
+					120,
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+						A2(
+							$author$project$Rules$tr,
+							A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+							A2($author$project$Rules$rto, 180, $author$project$Rules$flr))))
+				]),
+			anchor: A2(
+				$author$project$Rules$rto,
+				120,
+				_Utils_update(
+					$author$project$Rules$flr,
+					{col: $author$project$Util$Secondary})),
+			bounds: _Utils_Tuple2(
+				{x: -2.2, y: -4.3},
+				{x: 3, y: 4.5}),
+			rotatable: false
+		});
+	var add1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+						A2($author$project$Rules$rto, 180, $author$project$Rules$flr)))
+				]),
+			anchor: _Utils_update(
+				$author$project$Rules$flr,
+				{col: $author$project$Util$Secondary}),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: -1},
+				{x: 4.5, y: 3}),
+			rotatable: false
+		});
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[
+				$author$project$Rules$flr,
+				A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+					A2(
+						$author$project$Rules$rto,
+						-120,
+						_Utils_update(
+							$author$project$Rules$flr,
+							{col: $author$project$Util$Ternary})))),
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2(
+						$author$project$Rules$pt,
+						2,
+						A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, $author$project$Rules$flr),
+					A2(
+						$author$project$Rules$rto,
+						120,
+						_Utils_update(
+							$author$project$Rules$flr,
+							{col: $author$project$Util$Secondary}))))
+			]),
+		rules: _List_fromArray(
+			[petal1, next1, petal2, next2, petal3, next3, add1, add2, add3]),
+		size: 15,
+		start: {x: 0.5, y: 0.5}
+	};
+}();
+var $author$project$Shapes$prism = {
+	angles: _List_fromArray(
+		[90, 120, 120, 120, 90]),
+	lengths: _List_fromArray(
+		[
+			1,
+			1,
+			1 / (2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30))),
+			1 / (2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30))),
+			1
+		]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$pri = {
+	centre: {x: 0.5, y: 0.5},
+	col: $author$project$Util$Primary,
+	dist: 0.5,
+	poly: $author$project$Shapes$prism,
+	scale: 1
+};
+var $author$project$RuleBased$Laves$prismaticPentagonalTessellation = function () {
+	var up2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 0},
+					A2($author$project$Rules$rto, 180, $author$project$Rules$pri))
+				]),
+			anchor: _Utils_update(
+				$author$project$Rules$pri,
+				{col: $author$project$Util$Secondary}),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: -1.5},
+				{x: 1, y: 3})
+		});
+	var up1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 0},
+					A2(
+						$author$project$Rules$rto,
+						180,
+						_Utils_update(
+							$author$project$Rules$pri,
+							{col: $author$project$Util$Secondary})))
+				]),
+			anchor: $author$project$Rules$pri,
+			bounds: _Utils_Tuple2(
+				{x: 0, y: -1.5},
+				{x: 1, y: 3})
+		});
+	var prism3 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{x: -1, y: 0},
+					_Utils_update(
+						$author$project$Rules$pri,
+						{col: $author$project$Util$Ternary})),
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 0},
+					_Utils_update(
+						$author$project$Rules$pri,
+						{col: $author$project$Util$Ternary}))
+				]),
+			anchor: _Utils_update(
+				$author$project$Rules$pri,
+				{col: $author$project$Util$Secondary}),
+			bounds: _Utils_Tuple2(
+				{x: -1, y: 0},
+				{x: 3, y: 1.5})
+		});
+	var prism2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{x: -1, y: 0},
+					$author$project$Rules$pri),
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 0},
+					$author$project$Rules$pri)
+				]),
+			anchor: _Utils_update(
+				$author$project$Rules$pri,
+				{col: $author$project$Util$Quart}),
+			bounds: _Utils_Tuple2(
+				{x: -1, y: 0},
+				{x: 3, y: 1.5})
+		});
+	var prism1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{x: -1, y: 0},
+					_Utils_update(
+						$author$project$Rules$pri,
+						{col: $author$project$Util$Quart})),
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 0},
+					_Utils_update(
+						$author$project$Rules$pri,
+						{col: $author$project$Util$Quart}))
+				]),
+			anchor: $author$project$Rules$pri,
+			bounds: _Utils_Tuple2(
+				{x: -1, y: 0},
+				{x: 3, y: 1.5})
+		});
+	var down2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 1},
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 3, $author$project$Rules$pri),
+						A2($author$project$Rules$rto, 180, $author$project$Rules$pri)))
+				]),
+			anchor: _Utils_update(
+				$author$project$Rules$pri,
+				{col: $author$project$Util$Secondary}),
+			bounds: _Utils_Tuple2(
+				{x: -0.3, y: -0.3},
+				{x: 2, y: 3})
+		});
+	var down1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 1},
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 3, $author$project$Rules$pri),
+						A2(
+							$author$project$Rules$rto,
+							180,
+							_Utils_update(
+								$author$project$Rules$pri,
+								{col: $author$project$Util$Secondary}))))
+				]),
+			anchor: $author$project$Rules$pri,
+			bounds: _Utils_Tuple2(
+				{x: -0.3, y: -0.3},
+				{x: 2, y: 3})
+		});
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[$author$project$Rules$pri]),
+		rules: _List_fromArray(
+			[prism1, prism2, prism3, up1, down1, up2, down2]),
+		size: 25,
 		start: {x: 0.5, y: 0.5}
 	};
 }();
@@ -7551,7 +8492,11 @@ var $author$project$RuleBased$Laves$lavesTesselations = _List_fromArray(
 		_Utils_Tuple2('Triakis Triangular', $author$project$RuleBased$Laves$triakisTriangularTessellation),
 		_Utils_Tuple2('Rhombile', $author$project$RuleBased$Laves$rhombileTessellation),
 		_Utils_Tuple2('Tetrakis Square', $author$project$RuleBased$Laves$tetrakisSquareTessellation),
-		_Utils_Tuple2('Disdyakis Rhombile', $author$project$RuleBased$Laves$disdyakisRhombileTessellation)
+		_Utils_Tuple2('Disdyakis Rhombile', $author$project$RuleBased$Laves$disdyakisRhombileTessellation),
+		_Utils_Tuple2('Deltoidal Trihexagonal', $author$project$RuleBased$Laves$deltodailTriHexagonalTessellation),
+		_Utils_Tuple2('Cairo Pentagonal', $author$project$RuleBased$Laves$cairoPentagonalTessellation),
+		_Utils_Tuple2('Floret Pentagonal', $author$project$RuleBased$Laves$floretPentagonalTessellation),
+		_Utils_Tuple2('Prismatic Pentagonal', $author$project$RuleBased$Laves$prismaticPentagonalTessellation)
 	]);
 var $author$project$RuleBased$Regular$hexagonalFlowerTessellation = function () {
 	var fill4 = _Utils_update(
@@ -9862,6 +10807,8 @@ var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $author$project$Main$downloadDisplay = function (model) {
 	return A2(
 		$elm$html$Html$div,

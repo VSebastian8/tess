@@ -182,4 +182,18 @@ translate point poly =
 
 equals : Polygon -> Polygon -> Bool
 equals p1 p2 =
-    p1.lengths == p2.lengths && p1.angles == p2.angles && p1.rotation == p2.rotation
+    p1.lengths == p2.lengths && p1.angles == p2.angles && anglesEqual p1.rotation p2.rotation
+
+
+normalizeAngle : Float -> Float
+normalizeAngle x =
+    x - 360 * toFloat (floor (x / 360))
+
+
+anglesEqual : Float -> Float -> Bool
+anglesEqual a b =
+    let
+        diff =
+            normalizeAngle (a - b)
+    in
+    diff < epsilon || diff > (360 - epsilon)

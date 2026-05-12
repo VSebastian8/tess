@@ -375,13 +375,12 @@ showTess tess animated w h =
         [ viewBox ("0 0 " ++ fromFloat w ++ " " ++ fromFloat h)
         , width (fromFloat w)
         , height (fromFloat h)
-        , style "margin-bottom" "-5px"
         , Svg.Attributes.class "tess-svg"
         ]
         (renderTess
             (fix
                 (placeStart tess w h)
-                ( { x = -3, y = -3 }, { x = w / tess.size + 3, y = h / tess.size + 3 } )
+                ( { x = -3, y = -3 }, { x = w / tess.size + 4, y = h / tess.size + 4 } )
             )
             animated
         )

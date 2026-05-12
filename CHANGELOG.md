@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5.0 - 2026-05-12
+
+- Tesselation `Animations`!
+- Clearer `UI`.
+- `Optimized` performance further.
+
 ## v0.4.0 - 2026-04-26
 
 - `Rule-base` procedural tesselation system.
