@@ -38,7 +38,8 @@
       let secondary = "#CCCCCC";
       let ternary = "#999999";
       let quart = "#555555";
-      let stroke = "#000000";
+      let strokeCol = "#000000";
+      let stroke = (localStorage.getItem("tess-stroke") ?? "true") === "true";
       let categories = JSON.parse(localStorage.getItem("tess-categories")) ?? [
         "Regular",
       ];
@@ -50,13 +51,13 @@
         secondary = localStorage.getItem("tess-secondary") ?? secondary;
         ternary = localStorage.getItem("tess-ternary") ?? ternary;
         quart = localStorage.getItem("tess-quart") ?? quart;
-        stroke = localStorage.getItem("tess-stroke") ?? stroke;
+        strokeCol = localStorage.getItem("tess-stroke-col") ?? strokeCol;
         styleCustomTheme.textContent = `.themeCustom {
           --primary-color: ${primary};
           --secondary-color: ${secondary};
           --ternary-color: ${ternary};
           --quart-color: ${quart};
-          --stroke-color: ${stroke};
+          --stroke-color: ${strokeCol};
         }`;
       };
       // Initiate app
@@ -67,11 +68,12 @@
           tessellation,
           categories,
           theme,
-          stroke,
+          strokeCol,
           primary,
           secondary,
           ternary,
           quart,
+          stroke,
         },
       });
       // Save local values

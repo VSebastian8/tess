@@ -154,3 +154,13 @@ rotateAround origin angle p =
 epsilon : Float
 epsilon =
     0.001
+
+
+index : List a -> Int -> a -> a
+index xs n alt =
+    case List.head (List.drop n xs) of
+        Nothing ->
+            alt
+
+        Just x ->
+            x

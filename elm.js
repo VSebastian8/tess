@@ -4846,6 +4846,7 @@ var $elm$core$Result$isOk = function (result) {
 	}
 };
 var $elm$json$Json$Decode$andThen = _Json_andThen;
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $elm$json$Json$Decode$map = _Json_map1;
 var $elm$json$Json$Decode$map2 = _Json_map2;
 var $elm$json$Json$Decode$succeed = _Json_succeed;
@@ -5170,11 +5171,12 @@ var $author$project$Main$init = function (_v0) {
 	var tessellation = _v0.tessellation;
 	var categories = _v0.categories;
 	var theme = _v0.theme;
-	var stroke = _v0.stroke;
+	var strokeCol = _v0.strokeCol;
 	var primary = _v0.primary;
 	var secondary = _v0.secondary;
 	var ternary = _v0.ternary;
 	var quart = _v0.quart;
+	var stroke = _v0.stroke;
 	return _Utils_Tuple2(
 		{
 			animated: false,
@@ -5182,7 +5184,7 @@ var $author$project$Main$init = function (_v0) {
 			customPrimary: primary,
 			customQuart: quart,
 			customSecondary: secondary,
-			customStroke: stroke,
+			customStroke: strokeCol,
 			customTernary: ternary,
 			downloadData: A2(
 				$elm$html$Html$a,
@@ -5193,6 +5195,7 @@ var $author$project$Main$init = function (_v0) {
 					])),
 			selectedTess: tessellation,
 			selectedTheme: theme,
+			stroke: stroke,
 			toggledCategories: categories
 		},
 		$elm$core$Platform$Cmd$none);
@@ -5725,7 +5728,8 @@ var $author$project$Polygon$polygonAnimatedSvg = F7(
 					$elm$svg$Svg$Attributes$points(svgPoints),
 					$elm$svg$Svg$Attributes$fill(
 					'var(' + ($author$project$Util$getVar(color) + ')')),
-					$elm$svg$Svg$Attributes$stroke('var(--stroke-color)'),
+					$elm$svg$Svg$Attributes$stroke(
+					'var(' + ($author$project$Util$getVar(color) + ')')),
 					$elm$svg$Svg$Attributes$strokeWidth(
 					$elm$core$String$fromFloat(w)),
 					$elm$svg$Svg$Attributes$class('poly'),
@@ -5807,7 +5811,8 @@ var $author$project$Polygon$polygonSvg = F5(
 					$elm$svg$Svg$Attributes$points(svgPoints),
 					$elm$svg$Svg$Attributes$fill(
 					'var(' + ($author$project$Util$getVar(color) + ')')),
-					$elm$svg$Svg$Attributes$stroke('var(--stroke-color)'),
+					$elm$svg$Svg$Attributes$stroke(
+					'var(' + ($author$project$Util$getVar(color) + ')')),
 					$elm$svg$Svg$Attributes$strokeWidth(
 					$elm$core$String$fromFloat(w))
 				]),
@@ -6306,7 +6311,7 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 					$author$project$Rules$hexv,
 					{col: $author$project$Util$Secondary})),
 			bounds: _Utils_Tuple2(
-				{x: -1.2, y: 0},
+				{x: -1.5, y: 0},
 				{x: 5, y: 7})
 		});
 	var hexRule1 = _Utils_update(
@@ -8335,6 +8340,398 @@ var $author$project$Rules$ois = {
 	poly: $author$project$Shapes$obtuseIso,
 	scale: 1
 };
+var $elm$core$List$takeReverse = F3(
+	function (n, list, kept) {
+		takeReverse:
+		while (true) {
+			if (n <= 0) {
+				return kept;
+			} else {
+				if (!list.b) {
+					return kept;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs,
+						$temp$kept = A2($elm$core$List$cons, x, kept);
+					n = $temp$n;
+					list = $temp$list;
+					kept = $temp$kept;
+					continue takeReverse;
+				}
+			}
+		}
+	});
+var $elm$core$List$takeTailRec = F2(
+	function (n, list) {
+		return $elm$core$List$reverse(
+			A3($elm$core$List$takeReverse, n, list, _List_Nil));
+	});
+var $elm$core$List$takeFast = F3(
+	function (ctr, n, list) {
+		if (n <= 0) {
+			return _List_Nil;
+		} else {
+			var _v0 = _Utils_Tuple2(n, list);
+			_v0$1:
+			while (true) {
+				_v0$5:
+				while (true) {
+					if (!_v0.b.b) {
+						return list;
+					} else {
+						if (_v0.b.b.b) {
+							switch (_v0.a) {
+								case 1:
+									break _v0$1;
+								case 2:
+									var _v2 = _v0.b;
+									var x = _v2.a;
+									var _v3 = _v2.b;
+									var y = _v3.a;
+									return _List_fromArray(
+										[x, y]);
+								case 3:
+									if (_v0.b.b.b.b) {
+										var _v4 = _v0.b;
+										var x = _v4.a;
+										var _v5 = _v4.b;
+										var y = _v5.a;
+										var _v6 = _v5.b;
+										var z = _v6.a;
+										return _List_fromArray(
+											[x, y, z]);
+									} else {
+										break _v0$5;
+									}
+								default:
+									if (_v0.b.b.b.b && _v0.b.b.b.b.b) {
+										var _v7 = _v0.b;
+										var x = _v7.a;
+										var _v8 = _v7.b;
+										var y = _v8.a;
+										var _v9 = _v8.b;
+										var z = _v9.a;
+										var _v10 = _v9.b;
+										var w = _v10.a;
+										var tl = _v10.b;
+										return (ctr > 1000) ? A2(
+											$elm$core$List$cons,
+											x,
+											A2(
+												$elm$core$List$cons,
+												y,
+												A2(
+													$elm$core$List$cons,
+													z,
+													A2(
+														$elm$core$List$cons,
+														w,
+														A2($elm$core$List$takeTailRec, n - 4, tl))))) : A2(
+											$elm$core$List$cons,
+											x,
+											A2(
+												$elm$core$List$cons,
+												y,
+												A2(
+													$elm$core$List$cons,
+													z,
+													A2(
+														$elm$core$List$cons,
+														w,
+														A3($elm$core$List$takeFast, ctr + 1, n - 4, tl)))));
+									} else {
+										break _v0$5;
+									}
+							}
+						} else {
+							if (_v0.a === 1) {
+								break _v0$1;
+							} else {
+								break _v0$5;
+							}
+						}
+					}
+				}
+				return list;
+			}
+			var _v1 = _v0.b;
+			var x = _v1.a;
+			return _List_fromArray(
+				[x]);
+		}
+	});
+var $elm$core$List$take = F2(
+	function (n, list) {
+		return A3($elm$core$List$takeFast, 0, n, list);
+	});
+var $author$project$Rules$st = F2(
+	function (n, pc) {
+		var alfa = A3(
+			$elm$core$List$foldl,
+			$elm$core$Basics$add,
+			0,
+			A2($elm$core$List$take, n, pc.poly.angles));
+		return A2(
+			$author$project$Rules$rto,
+			180 * A2($elm$core$Basics$modBy, 2, n),
+			A2(
+				$author$project$Rules$rto,
+				-alfa,
+				A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2($author$project$Rules$pt, n, pc)),
+					pc)));
+	});
+var $author$project$RuleBased$Laves$triakisStarTessellation = function () {
+	var hexTile = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2($author$project$Rules$pt, 4, $author$project$Rules$hex)),
+					$author$project$Rules$hex),
+					A2(
+					$author$project$Rules$tr,
+					{x: 0, y: -1},
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 1, $author$project$Rules$hex),
+						$author$project$Rules$hex)),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, $author$project$Rules$hex),
+					$author$project$Rules$hex),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, $author$project$Rules$hex),
+					$author$project$Rules$hex),
+					A2(
+					$author$project$Rules$tr,
+					{x: 0, y: 1},
+					A2(
+						$author$project$Rules$tr,
+						$author$project$Util$neg(
+							A2($author$project$Rules$pt, 1, $author$project$Rules$hex)),
+						$author$project$Rules$hex)),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2($author$project$Rules$pt, 2, $author$project$Rules$hex)),
+					$author$project$Rules$hex)
+				]),
+			anchor: $author$project$Rules$hex,
+			bounds: _Utils_Tuple2(
+				{x: -1.6, y: -2},
+				{x: 5, y: 5})
+		});
+	var hexB = A2(
+		$author$project$Rules$sc,
+		2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30)),
+		$author$project$Rules$hex);
+	var subRule1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2($author$project$Rules$st, 2, $author$project$Rules$ois),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, hexB),
+					A2(
+						$author$project$Rules$rto,
+						-90,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Secondary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, hexB),
+					A2(
+						$author$project$Rules$rto,
+						-60,
+						A2($author$project$Rules$st, 2, $author$project$Rules$ois))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, hexB),
+					A2(
+						$author$project$Rules$rto,
+						-150,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Secondary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, hexB),
+					A2(
+						$author$project$Rules$rto,
+						-120,
+						A2($author$project$Rules$st, 2, $author$project$Rules$ois))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 3, hexB),
+					A2(
+						$author$project$Rules$rto,
+						150,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Secondary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 3, hexB),
+					A2(
+						$author$project$Rules$rto,
+						180,
+						A2($author$project$Rules$st, 2, $author$project$Rules$ois))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, hexB),
+					A2(
+						$author$project$Rules$rto,
+						90,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Secondary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, hexB),
+					A2(
+						$author$project$Rules$rto,
+						120,
+						A2($author$project$Rules$st, 2, $author$project$Rules$ois))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 5, hexB),
+					A2(
+						$author$project$Rules$rto,
+						30,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Secondary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 5, hexB),
+					A2(
+						$author$project$Rules$rto,
+						60,
+						A2($author$project$Rules$st, 2, $author$project$Rules$ois))),
+					A2(
+					$author$project$Rules$rto,
+					-30,
+					A2(
+						$author$project$Rules$st,
+						1,
+						_Utils_update(
+							$author$project$Rules$ois,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$rto,
+					30,
+					A2(
+						$author$project$Rules$st,
+						1,
+						_Utils_update(
+							$author$project$Rules$ois,
+							{col: $author$project$Util$Ternary}))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, hexB),
+					A2(
+						$author$project$Rules$rto,
+						-30,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Ternary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, hexB),
+					A2(
+						$author$project$Rules$rto,
+						-90,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Ternary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 3, hexB),
+					A2(
+						$author$project$Rules$rto,
+						-150,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Ternary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, hexB),
+					A2(
+						$author$project$Rules$rto,
+						150,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Ternary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 5, hexB),
+					A2(
+						$author$project$Rules$rto,
+						90,
+						A2(
+							$author$project$Rules$st,
+							1,
+							_Utils_update(
+								$author$project$Rules$ois,
+								{col: $author$project$Util$Ternary}))))
+				]),
+			anchor: hexB,
+			bounds: _Utils_Tuple2(
+				{x: 0, y: -0.6},
+				{x: 3, y: 3}),
+			rotatable: false,
+			subdivide: true
+		});
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[$author$project$Rules$hex]),
+		rules: _List_fromArray(
+			[hexTile, subRule1]),
+		size: 55,
+		start: {x: 0.5, y: 0.5}
+	};
+}();
 var $author$project$RuleBased$Laves$triakisTriangularTessellation = function () {
 	var triTile2 = _Utils_update(
 		$author$project$Rules$r,
@@ -8490,6 +8887,7 @@ var $author$project$RuleBased$Laves$triakisTriangularTessellation = function () 
 var $author$project$RuleBased$Laves$lavesTesselations = _List_fromArray(
 	[
 		_Utils_Tuple2('Triakis Triangular', $author$project$RuleBased$Laves$triakisTriangularTessellation),
+		_Utils_Tuple2('Triakis Star', $author$project$RuleBased$Laves$triakisStarTessellation),
 		_Utils_Tuple2('Rhombile', $author$project$RuleBased$Laves$rhombileTessellation),
 		_Utils_Tuple2('Tetrakis Square', $author$project$RuleBased$Laves$tetrakisSquareTessellation),
 		_Utils_Tuple2('Disdyakis Rhombile', $author$project$RuleBased$Laves$disdyakisRhombileTessellation),
@@ -10736,7 +11134,7 @@ var $author$project$Main$update = F2(
 						model,
 						{customStroke: color}),
 					$author$project$Main$run(
-						A2($author$project$Main$SetLocal, 'tess-stroke', color)));
+						A2($author$project$Main$SetLocal, 'tess-stroke-col', color)));
 			case 'PickPrimary':
 				var color = msg.a;
 				return _Utils_Tuple2(
@@ -10788,12 +11186,22 @@ var $author$project$Main$update = F2(
 					model,
 					$author$project$Main$setLocal(
 						_Utils_Tuple2(key, val)));
-			default:
+			case 'RunAnimation':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{animated: true, animationKey: model.animationKey + 1}),
 					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{stroke: !model.stroke}),
+					$author$project$Main$run(
+						A2(
+							$author$project$Main$SetLocal,
+							'tess-stroke',
+							model.stroke ? 'false' : 'true')));
 		}
 	});
 var $elm$html$Html$Attributes$stringProperty = F2(
@@ -10987,6 +11395,7 @@ var $author$project$Main$settingsMenu = function (model) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
+						$elm$html$Html$Attributes$class('btn'),
 						$elm$html$Html$Attributes$class('action-btn'),
 						$elm$html$Html$Events$onClick($author$project$Main$RunAnimation),
 						$elm$html$Html$Attributes$class('theme' + model.selectedTheme)
@@ -11018,6 +11427,7 @@ var $author$project$Main$settingsMenu = function (model) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
+						$elm$html$Html$Attributes$class('btn'),
 						$elm$html$Html$Attributes$class('action-btn'),
 						$elm$html$Html$Events$onClick($author$project$Main$DownloadSvg),
 						$elm$html$Html$Attributes$class('theme' + model.selectedTheme)
@@ -11170,6 +11580,7 @@ var $author$project$Main$tessMenu = function (model) {
 			]));
 };
 var $author$project$Util$Stroke = {$: 'Stroke'};
+var $author$project$Main$ToggleStroke = {$: 'ToggleStroke'};
 var $author$project$Main$PickPrimary = function (a) {
 	return {$: 'PickPrimary', a: a};
 };
@@ -11308,7 +11719,46 @@ var $author$project$Main$themeMenu = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Theme')
+						A2(
+						$elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Theme'),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn'),
+										$elm$html$Html$Attributes$class('stroke-btn'),
+										$elm$html$Html$Events$onClick($author$project$Main$ToggleStroke)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$span,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('icon')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(
+												model.stroke ? '□' : '■')
+											])),
+										A2(
+										$elm$html$Html$span,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('tooltip')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(
+												model.stroke ? 'Hide stroke' : 'Show stroke')
+											]))
+									]))
+							]))
 					])),
 			_Utils_ap(
 				A2(
@@ -11332,7 +11782,9 @@ var $author$project$Main$view = function (model) {
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$id('container'),
-				$elm$html$Html$Attributes$class('theme' + model.selectedTheme)
+				$elm$html$Html$Attributes$class('theme' + model.selectedTheme),
+				$elm$html$Html$Attributes$class(
+				model.stroke ? 'stroke-on' : '')
 			]),
 		_List_fromArray(
 			[
@@ -11365,34 +11817,39 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 						function (ternary) {
 							return A2(
 								$elm$json$Json$Decode$andThen,
-								function (stroke) {
+								function (strokeCol) {
 									return A2(
 										$elm$json$Json$Decode$andThen,
-										function (secondary) {
+										function (stroke) {
 											return A2(
 												$elm$json$Json$Decode$andThen,
-												function (quart) {
+												function (secondary) {
 													return A2(
 														$elm$json$Json$Decode$andThen,
-														function (primary) {
+														function (quart) {
 															return A2(
 																$elm$json$Json$Decode$andThen,
-																function (categories) {
-																	return $elm$json$Json$Decode$succeed(
-																		{categories: categories, primary: primary, quart: quart, secondary: secondary, stroke: stroke, ternary: ternary, tessellation: tessellation, theme: theme});
+																function (primary) {
+																	return A2(
+																		$elm$json$Json$Decode$andThen,
+																		function (categories) {
+																			return $elm$json$Json$Decode$succeed(
+																				{categories: categories, primary: primary, quart: quart, secondary: secondary, stroke: stroke, strokeCol: strokeCol, ternary: ternary, tessellation: tessellation, theme: theme});
+																		},
+																		A2(
+																			$elm$json$Json$Decode$field,
+																			'categories',
+																			$elm$json$Json$Decode$list($elm$json$Json$Decode$string)));
 																},
-																A2(
-																	$elm$json$Json$Decode$field,
-																	'categories',
-																	$elm$json$Json$Decode$list($elm$json$Json$Decode$string)));
+																A2($elm$json$Json$Decode$field, 'primary', $elm$json$Json$Decode$string));
 														},
-														A2($elm$json$Json$Decode$field, 'primary', $elm$json$Json$Decode$string));
+														A2($elm$json$Json$Decode$field, 'quart', $elm$json$Json$Decode$string));
 												},
-												A2($elm$json$Json$Decode$field, 'quart', $elm$json$Json$Decode$string));
+												A2($elm$json$Json$Decode$field, 'secondary', $elm$json$Json$Decode$string));
 										},
-										A2($elm$json$Json$Decode$field, 'secondary', $elm$json$Json$Decode$string));
+										A2($elm$json$Json$Decode$field, 'stroke', $elm$json$Json$Decode$bool));
 								},
-								A2($elm$json$Json$Decode$field, 'stroke', $elm$json$Json$Decode$string));
+								A2($elm$json$Json$Decode$field, 'strokeCol', $elm$json$Json$Decode$string));
 						},
 						A2($elm$json$Json$Decode$field, 'ternary', $elm$json$Json$Decode$string));
 				},

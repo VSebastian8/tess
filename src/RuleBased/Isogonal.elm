@@ -249,7 +249,7 @@ hexaStarTessellation =
                     [ hexv |> sc 2 |> tr { x = -1, y = 0 } |> tr (pt 4 hx)
                     , { eqi | col = Quart } |> rto -60 |> tr (hx |> pt 2)
                     ]
-                , bounds = ( { x = -1.2, y = 0 }, { x = 5, y = 7 } )
+                , bounds = ( { x = -1.5, y = 0 }, { x = 5, y = 7 } )
             }
     in
     { rules =

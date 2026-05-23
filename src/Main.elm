@@ -61,18 +61,19 @@ type alias Model =
     , animationKey : Int
     , animated : Bool
     , downloadData : Html Never
+    , stroke : Bool
     }
 
 
 type alias Flags =
-    { tessellation : String, categories : List String, theme : String, stroke : String, primary : String, secondary : String, ternary : String, quart : String }
+    { tessellation : String, categories : List String, theme : String, strokeCol : String, primary : String, secondary : String, ternary : String, quart : String, stroke : Bool }
 
 
 init : Flags -> ( Model, Cmd msg )
-init { tessellation, categories, theme, stroke, primary, secondary, ternary, quart } =
+init { tessellation, categories, theme, strokeCol, primary, secondary, ternary, quart, stroke } =
     ( { selectedTheme = theme
       , toggledCategories = categories
-      , customStroke = stroke
+      , customStroke = strokeCol
       , customPrimary = primary
       , customSecondary = secondary
       , customTernary = ternary
@@ -81,6 +82,7 @@ init { tessellation, categories, theme, stroke, primary, secondary, ternary, qua
       , animationKey = 0
       , animated = False
       , downloadData = a [] [ text "loading" ]
+      , stroke = stroke
       }
     , Cmd.none
     )
@@ -103,6 +105,7 @@ type Msg
     | TriggerDownloadPort
     | SetLocal String String
     | RunAnimation
+    | ToggleStroke
 
 
 run : msg -> Cmd msg
@@ -123,7 +126,7 @@ update msg model =
             ( { model | selectedTheme = theme }, run (SetLocal "tess-theme" theme) )
 
         PickStroke color ->
-            ( { model | customStroke = color }, run (SetLocal "tess-stroke" color) )
+            ( { model | customStroke = color }, run (SetLocal "tess-stroke-col" color) )
 
         PickPrimary color ->
             ( { model | customPrimary = color }, run (SetLocal "tess-primary" color) )
@@ -151,6 +154,19 @@ update msg model =
             , Cmd.none
             )
 
+        ToggleStroke ->
+            ( { model | stroke = not model.stroke }
+            , run
+                (SetLocal "tess-stroke"
+                    (if model.stroke then
+                        "false"
+
+                     else
+                        "true"
+                    )
+                )
+            )
+
 
 toggle : a -> List a -> List a
 toggle x xs =
@@ -170,6 +186,13 @@ view model =
     div
         [ id "container"
         , class ("theme" ++ model.selectedTheme)
+        , class
+            (if model.stroke then
+                "stroke-on"
+
+             else
+                ""
+            )
         ]
         [ tessMenu model
         , themeMenu model
@@ -264,7 +287,31 @@ themeMenu model =
     div
         [ id "themeContainer" ]
         (h2 []
-            [ text "Theme" ]
+            [ div []
+                [ text "Theme"
+                , button
+                    [ class "btn", class "stroke-btn", onClick ToggleStroke ]
+                    [ span [ class "icon" ]
+                        [ text
+                            (if model.stroke then
+                                "□"
+
+                             else
+                                "■"
+                            )
+                        ]
+                    , span [ class "tooltip" ]
+                        [ text
+                            (if model.stroke then
+                                "Hide stroke"
+
+                             else
+                                "Show stroke"
+                            )
+                        ]
+                    ]
+                ]
+            ]
             :: (themeOptions
                     |> List.map (\t -> themeOption t model)
                )
@@ -351,7 +398,8 @@ settingsMenu model =
     div
         [ id "settingsContainer" ]
         [ button
-            [ class "action-btn"
+            [ class "btn"
+            , class "action-btn"
             , onClick RunAnimation
             , class ("theme" ++ model.selectedTheme)
             ]
@@ -359,7 +407,8 @@ settingsMenu model =
             , span [ class "tooltip" ] [ text "Run animation" ]
             ]
         , button
-            [ class "action-btn"
+            [ class "btn"
+            , class "action-btn"
             , onClick DownloadSvg
             , class ("theme" ++ model.selectedTheme)
             ]

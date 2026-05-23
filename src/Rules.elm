@@ -110,6 +110,15 @@ sc scalar pc =
     { pc | poly = { p | origin = mul scalar p.origin }, scale = pc.scale * scalar, centre = mul scalar (sub pc.centre p.origin) |> add (mul scalar p.origin), dist = pc.dist * scalar }
 
 
+st : Int -> PC -> PC
+st n pc =
+    let
+        alfa =
+            List.take n pc.poly.angles |> List.foldl (+) 0
+    in
+    pc |> tr (pc |> pt (toFloat n) |> neg) |> rto -alfa |> rto (180 * toFloat (modBy 2 n))
+
+
 rescale : PC -> PC
 rescale pc =
     let

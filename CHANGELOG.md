@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0 - TBD
+
+- Reworked `stroke`.
+
 ## v0.5.0 - 2026-05-12
 
 - Tesselation `Animations`!

@@ -9,6 +9,7 @@ import Util exposing (..)
 lavesTesselations : List ( String, Tess )
 lavesTesselations =
     [ ( "Triakis Triangular", triakisTriangularTessellation )
+    , ( "Triakis Star", triakisStarTessellation )
     , ( "Rhombile", rhombileTessellation )
     , ( "Tetrakis Square", tetrakisSquareTessellation )
     , ( "Disdyakis Rhombile", disdyakisRhombileTessellation )
@@ -517,5 +518,70 @@ prismaticPentagonalTessellation =
     , closed = []
     , open = [ pri ]
     , size = 25
+    , start = { x = 0.5, y = 0.5 }
+    }
+
+
+
+-- Patterns
+
+
+triakisStarTessellation : Tess
+triakisStarTessellation =
+    let
+        hexTile =
+            { r
+                | anchor = hex
+                , additions =
+                    [ hex |> tr (hex |> pt 4 |> neg)
+                    , hex |> tr (hex |> pt 1) |> tr { x = 0, y = -1 }
+                    , hex |> tr (hex |> pt 2)
+                    , hex |> tr (hex |> pt 4)
+                    , hex |> tr (hex |> pt 1 |> neg) |> tr { x = 0, y = 1 }
+                    , hex |> tr (hex |> pt 2 |> neg)
+                    ]
+                , bounds = ( { x = -1.6, y = -2 }, { x = 5, y = 5 } )
+            }
+
+        hexB =
+            hex |> sc (2 * cos (degrees 30))
+
+        subRule1 =
+            { r
+                | anchor = hexB
+                , additions =
+                    [ ois |> st 2
+                    , { ois | col = Secondary } |> st 1 |> rto -90 |> tr (hexB |> pt 1)
+                    , ois |> st 2 |> rto -60 |> tr (hexB |> pt 1)
+                    , { ois | col = Secondary } |> st 1 |> rto -150 |> tr (hexB |> pt 2)
+                    , ois |> st 2 |> rto -120 |> tr (hexB |> pt 2)
+                    , { ois | col = Secondary } |> st 1 |> rto 150 |> tr (hexB |> pt 3)
+                    , ois |> st 2 |> rto 180 |> tr (hexB |> pt 3)
+                    , { ois | col = Secondary } |> st 1 |> rto 90 |> tr (hexB |> pt 4)
+                    , ois |> st 2 |> rto 120 |> tr (hexB |> pt 4)
+                    , { ois | col = Secondary } |> st 1 |> rto 30 |> tr (hexB |> pt 5)
+                    , ois |> st 2 |> rto 60 |> tr (hexB |> pt 5)
+                    , { ois | col = Secondary } |> st 1 |> rto -30
+                    , { ois | col = Ternary } |> st 1 |> rto 30
+                    , { ois | col = Ternary } |> st 1 |> rto -30 |> tr (hexB |> pt 1)
+                    , { ois | col = Ternary } |> st 1 |> rto -90 |> tr (hexB |> pt 2)
+                    , { ois | col = Ternary } |> st 1 |> rto -150 |> tr (hexB |> pt 3)
+                    , { ois | col = Ternary } |> st 1 |> rto 150 |> tr (hexB |> pt 4)
+                    , { ois | col = Ternary } |> st 1 |> rto 90 |> tr (hexB |> pt 5)
+                    ]
+                , bounds = ( { x = 0, y = -0.6 }, { x = 3, y = 3 } )
+                , subdivide = True
+                , rotatable = False
+            }
+    in
+    { rules =
+        [ hexTile
+        , subRule1
+        ]
+    , closed = []
+    , open =
+        [ hex
+        ]
+    , size = 55
     , start = { x = 0.5, y = 0.5 }
     }

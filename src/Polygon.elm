@@ -112,7 +112,7 @@ polygonSvg poly size origin color w =
     polygon
         [ points svgPoints
         , fill ("var(" ++ getVar color ++ ")")
-        , stroke "var(--stroke-color)"
+        , stroke ("var(" ++ getVar color ++ ")")
         , strokeWidth (String.fromFloat w)
         ]
         []
@@ -153,7 +153,7 @@ polygonAnimatedSvg poly size origin color w index total =
     polygon
         [ points svgPoints
         , fill ("var(" ++ getVar color ++ ")")
-        , stroke "var(--stroke-color)"
+        , stroke ("var(" ++ getVar color ++ ")")
         , strokeWidth (String.fromFloat w)
         , class "poly"
         , opacity "0"

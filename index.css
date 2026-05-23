@@ -59,10 +59,11 @@
     height: auto !important;
   }
   #tess {
-    border-bottom: 5px solid #3e3f5b !important;
-    border-left: 6px solid #3e3f5b !important;
+    border-width: 6px 6px 5px 6px !important;
   }
   .tess-svg {
+    margin-top: -1px !important;
+    margin-right: -1px !important;
     margin-left: -1px !important;
   }
   .action-btn .tooltip {
@@ -186,6 +187,18 @@ body {
 
 .tess-svg {
   margin-bottom: -5px;
+}
+
+#container:not(.stroke-on) #tess polygon {
+  stroke-width: 1.1 !important;
+}
+
+.stroke-on polygon {
+  stroke: var(--stroke-color);
+}
+
+#rules polygon {
+  stroke: var(--stroke-color);
 }
 
 #tess-text {

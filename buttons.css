@@ -4,21 +4,34 @@
   inherits: false;
 }
 
-.action-btn {
+.btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  background: transparent;
+}
+
+.action-btn {
   width: 80px;
   height: 80px;
   border: none;
-  cursor: pointer;
   border-radius: 6px;
   font-size: xx-large;
   color: #3e3f5b;
-  background: transparent;
 }
-.action-btn .tooltip {
+
+.stroke-btn {
+  border: none;
+  font-size: x-large;
+  color: #3e3f5b;
+  padding: 0;
+  margin-left: 10px;
+  vertical-align: 10%;
+}
+
+.btn .tooltip {
   position: absolute;
   bottom: calc(100% + 6px);
   left: 50%;
@@ -34,10 +47,12 @@
   opacity: 0;
   transition: opacity 0.15s;
 }
+
 .action-btn:hover {
   background: #e8e8e8;
 }
-.action-btn:hover .tooltip {
+
+.btn:hover .tooltip {
   opacity: 1;
 }
 
