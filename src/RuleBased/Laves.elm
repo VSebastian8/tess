@@ -11,6 +11,7 @@ lavesTesselations =
     [ ( "Triakis Triangular", triakisTriangularTessellation )
     , ( "Triakis Star", triakisStarTessellation )
     , ( "Rhombile", rhombileTessellation )
+    , ( "Rhombile Star", rhombileStarTessellation )
     , ( "Tetrakis Square", tetrakisSquareTessellation )
     , ( "Disdyakis Rhombile", disdyakisRhombileTessellation )
     , ( "Deltoidal Trihexagonal", deltodailTriHexagonalTessellation )
@@ -570,6 +571,61 @@ triakisStarTessellation =
                     , { ois | col = Ternary } |> st 1 |> rto 90 |> tr (hexB |> pt 5)
                     ]
                 , bounds = ( { x = 0, y = -0.6 }, { x = 3, y = 3 } )
+                , subdivide = True
+                , rotatable = False
+            }
+    in
+    { rules =
+        [ hexTile
+        , subRule1
+        ]
+    , closed = []
+    , open =
+        [ hex
+        ]
+    , size = 55
+    , start = { x = 0.5, y = 0.5 }
+    }
+
+
+rhombileStarTessellation : Tess
+rhombileStarTessellation =
+    let
+        hexTile =
+            { r
+                | anchor = hex
+                , additions =
+                    [ hex |> tr (hex |> pt 4 |> neg)
+                    , hex |> tr (hex |> pt 1) |> tr { x = 0, y = -1 }
+                    , hex |> tr (hex |> pt 2)
+                    , hex |> tr (hex |> pt 4)
+                    , hex |> tr (hex |> pt 1 |> neg) |> tr { x = 0, y = 1 }
+                    , hex |> tr (hex |> pt 2 |> neg)
+                    ]
+                , bounds = ( { x = -1.6, y = -2 }, { x = 5, y = 5 } )
+            }
+
+        hexB =
+            hex |> sc 2
+
+        subRule1 =
+            { r
+                | anchor = hexB
+                , additions =
+                    [ { rho | col = Ternary } |> rto 30
+                    , { rho | col = Ternary } |> rto -30 |> tr (pt 1 hexB)
+                    , { rho | col = Ternary } |> rto -90 |> tr (pt 2 hexB)
+                    , { rho | col = Ternary } |> rto -150 |> tr (pt 3 hexB)
+                    , { rho | col = Ternary } |> rto 150 |> tr (pt 4 hexB)
+                    , { rho | col = Ternary } |> rto 90 |> tr (pt 5 hexB)
+                    , rho |> rto 90 |> tr (rho |> rto 30 |> pt 2)
+                    , { rho | col = Secondary } |> rto 30 |> tr (hexB |> pt 1) |> tr (rho |> rto -30 |> pt 2)
+                    , rho |> rto -30 |> tr (hexB |> pt 2) |> tr (rho |> rto -90 |> pt 2)
+                    , { rho | col = Secondary } |> rto -90 |> tr (hexB |> pt 3) |> tr (rho |> rto -150 |> pt 2)
+                    , rho |> rto -150 |> tr (hexB |> pt 4) |> tr (rho |> rto 150 |> pt 2)
+                    , { rho | col = Secondary } |> rto 150 |> tr (hexB |> pt 5) |> tr (rho |> rto 90 |> pt 2)
+                    ]
+                , bounds = ( { x = 0, y = -0.7 }, { x = 3.5, y = 3.5 } )
                 , subdivide = True
                 , rotatable = False
             }

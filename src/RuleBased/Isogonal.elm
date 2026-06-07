@@ -24,10 +24,12 @@ squareRowsTessellation =
             { r
                 | anchor = squ
                 , additions =
-                    [ tr { x = 1, y = 0 } { squ | col = Quart }
+                    [ squ |> sc 2 |> sz (1 / 2)
+                    , { squ | col = Quart } |> tr { x = 1, y = 0 }
                     , tr { x = 2, y = 0 } squ
                     ]
                 , rotatable = False
+                , subdivide = True
                 , bounds = ( { x = 0, y = 0 }, { x = 3, y = 1 } )
             }
 
@@ -35,10 +37,12 @@ squareRowsTessellation =
             { r
                 | anchor = { squ | col = Ternary }
                 , additions =
-                    [ tr { x = 1, y = 0 } { squ | col = Secondary }
+                    [ { squ | col = Ternary } |> sc 2 |> sz (1 / 2)
+                    , tr { x = 1, y = 0 } { squ | col = Secondary }
                     , tr { x = 2, y = 0 } { squ | col = Ternary }
                     ]
                 , rotatable = False
+                , subdivide = True
                 , bounds = ( { x = 0, y = 0 }, { x = 3, y = 1 } )
             }
 
@@ -74,28 +78,39 @@ squareRowsTessellation =
 triangularRowsTessellation : Tess
 triangularRowsTessellation =
     let
-        triRule1 =
+        downRule =
             { r
-                | anchor = eqi
+                | anchor = { eqi | col = Secondary } |> rto -60 |> sc 2 |> sz (1 / 2)
                 , additions =
-                    [ { eqi | col = Secondary } |> rto 60 |> tr (equilateral |> getPoint 2)
-                    , tr { x = 1, y = 0 } eqi
+                    [ { eqi | col = Secondary } |> rto -60 |> sc 2 |> sz (1 / 2) |> tr (eqi |> pt 2) |> tr { x = -0.5, y = 0 }
+                    , { eqi | col = Secondary } |> rto -60
                     ]
-                , rotatable = False
-                , bounds = ( { x = 0, y = 0 }, { x = 2, y = 1 } )
+                , subdivide = True
             }
 
-        triRule2 =
+        rightRule =
             { r
-                | anchor = eqi
+                | anchor = { eqi | col = Secondary } |> rto -60 |> sc 4 |> sz (1 / 4)
                 , additions =
-                    [ eqi |> tr (equilateral |> getPoint 2) |> tr { x = -0.5, y = 0 } ]
-                , rotatable = False
-                , bounds = ( { x = 0, y = 0 }, { x = 1, y = 2 } )
+                    [ { eqi | col = Secondary } |> rto -60 |> sc 2 |> sz (1 / 2)
+                    , eqi |> sc 2 |> sz (1 / 2)
+                    , { eqi | col = Secondary } |> rto -60 |> sc 4 |> sz (1 / 4) |> tr { x = 1, y = 0 }
+                    ]
+                , subdivide = True
+            }
+
+        downRule2 =
+            { r
+                | anchor = eqi |> sc 2 |> sz (1 / 2)
+                , additions =
+                    [ eqi
+                    , eqi |> sc 2 |> sz (1 / 2) |> tr (eqi |> pt 2) |> tr { x = -0.5, y = 0 }
+                    ]
+                , subdivide = True
             }
     in
-    { rules = [ triRule1, triRule2 ]
-    , open = [ eqi |> tr { x = -0.5, y = 0 } ]
+    { rules = [ downRule, rightRule, downRule2 ]
+    , open = [ { eqi | col = Secondary } |> rto -60 |> sc 4 |> sz (1 / 4) ]
     , closed = []
     , size = 30
     , start = { x = 0, y = 0 }
