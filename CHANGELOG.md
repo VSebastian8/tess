@@ -3,6 +3,7 @@
 ## v0.5.0 - TBD
 
 - Reworked `stroke`.
+- `Fractals`.
 
 ## v0.5.0 - 2026-05-12
 

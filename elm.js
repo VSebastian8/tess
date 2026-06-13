@@ -5987,6 +5987,7 @@ var $elm$core$Dict$fromList = function (assocs) {
 		$elm$core$Dict$empty,
 		assocs);
 };
+var $author$project$Util$Quart = {$: 'Quart'};
 var $author$project$Util$Secondary = {$: 'Secondary'};
 var $author$project$Util$Ternary = {$: 'Ternary'};
 var $author$project$Util$Primary = {$: 'Primary'};
@@ -6008,19 +6009,70 @@ var $author$project$Rules$eqi = {
 	poly: $author$project$Shapes$equilateral,
 	scale: 1
 };
-var $author$project$Shapes$hexagon = {
+var $author$project$Shapes$floret = {
 	angles: _List_fromArray(
-		[120, 120, 120, 120, 120, 120]),
+		[120, 120, 120, 120, 60]),
 	lengths: _List_fromArray(
-		[1, 1, 1, 1, 1, 1]),
+		[
+			1 + (2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60))),
+			1,
+			1,
+			1,
+			1 + (2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60)))
+		]),
 	origin: {x: 0, y: 0},
 	rotation: 0
 };
-var $author$project$Rules$hexv = {
-	centre: {x: 0.5, y: 0.86},
+var $author$project$Rules$flr = {
+	centre: {
+		x: 1 + $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60)),
+		y: ($elm$core$Basics$sin(
+			$elm$core$Basics$degrees(60)) * (1 + (2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60))))) / 2
+	},
 	col: $author$project$Util$Primary,
-	dist: 0.86,
-	poly: $author$project$Shapes$hexagon,
+	dist: 0.5,
+	poly: $author$project$Shapes$floret,
+	scale: 1
+};
+var $author$project$Util$mag = function (_v0) {
+	var x = _v0.x;
+	var y = _v0.y;
+	return $elm$core$Basics$sqrt((x * x) + (y * y));
+};
+var $author$project$Shapes$obtuseIso = {
+	angles: _List_fromArray(
+		[30, 30, 120]),
+	lengths: _List_fromArray(
+		[
+			1,
+			2 * $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30)),
+			1
+		]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$ois = {
+	centre: A2(
+		$author$project$Util$mul,
+		2 / 3,
+		{
+			x: 0.25,
+			y: $elm$core$Basics$cos(
+				$elm$core$Basics$degrees(30)) / 2
+		}),
+	col: $author$project$Util$Primary,
+	dist: $author$project$Util$mag(
+		{
+			x: 0.25,
+			y: $elm$core$Basics$cos(
+				$elm$core$Basics$degrees(30)) / 2
+		}) / 3,
+	poly: $author$project$Shapes$obtuseIso,
 	scale: 1
 };
 var $elm$core$List$drop = F2(
@@ -6103,8 +6155,281 @@ var $author$project$Rules$r = {
 	rotatable: true,
 	subdivide: false
 };
+var $author$project$Shapes$right = {
+	angles: _List_fromArray(
+		[30, 90, 60]),
+	lengths: _List_fromArray(
+		[
+			1,
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30)),
+			$elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60))
+		]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$rgt = function () {
+	var c = A2(
+		$author$project$Util$mul,
+		2 / 3,
+		A2(
+			$author$project$Util$add,
+			A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$right),
+			A2(
+				$author$project$Util$mul,
+				0.5,
+				A2(
+					$author$project$Util$sub,
+					A2($author$project$Polygon$getPoint, 2, $author$project$Shapes$right),
+					A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$right)))));
+	return {centre: c, col: $author$project$Util$Primary, dist: 0.12, poly: $author$project$Shapes$right, scale: 1};
+}();
+var $author$project$Shapes$rhombus = {
+	angles: _List_fromArray(
+		[60, 120, 60, 120]),
+	lengths: _List_fromArray(
+		[1, 1, 1, 1]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$rho = {
+	centre: {
+		x: $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(60)) / 2,
+		y: $elm$core$Basics$cos(
+			$elm$core$Basics$degrees(30)) / 2
+	},
+	col: $author$project$Util$Primary,
+	dist: ($elm$core$Basics$cos(
+		$elm$core$Basics$degrees(30)) * $elm$core$Basics$cos(
+		$elm$core$Basics$degrees(30))) / 2,
+	poly: $author$project$Shapes$rhombus,
+	scale: 1
+};
 var $author$project$Rules$rto = $author$project$Rules$rt(
 	{x: 0, y: 0});
+var $author$project$RuleBased$Fractal$floretFractalTessellation = function () {
+	var petal1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2($author$project$Rules$rto, -60, $author$project$Rules$flr)
+				]),
+			anchor: $author$project$Rules$flr,
+			bounds: _Utils_Tuple2(
+				{x: -0.75, y: 0},
+				{x: 3, y: 2.5})
+		});
+	var next3 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					$author$project$Rules$flr,
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+						A2($author$project$Rules$rto, -120, $author$project$Rules$flr)))
+				]),
+			anchor: A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2(
+						$author$project$Rules$pt,
+						2,
+						A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, $author$project$Rules$flr),
+					A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 4.5, y: 4.5}),
+			rotatable: false
+		});
+	var next2 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2(
+							$author$project$Rules$pt,
+							2,
+							A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 4, $author$project$Rules$flr),
+						A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+					$author$project$Rules$flr
+				]),
+			anchor: A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+					A2($author$project$Rules$rto, -120, $author$project$Rules$flr))),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 4.5, y: 4.5}),
+			rotatable: false
+		});
+	var next1 = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+						A2($author$project$Rules$rto, -120, $author$project$Rules$flr))),
+					A2(
+					$author$project$Rules$tr,
+					$author$project$Util$neg(
+						A2(
+							$author$project$Rules$pt,
+							2,
+							A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+					A2(
+						$author$project$Rules$tr,
+						A2($author$project$Rules$pt, 4, $author$project$Rules$flr),
+						A2($author$project$Rules$rto, 120, $author$project$Rules$flr)))
+				]),
+			anchor: $author$project$Rules$flr,
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 4.5, y: 4.5}),
+			rotatable: false
+		});
+	var fractal = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						0.5,
+						A2($author$project$Rules$rto, -60, $author$project$Rules$flr)),
+					A2($author$project$Rules$rto, -120, $author$project$Rules$ois)),
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						4,
+						A2($author$project$Rules$rto, -60, $author$project$Rules$flr)),
+					A2(
+						$author$project$Rules$rto,
+						60,
+						A2(
+							$author$project$Rules$sc,
+							1 + (2 * $elm$core$Basics$cos(
+								$elm$core$Basics$degrees(60))),
+							_Utils_update(
+								$author$project$Rules$rgt,
+								{col: $author$project$Util$Secondary})))),
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						1,
+						A2($author$project$Rules$rto, -60, $author$project$Rules$flr)),
+					A2(
+						$author$project$Rules$rto,
+						-180,
+						_Utils_update(
+							$author$project$Rules$eqi,
+							{col: $author$project$Util$Ternary}))),
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						4,
+						A2($author$project$Rules$rto, -60, $author$project$Rules$flr)),
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Quart})),
+					A2(
+					$author$project$Rules$tr,
+					{x: -1, y: 0},
+					A2(
+						$author$project$Rules$tr,
+						A2(
+							$author$project$Rules$pt,
+							1,
+							A2($author$project$Rules$rto, -60, $author$project$Rules$flr)),
+						_Utils_update(
+							$author$project$Rules$rho,
+							{col: $author$project$Util$Quart})))
+				]),
+			anchor: A2($author$project$Rules$rto, -60, $author$project$Rules$flr),
+			bounds: _Utils_Tuple2(
+				{x: -1, y: 0},
+				{x: 2, y: 2.5}),
+			rotatable: true,
+			subdivide: true
+		});
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[
+				$author$project$Rules$flr,
+				A2(
+				$author$project$Rules$tr,
+				A2($author$project$Rules$pt, 1, $author$project$Rules$flr),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 2, $author$project$Rules$flr),
+					A2($author$project$Rules$rto, -120, $author$project$Rules$flr))),
+				A2(
+				$author$project$Rules$tr,
+				$author$project$Util$neg(
+					A2(
+						$author$project$Rules$pt,
+						2,
+						A2($author$project$Rules$rto, 120, $author$project$Rules$flr))),
+				A2(
+					$author$project$Rules$tr,
+					A2($author$project$Rules$pt, 4, $author$project$Rules$flr),
+					A2($author$project$Rules$rto, 120, $author$project$Rules$flr)))
+			]),
+		rules: _List_fromArray(
+			[petal1, next1, next2, next3, fractal]),
+		size: 25,
+		start: {x: 0.5, y: 0.5}
+	};
+}();
+var $author$project$RuleBased$Fractal$fractalTesselations = _List_fromArray(
+	[
+		_Utils_Tuple2('Floret Fan', $author$project$RuleBased$Fractal$floretFractalTessellation)
+	]);
+var $author$project$Shapes$hexagon = {
+	angles: _List_fromArray(
+		[120, 120, 120, 120, 120, 120]),
+	lengths: _List_fromArray(
+		[1, 1, 1, 1, 1, 1]),
+	origin: {x: 0, y: 0},
+	rotation: 0
+};
+var $author$project$Rules$hexv = {
+	centre: {x: 0.5, y: 0.86},
+	col: $author$project$Util$Primary,
+	dist: 0.86,
+	poly: $author$project$Shapes$hexagon,
+	scale: 1
+};
 var $author$project$Rules$sz = F2(
 	function (size, pc) {
 		var p = pc.poly;
@@ -6279,7 +6604,6 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$Util$Quart = {$: 'Quart'};
 var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 	var hx = A2($author$project$Rules$sz, 2, $author$project$Rules$hexv);
 	var hexRule2 = _Utils_update(
@@ -7477,36 +7801,6 @@ var $author$project$Rules$lft = function () {
 					A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$left)))));
 	return {centre: c, col: $author$project$Util$Primary, dist: 0.12, poly: $author$project$Shapes$left, scale: 1};
 }();
-var $author$project$Shapes$right = {
-	angles: _List_fromArray(
-		[30, 90, 60]),
-	lengths: _List_fromArray(
-		[
-			1,
-			$elm$core$Basics$cos(
-			$elm$core$Basics$degrees(30)),
-			$elm$core$Basics$cos(
-			$elm$core$Basics$degrees(60))
-		]),
-	origin: {x: 0, y: 0},
-	rotation: 0
-};
-var $author$project$Rules$rgt = function () {
-	var c = A2(
-		$author$project$Util$mul,
-		2 / 3,
-		A2(
-			$author$project$Util$add,
-			A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$right),
-			A2(
-				$author$project$Util$mul,
-				0.5,
-				A2(
-					$author$project$Util$sub,
-					A2($author$project$Polygon$getPoint, 2, $author$project$Shapes$right),
-					A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$right)))));
-	return {centre: c, col: $author$project$Util$Primary, dist: 0.12, poly: $author$project$Shapes$right, scale: 1};
-}();
 var $author$project$RuleBased$Laves$disdyakisRhombileTessellation = function () {
 	var subRule1 = _Utils_update(
 		$author$project$Rules$r,
@@ -7660,35 +7954,6 @@ var $author$project$RuleBased$Laves$disdyakisRhombileTessellation = function () 
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$Shapes$floret = {
-	angles: _List_fromArray(
-		[120, 120, 120, 120, 60]),
-	lengths: _List_fromArray(
-		[
-			1 + (2 * $elm$core$Basics$cos(
-			$elm$core$Basics$degrees(60))),
-			1,
-			1,
-			1,
-			1 + (2 * $elm$core$Basics$cos(
-			$elm$core$Basics$degrees(60)))
-		]),
-	origin: {x: 0, y: 0},
-	rotation: 0
-};
-var $author$project$Rules$flr = {
-	centre: {
-		x: 1 + $elm$core$Basics$cos(
-			$elm$core$Basics$degrees(60)),
-		y: ($elm$core$Basics$sin(
-			$elm$core$Basics$degrees(60)) * (1 + (2 * $elm$core$Basics$cos(
-			$elm$core$Basics$degrees(60))))) / 2
-	},
-	col: $author$project$Util$Primary,
-	dist: 0.5,
-	poly: $author$project$Shapes$floret,
-	scale: 1
-};
 var $author$project$RuleBased$Laves$floretPentagonalTessellation = function () {
 	var petal3 = _Utils_update(
 		$author$project$Rules$r,
@@ -8152,28 +8417,6 @@ var $author$project$RuleBased$Laves$prismaticPentagonalTessellation = function (
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$Shapes$rhombus = {
-	angles: _List_fromArray(
-		[60, 120, 60, 120]),
-	lengths: _List_fromArray(
-		[1, 1, 1, 1]),
-	origin: {x: 0, y: 0},
-	rotation: 0
-};
-var $author$project$Rules$rho = {
-	centre: {
-		x: $elm$core$Basics$cos(
-			$elm$core$Basics$degrees(60)) / 2,
-		y: $elm$core$Basics$cos(
-			$elm$core$Basics$degrees(30)) / 2
-	},
-	col: $author$project$Util$Primary,
-	dist: ($elm$core$Basics$cos(
-		$elm$core$Basics$degrees(30)) * $elm$core$Basics$cos(
-		$elm$core$Basics$degrees(30))) / 2,
-	poly: $author$project$Shapes$rhombus,
-	scale: 1
-};
 var $author$project$RuleBased$Laves$rhombileStarTessellation = function () {
 	var hexTile = _Utils_update(
 		$author$project$Rules$r,
@@ -8592,43 +8835,6 @@ var $author$project$RuleBased$Laves$tetrakisSquareTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$Util$mag = function (_v0) {
-	var x = _v0.x;
-	var y = _v0.y;
-	return $elm$core$Basics$sqrt((x * x) + (y * y));
-};
-var $author$project$Shapes$obtuseIso = {
-	angles: _List_fromArray(
-		[30, 30, 120]),
-	lengths: _List_fromArray(
-		[
-			1,
-			2 * $elm$core$Basics$cos(
-			$elm$core$Basics$degrees(30)),
-			1
-		]),
-	origin: {x: 0, y: 0},
-	rotation: 0
-};
-var $author$project$Rules$ois = {
-	centre: A2(
-		$author$project$Util$mul,
-		2 / 3,
-		{
-			x: 0.25,
-			y: $elm$core$Basics$cos(
-				$elm$core$Basics$degrees(30)) / 2
-		}),
-	col: $author$project$Util$Primary,
-	dist: $author$project$Util$mag(
-		{
-			x: 0.25,
-			y: $elm$core$Basics$cos(
-				$elm$core$Basics$degrees(30)) / 2
-		}) / 3,
-	poly: $author$project$Shapes$obtuseIso,
-	scale: 1
-};
 var $elm$core$List$takeReverse = F3(
 	function (n, list, kept) {
 		takeReverse:
@@ -11313,7 +11519,8 @@ var $author$project$Main$categoryTessellations = _List_fromArray(
 		_Utils_Tuple2('Regular', $author$project$RuleBased$Regular$regularTesselations),
 		_Utils_Tuple2('Isogonal', $author$project$RuleBased$Isogonal$isogonalTesselations),
 		_Utils_Tuple2('Semiregular', $author$project$RuleBased$Semiregular$semiregularTesselations),
-		_Utils_Tuple2('Laves', $author$project$RuleBased$Laves$lavesTesselations)
+		_Utils_Tuple2('Laves', $author$project$RuleBased$Laves$lavesTesselations),
+		_Utils_Tuple2('Fractal', $author$project$RuleBased$Fractal$fractalTesselations)
 	]);
 var $elm$core$Tuple$second = function (_v0) {
 	var y = _v0.b;

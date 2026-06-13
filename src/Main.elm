@@ -6,6 +6,7 @@ import Html exposing (..)
 import Html.Attributes exposing (class, id, name, style, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Html.Keyed
+import RuleBased.Fractal exposing (fractalTesselations)
 import RuleBased.Isogonal exposing (isogonalTesselations)
 import RuleBased.Laves exposing (lavesTesselations)
 import RuleBased.Regular exposing (regularTesselations)
@@ -205,7 +206,7 @@ view model =
 
 categoryTessellations : List ( String, List ( String, Tess ) )
 categoryTessellations =
-    [ ( "Regular", regularTesselations ), ( "Isogonal", isogonalTesselations ), ( "Semiregular", semiregularTesselations ), ( "Laves", lavesTesselations ) ]
+    [ ( "Regular", regularTesselations ), ( "Isogonal", isogonalTesselations ), ( "Semiregular", semiregularTesselations ), ( "Laves", lavesTesselations ), ( "Fractal", fractalTesselations ) ]
 
 
 tessellations : List ( String, Tess )
