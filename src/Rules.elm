@@ -143,6 +143,9 @@ renderRule { anchor, additions, bounds, subdivide } =
         anchorSvgs =
             [ polygonSvg (rescale anchor).poly 1 { x = 0, y = 0 } anchor.col 0.08, pointSvg anchor.centre 1 { x = 0, y = 0 } 0.04 ]
 
+        extraAnchor =
+            strokePolygonSvg (rescale anchor).poly 1 { x = 0, y = 0 } 0.08
+
         addSvgs =
             additions
                 |> List.map rescale
@@ -159,7 +162,7 @@ renderRule { anchor, additions, bounds, subdivide } =
         , height "200"
         ]
         (if subdivide then
-            anchorSvgs ++ addSvgs
+            anchorSvgs ++ addSvgs ++ [ extraAnchor ]
 
          else
             addSvgs ++ anchorSvgs
@@ -173,6 +176,12 @@ type alias Tess =
     , size : Float
     , start : Point
     }
+
+
+debugTess : Tess -> Bool -> List (Svg msg)
+debugTess { open, closed, size } _ =
+    (Debug.log "closed: " closed |> List.map rescale |> List.map (\p -> debugPolygonSvg p.poly size { x = 0, y = 0 } p.col 2))
+        ++ (Debug.log "open: " open |> List.map rescale |> List.map (\p -> polygonSvg p.poly size { x = 0, y = 0 } p.col 2))
 
 
 renderTess : Tess -> Bool -> List (Svg msg)
@@ -258,6 +267,11 @@ modify tess p rest =
     }
 
 
+hugePoly : PC -> ( Point, Point ) -> Bool
+hugePoly p ( b1, b2 ) =
+    distance b2 b1 < p.scale
+
+
 step : Tess -> ( Point, Point ) -> Tess
 step tess bounds =
     case tess.open of
@@ -266,7 +280,7 @@ step tess bounds =
 
         -- Pick the first open polygon, check its validity and apply all rules to it
         p :: rest ->
-            if not (inside p.centre bounds) || List.any (collides p) tess.closed then
+            if not (inside p.centre bounds) || List.any (collides p) tess.closed || hugePoly p bounds then
                 { tess | open = rest }
 
             else

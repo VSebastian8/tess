@@ -86,6 +86,7 @@ triangularRowsTessellation =
                     , { eqi | col = Secondary } |> rto -60
                     ]
                 , subdivide = True
+                , bounds = ( { x = -0.5, y = 0 }, { x = 1, y = 2 } )
             }
 
         rightRule =
@@ -97,6 +98,7 @@ triangularRowsTessellation =
                     , { eqi | col = Secondary } |> rto -60 |> sc 4 |> sz (1 / 4) |> tr { x = 1, y = 0 }
                     ]
                 , subdivide = True
+                , bounds = ( { x = -0.5, y = 0 }, { x = 2, y = 1 } )
             }
 
         downRule2 =
@@ -107,6 +109,7 @@ triangularRowsTessellation =
                     , eqi |> sc 2 |> sz (1 / 2) |> tr (eqi |> pt 2) |> tr { x = -0.5, y = 0 }
                     ]
                 , subdivide = True
+                , bounds = ( { x = 0, y = 0 }, { x = 1, y = 2 } )
             }
     in
     { rules = [ downRule, rightRule, downRule2 ]

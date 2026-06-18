@@ -5278,6 +5278,14 @@ var $author$project$Rules$collides = F2(
 			A2($author$project$Util$distance, p1.centre, p2.centre),
 			(p1.dist + p2.dist) - $author$project$Util$epsilon) < 0;
 	});
+var $author$project$Rules$hugePoly = F2(
+	function (p, _v0) {
+		var b1 = _v0.a;
+		var b2 = _v0.b;
+		return _Utils_cmp(
+			A2($author$project$Util$distance, b2, b1),
+			p.scale) < 0;
+	});
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Util$inside = F2(
 	function (p1, _v0) {
@@ -5527,10 +5535,10 @@ var $author$project$Rules$step = F2(
 		} else {
 			var p = _v0.a;
 			var rest = _v0.b;
-			return ((!A2($author$project$Util$inside, p.centre, bounds)) || A2(
+			return ((!A2($author$project$Util$inside, p.centre, bounds)) || (A2(
 				$elm$core$List$any,
 				$author$project$Rules$collides(p),
-				tess.closed)) ? _Utils_update(
+				tess.closed) || A2($author$project$Rules$hugePoly, p, bounds))) ? _Utils_update(
 				tess,
 				{open: rest}) : A3($author$project$Rules$modify, tess, p, rest);
 		}
@@ -6411,9 +6419,104 @@ var $author$project$RuleBased$Fractal$floretFractalTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
+var $author$project$RuleBased$Fractal$squareFractalTessellation = function () {
+	var shrink = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					_Utils_update(
+					$author$project$Rules$squ,
+					{col: $author$project$Util$Secondary})
+				]),
+			anchor: $author$project$Rules$squ,
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 1, y: 1}),
+			subdivide: true
+		});
+	var grow = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{x: -0.5, y: -0.5},
+					A2($author$project$Rules$sc, 2, $author$project$Rules$squ))
+				]),
+			bounds: _Utils_Tuple2(
+				{x: -0.5, y: -0.5},
+				{x: 2, y: 2}),
+			subdivide: true
+		});
+	var diag = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$sc,
+					1 / 2,
+					_Utils_update(
+						$author$project$Rules$squ,
+						{col: $author$project$Util$Secondary})),
+					A2(
+					$author$project$Rules$tr,
+					{x: 0.5, y: 0.5},
+					A2(
+						$author$project$Rules$sc,
+						1 / 2,
+						_Utils_update(
+							$author$project$Rules$squ,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$tr,
+					{x: 0.5, y: 0},
+					A2(
+						$author$project$Rules$sc,
+						1 / 2,
+						_Utils_update(
+							$author$project$Rules$squ,
+							{col: $author$project$Util$Ternary}))),
+					A2(
+					$author$project$Rules$tr,
+					{x: 0, y: 0.5},
+					A2(
+						$author$project$Rules$sc,
+						1 / 2,
+						_Utils_update(
+							$author$project$Rules$squ,
+							{col: $author$project$Util$Ternary})))
+				]),
+			anchor: _Utils_update(
+				$author$project$Rules$squ,
+				{col: $author$project$Util$Secondary}),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 1, y: 1}),
+			fragment: 2,
+			subdivide: true
+		});
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$tr,
+				{x: -1.5, y: -1.5},
+				A2($author$project$Rules$sc, 4, $author$project$Rules$squ))
+			]),
+		rules: _List_fromArray(
+			[grow, shrink, diag]),
+		size: 10,
+		start: {x: 0.5, y: 0.5}
+	};
+}();
 var $author$project$RuleBased$Fractal$fractalTesselations = _List_fromArray(
 	[
-		_Utils_Tuple2('Floret Fan', $author$project$RuleBased$Fractal$floretFractalTessellation)
+		_Utils_Tuple2('Floret Fan', $author$project$RuleBased$Fractal$floretFractalTessellation),
+		_Utils_Tuple2('Square Diagonal', $author$project$RuleBased$Fractal$squareFractalTessellation)
 	]);
 var $author$project$Shapes$hexagon = {
 	angles: _List_fromArray(
@@ -7039,6 +7142,9 @@ var $author$project$RuleBased$Isogonal$triangularRowsTessellation = function () 
 						_Utils_update(
 							$author$project$Rules$eqi,
 							{col: $author$project$Util$Secondary})))),
+			bounds: _Utils_Tuple2(
+				{x: -0.5, y: 0},
+				{x: 2, y: 1}),
 			subdivide: true
 		});
 	var downRule2 = _Utils_update(
@@ -7062,6 +7168,9 @@ var $author$project$RuleBased$Isogonal$triangularRowsTessellation = function () 
 				$author$project$Rules$sz,
 				1 / 2,
 				A2($author$project$Rules$sc, 2, $author$project$Rules$eqi)),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 1, y: 2}),
 			subdivide: true
 		});
 	var downRule = _Utils_update(
@@ -7106,6 +7215,9 @@ var $author$project$RuleBased$Isogonal$triangularRowsTessellation = function () 
 						_Utils_update(
 							$author$project$Rules$eqi,
 							{col: $author$project$Util$Secondary})))),
+			bounds: _Utils_Tuple2(
+				{x: -0.5, y: 0},
+				{x: 1, y: 2}),
 			subdivide: true
 		});
 	return {
@@ -11756,11 +11868,45 @@ var $author$project$Polygon$pointSvg = F4(
 				]),
 			_List_Nil);
 	});
+var $author$project$Polygon$strokePolygonSvg = F4(
+	function (poly, size, origin, w) {
+		var svgPoints = A2(
+			$elm$core$String$join,
+			' ',
+			A2(
+				$elm$core$List$map,
+				function (p) {
+					return $elm$core$String$fromFloat(p.x) + (',' + $elm$core$String$fromFloat(p.y));
+				},
+				A2(
+					$author$project$Polygon$drawAt,
+					origin,
+					A2(
+						$author$project$Polygon$scaleWith,
+						size,
+						$author$project$Polygon$asPoints(poly)))));
+		return A2(
+			$elm$svg$Svg$polygon,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$points(svgPoints),
+					$elm$svg$Svg$Attributes$fill('none'),
+					$elm$svg$Svg$Attributes$strokeWidth(
+					$elm$core$String$fromFloat(w))
+				]),
+			_List_Nil);
+	});
 var $author$project$Rules$renderRule = function (_v0) {
 	var anchor = _v0.anchor;
 	var additions = _v0.additions;
 	var bounds = _v0.bounds;
 	var subdivide = _v0.subdivide;
+	var extraAnchor = A4(
+		$author$project$Polygon$strokePolygonSvg,
+		$author$project$Rules$rescale(anchor).poly,
+		1,
+		{x: 0, y: 0},
+		0.08);
 	var anchorSvgs = _List_fromArray(
 		[
 			A5(
@@ -11818,7 +11964,12 @@ var $author$project$Rules$renderRule = function (_v0) {
 				$elm$svg$Svg$Attributes$width('200'),
 				$elm$svg$Svg$Attributes$height('200')
 			]),
-		subdivide ? _Utils_ap(anchorSvgs, addSvgs) : _Utils_ap(addSvgs, anchorSvgs));
+		subdivide ? _Utils_ap(
+			anchorSvgs,
+			_Utils_ap(
+				addSvgs,
+				_List_fromArray(
+					[extraAnchor]))) : _Utils_ap(addSvgs, anchorSvgs));
 };
 var $author$project$Main$rulesDisplay = function (model) {
 	return A2(

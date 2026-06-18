@@ -9,6 +9,7 @@ import Util exposing (..)
 fractalTesselations : List ( String, Tess )
 fractalTesselations =
     [ ( "Floret Fan", floretFractalTessellation )
+    , ( "Square Diagonal", squareFractalTessellation )
     ]
 
 
@@ -80,3 +81,38 @@ floretFractalTessellation =
     , start = { x = 0.5, y = 0.5 }
     , size = 25
     }
+
+
+squareFractalTessellation : Tess
+squareFractalTessellation =
+    let
+        grow =
+            { r
+                | additions = [ squ |> sc 2 |> tr { x = -0.5, y = -0.5 } ]
+                , subdivide = True
+                , bounds = ( { x = -0.5, y = -0.5 }, { x = 2, y = 2 } )
+            }
+
+        shrink =
+            { r
+                | anchor = squ
+                , additions = [ { squ | col = Secondary } ]
+                , subdivide = True
+                , bounds = ( { x = 0, y = 0 }, { x = 1, y = 1 } )
+            }
+
+        diag =
+            { r
+                | anchor = { squ | col = Secondary }
+                , additions =
+                    [ { squ | col = Secondary } |> sc (1 / 2)
+                    , { squ | col = Secondary } |> sc (1 / 2) |> tr { x = 0.5, y = 0.5 }
+                    , { squ | col = Ternary } |> sc (1 / 2) |> tr { x = 0.5, y = 0 }
+                    , { squ | col = Ternary } |> sc (1 / 2) |> tr { x = 0, y = 0.5 }
+                    ]
+                , fragment = 2
+                , subdivide = True
+                , bounds = ( { x = 0, y = 0 }, { x = 1, y = 1 } )
+            }
+    in
+    { rules = [ grow, shrink, diag ], open = [ squ |> sc 4 |> tr { x = -1.5, y = -1.5 } ], closed = [], start = { x = 0.5, y = 0.5 }, size = 10 }

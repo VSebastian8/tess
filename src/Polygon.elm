@@ -118,6 +118,44 @@ polygonSvg poly size origin color w =
         []
 
 
+debugPolygonSvg : Polygon -> Float -> Point -> Color -> Float -> Svg msg
+debugPolygonSvg poly size origin color w =
+    let
+        svgPoints =
+            asPoints poly
+                |> scaleWith size
+                |> drawAt origin
+                |> List.map (\p -> String.fromFloat p.x ++ "," ++ String.fromFloat p.y)
+                |> String.join " "
+    in
+    polygon
+        [ points svgPoints
+        , fill ("var(" ++ getVar color ++ ")")
+        , stroke ("var(" ++ getVar color ++ ")")
+        , strokeWidth (String.fromFloat w)
+        , opacity "0.5"
+        ]
+        []
+
+
+strokePolygonSvg : Polygon -> Float -> Point -> Float -> Svg msg
+strokePolygonSvg poly size origin w =
+    let
+        svgPoints =
+            asPoints poly
+                |> scaleWith size
+                |> drawAt origin
+                |> List.map (\p -> String.fromFloat p.x ++ "," ++ String.fromFloat p.y)
+                |> String.join " "
+    in
+    polygon
+        [ points svgPoints
+        , fill "none"
+        , strokeWidth (String.fromFloat w)
+        ]
+        []
+
+
 calcDelay : Int -> Int -> String
 calcDelay index total =
     let
