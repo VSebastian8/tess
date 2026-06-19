@@ -8,17 +8,17 @@ import Util exposing (..)
 
 isogonalTesselations : List ( String, Tess )
 isogonalTesselations =
-    [ ( "Square Rows", squareRowsTessellation )
-    , ( "Triangular Rows", triangularRowsTessellation )
-    , ( "Pythagorean", pythagoreanTessellation )
-    , ( "Trithagorean", trithagoreanTessellation )
-    , ( "Hexa Star", hexaStarTessellation )
-    , ( "Hexa Gyra", hexaGyraTessellation )
+    [ ( "Square Rows", squareRowsTess )
+    , ( "Triangular Rows", triangularRowsTess )
+    , ( "Pythagorean", pythagoreanTess )
+    , ( "Trithagorean", trithagoreanTess )
+    , ( "Hexa Star", hexaStarTess )
+    , ( "Hexa Gyra", hexaGyraTess )
     ]
 
 
-squareRowsTessellation : Tess
-squareRowsTessellation =
+squareRowsTess : Tess
+squareRowsTess =
     let
         squareRule1 =
             { r
@@ -75,8 +75,8 @@ squareRowsTessellation =
     }
 
 
-triangularRowsTessellation : Tess
-triangularRowsTessellation =
+triangularRowsTess : Tess
+triangularRowsTess =
     let
         downRule =
             { r
@@ -120,8 +120,8 @@ triangularRowsTessellation =
     }
 
 
-pythagoreanTessellation : Tess
-pythagoreanTessellation =
+pythagoreanTess : Tess
+pythagoreanTess =
     let
         squareRule1 =
             { r
@@ -174,8 +174,8 @@ pythagoreanTessellation =
     }
 
 
-trithagoreanTessellation : Tess
-trithagoreanTessellation =
+trithagoreanTess : Tess
+trithagoreanTess =
     let
         triRule1 =
             { r
@@ -229,8 +229,8 @@ trithagoreanTessellation =
     }
 
 
-hexaStarTessellation : Tess
-hexaStarTessellation =
+hexaStarTess : Tess
+hexaStarTess =
     let
         hx =
             hexv |> sz 2
@@ -282,8 +282,8 @@ hexaStarTessellation =
     }
 
 
-hexaGyraTessellation : Tess
-hexaGyraTessellation =
+hexaGyraTess : Tess
+hexaGyraTess =
     let
         hexRule =
             { r

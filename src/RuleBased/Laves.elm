@@ -8,21 +8,21 @@ import Util exposing (..)
 
 lavesTesselations : List ( String, Tess )
 lavesTesselations =
-    [ ( "Triakis Triangular", triakisTriangularTessellation )
-    , ( "Triakis Star", triakisStarTessellation )
-    , ( "Rhombile", rhombileTessellation )
-    , ( "Rhombile Star", rhombileStarTessellation )
-    , ( "Tetrakis Square", tetrakisSquareTessellation )
-    , ( "Disdyakis Rhombile", disdyakisRhombileTessellation )
-    , ( "Deltoidal Trihexagonal", deltodailTriHexagonalTessellation )
-    , ( "Cairo Pentagonal", cairoPentagonalTessellation )
-    , ( "Floret Pentagonal", floretPentagonalTessellation )
-    , ( "Prismatic Pentagonal", prismaticPentagonalTessellation )
+    [ ( "Triakis Triangular", triakisTriangularTess )
+    , ( "Triakis Star", triakisStarTess )
+    , ( "Rhombile", rhombileTess )
+    , ( "Rhombile Star", rhombileStarTess )
+    , ( "Tetrakis Square", tetrakisSquareTess )
+    , ( "Disdyakis Rhombile", disdyakisRhombileTess )
+    , ( "Deltoidal Trihexagonal", deltodailTriHexagonalTess )
+    , ( "Cairo Pentagonal", cairoPentagonalTess )
+    , ( "Floret Pentagonal", floretPentagonalTess )
+    , ( "Prismatic Pentagonal", prismaticPentagonalTess )
     ]
 
 
-triakisTriangularTessellation : Tess
-triakisTriangularTessellation =
+triakisTriangularTess : Tess
+triakisTriangularTess =
     let
         triTile1 =
             { r
@@ -90,8 +90,8 @@ triakisTriangularTessellation =
     }
 
 
-rhombileTessellation : Tess
-rhombileTessellation =
+rhombileTess : Tess
+rhombileTess =
     let
         hexTile =
             { r
@@ -133,8 +133,8 @@ rhombileTessellation =
     }
 
 
-tetrakisSquareTessellation : Tess
-tetrakisSquareTessellation =
+tetrakisSquareTess : Tess
+tetrakisSquareTess =
     let
         sqTile =
             { r
@@ -179,8 +179,8 @@ tetrakisSquareTessellation =
     }
 
 
-disdyakisRhombileTessellation : Tess
-disdyakisRhombileTessellation =
+disdyakisRhombileTess : Tess
+disdyakisRhombileTess =
     let
         hexTile =
             { r
@@ -231,8 +231,8 @@ disdyakisRhombileTessellation =
     }
 
 
-deltodailTriHexagonalTessellation : Tess
-deltodailTriHexagonalTessellation =
+deltodailTriHexagonalTess : Tess
+deltodailTriHexagonalTess =
     let
         triTile1 =
             { r
@@ -300,8 +300,8 @@ deltodailTriHexagonalTessellation =
     }
 
 
-cairoPentagonalTessellation : Tess
-cairoPentagonalTessellation =
+cairoPentagonalTess : Tess
+cairoPentagonalTess =
     let
         rhomb1 =
             { r
@@ -361,8 +361,8 @@ cairoPentagonalTessellation =
     }
 
 
-floretPentagonalTessellation : Tess
-floretPentagonalTessellation =
+floretPentagonalTess : Tess
+floretPentagonalTess =
     let
         petal1 =
             { r
@@ -454,8 +454,8 @@ floretPentagonalTessellation =
     }
 
 
-prismaticPentagonalTessellation : Tess
-prismaticPentagonalTessellation =
+prismaticPentagonalTess : Tess
+prismaticPentagonalTess =
     let
         prism1 =
             { r
@@ -527,8 +527,8 @@ prismaticPentagonalTessellation =
 -- Patterns
 
 
-triakisStarTessellation : Tess
-triakisStarTessellation =
+triakisStarTess : Tess
+triakisStarTess =
     let
         hexTile =
             { r
@@ -588,8 +588,8 @@ triakisStarTessellation =
     }
 
 
-rhombileStarTessellation : Tess
-rhombileStarTessellation =
+rhombileStarTess : Tess
+rhombileStarTess =
     let
         hexTile =
             { r

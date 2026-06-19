@@ -8,18 +8,18 @@ import Util exposing (..)
 
 regularTesselations : List ( String, Tess )
 regularTesselations =
-    [ ( "Square", squareTessellation )
-    , ( "Rotated Square", rotatedSquareTessellation )
-    , ( "Square Flower", squareFlowerTessellation )
-    , ( "Triangular", triangularTessellation )
-    , ( "Rotated Triangular", rotatedTriangularTessellation )
-    , ( "Hexagonal", hexagonalTessellation )
-    , ( "Hexa Flower", hexagonalFlowerTessellation )
+    [ ( "Square", squareTess )
+    , ( "Rotated Square", rotatedSquareTess )
+    , ( "Square Flower", squareFlowerTess )
+    , ( "Triangular", triangularTess )
+    , ( "Rotated Triangular", rotatedTriangularTess )
+    , ( "Hexagonal", hexagonalTess )
+    , ( "Hexa Flower", hexagonalFlowerTess )
     ]
 
 
-squareTessellation : Tess
-squareTessellation =
+squareTess : Tess
+squareTess =
     let
         squareRule1 =
             { r
@@ -63,8 +63,8 @@ squareTessellation =
     }
 
 
-triangularTessellation : Tess
-triangularTessellation =
+triangularTess : Tess
+triangularTess =
     let
         triRule1 =
             { r
@@ -110,8 +110,8 @@ triangularTessellation =
     }
 
 
-hexagonalTessellation : Tess
-hexagonalTessellation =
+hexagonalTess : Tess
+hexagonalTess =
     let
         hexRule1 =
             { r
@@ -164,8 +164,8 @@ hexagonalTessellation =
     }
 
 
-rotatedSquareTessellation : Tess
-rotatedSquareTessellation =
+rotatedSquareTess : Tess
+rotatedSquareTess =
     let
         squareRule1 =
             { r
@@ -215,8 +215,8 @@ rotatedSquareTessellation =
     }
 
 
-rotatedTriangularTessellation : Tess
-rotatedTriangularTessellation =
+rotatedTriangularTess : Tess
+rotatedTriangularTess =
     let
         triRule1 =
             { r
@@ -258,8 +258,8 @@ rotatedTriangularTessellation =
     }
 
 
-squareFlowerTessellation : Tess
-squareFlowerTessellation =
+squareFlowerTess : Tess
+squareFlowerTess =
     let
         diag1 =
             { r
@@ -329,8 +329,8 @@ squareFlowerTessellation =
     }
 
 
-hexagonalFlowerTessellation : Tess
-hexagonalFlowerTessellation =
+hexagonalFlowerTess : Tess
+hexagonalFlowerTess =
     let
         diag1 =
             { r | anchor = hex, additions = [ { hex | col = Secondary } |> tr (hex |> pt 4 |> neg) ], bounds = ( { x = -1, y = -2 }, { x = 3, y = 4 } ) }

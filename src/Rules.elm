@@ -269,7 +269,7 @@ modify tess p rest =
 
 hugePoly : PC -> ( Point, Point ) -> Bool
 hugePoly p ( b1, b2 ) =
-    distance b2 b1 < p.scale
+    b2.y < p.scale
 
 
 step : Tess -> ( Point, Point ) -> Tess

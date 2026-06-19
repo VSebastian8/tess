@@ -8,13 +8,14 @@ import Util exposing (..)
 
 fractalTesselations : List ( String, Tess )
 fractalTesselations =
-    [ ( "Floret Fan", floretFractalTessellation )
-    , ( "Square Diagonal", squareFractalTessellation )
+    [ ( "Floret Fan", floretFractalTess )
+    , ( "Square Diagonal", squareFractalTess )
+    , ( "Sierpinski Triangle", sierpinskiTriangleTess )
     ]
 
 
-floretFractalTessellation : Tess
-floretFractalTessellation =
+floretFractalTess : Tess
+floretFractalTess =
     let
         petal1 =
             { r
@@ -83,8 +84,8 @@ floretFractalTessellation =
     }
 
 
-squareFractalTessellation : Tess
-squareFractalTessellation =
+squareFractalTess : Tess
+squareFractalTess =
     let
         grow =
             { r
@@ -115,4 +116,40 @@ squareFractalTessellation =
                 , bounds = ( { x = 0, y = 0 }, { x = 1, y = 1 } )
             }
     in
-    { rules = [ grow, shrink, diag ], open = [ squ |> sc 4 |> tr { x = -1.5, y = -1.5 } ], closed = [], start = { x = 0.5, y = 0.5 }, size = 10 }
+    { rules = [ grow, shrink, diag ], open = [ squ |> sc 1.2 |> tr { x = -0.1, y = -0.1 } ], closed = [], start = { x = 0.5, y = 0.5 }, size = 10 }
+
+
+sierpinskiTriangleTess : Tess
+sierpinskiTriangleTess =
+    let
+        grow =
+            { r
+                | anchor = eqi |> rto 60
+                , additions = [ eqi |> sc 2 |> rto 60 |> tr { x = -0.5, y = sqrt 3 / 4 } ]
+                , subdivide = True
+                , bounds = ( { x = -0.5, y = -1.4 }, { x = 2, y = 2 } )
+            }
+
+        shrink =
+            { r
+                | anchor = eqi
+                , additions = [ { eqi | col = Secondary } ]
+                , subdivide = True
+                , bounds = ( { x = 0, y = 0 }, { x = 1, y = 1 } )
+            }
+
+        recursion =
+            { r
+                | anchor = { eqi | col = Secondary } |> rto 60 |> sc 2
+                , additions =
+                    [ { eqi | col = Secondary } |> rto 60 |> tr (eqi |> rto 60 |> pt 1)
+                    , { eqi | col = Secondary } |> rto 60
+                    , { eqi | col = Secondary } |> rto 60 |> tr { x = 1, y = 0 }
+                    , { eqi | col = Ternary } |> tr (eqi |> rto 60 |> pt 1)
+                    ]
+                , subdivide = True
+                , fragment = 2
+                , bounds = ( { x = 0, y = -1.7 }, { x = 2, y = 2 } )
+            }
+    in
+    { rules = [ grow, shrink, recursion ], open = [ eqi |> sc 1.2 |> rto 60 ], closed = [], start = { x = 0.5, y = 0.5 }, size = 10 }

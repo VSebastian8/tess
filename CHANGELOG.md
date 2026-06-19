@@ -4,6 +4,8 @@
 
 - Reworked `stroke`.
 - `Fractals`.
+- `Debugging`.
+- `Responsive` UI.
 
 ## v0.5.0 - 2026-05-12
 

@@ -5282,9 +5282,7 @@ var $author$project$Rules$hugePoly = F2(
 	function (p, _v0) {
 		var b1 = _v0.a;
 		var b2 = _v0.b;
-		return _Utils_cmp(
-			A2($author$project$Util$distance, b2, b1),
-			p.scale) < 0;
+		return _Utils_cmp(b2.y, p.scale) < 0;
 	});
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Util$inside = F2(
@@ -6217,7 +6215,7 @@ var $author$project$Rules$rho = {
 };
 var $author$project$Rules$rto = $author$project$Rules$rt(
 	{x: 0, y: 0});
-var $author$project$RuleBased$Fractal$floretFractalTessellation = function () {
+var $author$project$RuleBased$Fractal$floretFractalTess = function () {
 	var petal1 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -6419,7 +6417,117 @@ var $author$project$RuleBased$Fractal$floretFractalTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Fractal$squareFractalTessellation = function () {
+var $author$project$RuleBased$Fractal$sierpinskiTriangleTess = function () {
+	var shrink = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					_Utils_update(
+					$author$project$Rules$eqi,
+					{col: $author$project$Util$Secondary})
+				]),
+			anchor: $author$project$Rules$eqi,
+			bounds: _Utils_Tuple2(
+				{x: 0, y: 0},
+				{x: 1, y: 1}),
+			subdivide: true
+		});
+	var recursion = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						1,
+						A2($author$project$Rules$rto, 60, $author$project$Rules$eqi)),
+					A2(
+						$author$project$Rules$rto,
+						60,
+						_Utils_update(
+							$author$project$Rules$eqi,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$rto,
+					60,
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Secondary})),
+					A2(
+					$author$project$Rules$tr,
+					{x: 1, y: 0},
+					A2(
+						$author$project$Rules$rto,
+						60,
+						_Utils_update(
+							$author$project$Rules$eqi,
+							{col: $author$project$Util$Secondary}))),
+					A2(
+					$author$project$Rules$tr,
+					A2(
+						$author$project$Rules$pt,
+						1,
+						A2($author$project$Rules$rto, 60, $author$project$Rules$eqi)),
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Ternary}))
+				]),
+			anchor: A2(
+				$author$project$Rules$sc,
+				2,
+				A2(
+					$author$project$Rules$rto,
+					60,
+					_Utils_update(
+						$author$project$Rules$eqi,
+						{col: $author$project$Util$Secondary}))),
+			bounds: _Utils_Tuple2(
+				{x: 0, y: -1.7},
+				{x: 2, y: 2}),
+			fragment: 2,
+			subdivide: true
+		});
+	var grow = _Utils_update(
+		$author$project$Rules$r,
+		{
+			additions: _List_fromArray(
+				[
+					A2(
+					$author$project$Rules$tr,
+					{
+						x: -0.5,
+						y: $elm$core$Basics$sqrt(3) / 4
+					},
+					A2(
+						$author$project$Rules$rto,
+						60,
+						A2($author$project$Rules$sc, 2, $author$project$Rules$eqi)))
+				]),
+			anchor: A2($author$project$Rules$rto, 60, $author$project$Rules$eqi),
+			bounds: _Utils_Tuple2(
+				{x: -0.5, y: -1.4},
+				{x: 2, y: 2}),
+			subdivide: true
+		});
+	return {
+		closed: _List_Nil,
+		open: _List_fromArray(
+			[
+				A2(
+				$author$project$Rules$rto,
+				60,
+				A2($author$project$Rules$sc, 1.2, $author$project$Rules$eqi))
+			]),
+		rules: _List_fromArray(
+			[grow, shrink, recursion]),
+		size: 10,
+		start: {x: 0.5, y: 0.5}
+	};
+}();
+var $author$project$RuleBased$Fractal$squareFractalTess = function () {
 	var shrink = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -6504,8 +6612,8 @@ var $author$project$RuleBased$Fractal$squareFractalTessellation = function () {
 			[
 				A2(
 				$author$project$Rules$tr,
-				{x: -1.5, y: -1.5},
-				A2($author$project$Rules$sc, 4, $author$project$Rules$squ))
+				{x: -0.1, y: -0.1},
+				A2($author$project$Rules$sc, 1.2, $author$project$Rules$squ))
 			]),
 		rules: _List_fromArray(
 			[grow, shrink, diag]),
@@ -6515,8 +6623,9 @@ var $author$project$RuleBased$Fractal$squareFractalTessellation = function () {
 }();
 var $author$project$RuleBased$Fractal$fractalTesselations = _List_fromArray(
 	[
-		_Utils_Tuple2('Floret Fan', $author$project$RuleBased$Fractal$floretFractalTessellation),
-		_Utils_Tuple2('Square Diagonal', $author$project$RuleBased$Fractal$squareFractalTessellation)
+		_Utils_Tuple2('Floret Fan', $author$project$RuleBased$Fractal$floretFractalTess),
+		_Utils_Tuple2('Square Diagonal', $author$project$RuleBased$Fractal$squareFractalTess),
+		_Utils_Tuple2('Sierpinski Triangle', $author$project$RuleBased$Fractal$sierpinskiTriangleTess)
 	]);
 var $author$project$Shapes$hexagon = {
 	angles: _List_fromArray(
@@ -6559,7 +6668,7 @@ var $author$project$Rules$sz = F2(
 					})
 			});
 	});
-var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
+var $author$project$RuleBased$Isogonal$hexaGyraTess = function () {
 	var triRule2 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -6707,7 +6816,7 @@ var $author$project$RuleBased$Isogonal$hexaGyraTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
+var $author$project$RuleBased$Isogonal$hexaStarTess = function () {
 	var hx = A2($author$project$Rules$sz, 2, $author$project$Rules$hexv);
 	var hexRule2 = _Utils_update(
 		$author$project$Rules$r,
@@ -6841,7 +6950,7 @@ var $author$project$RuleBased$Isogonal$hexaStarTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
+var $author$project$RuleBased$Isogonal$pythagoreanTess = function () {
 	var squareRule3 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -6982,7 +7091,7 @@ var $author$project$RuleBased$Isogonal$pythagoreanTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Isogonal$squareRowsTessellation = function () {
+var $author$project$RuleBased$Isogonal$squareRowsTess = function () {
 	var squareRule4 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -7092,7 +7201,7 @@ var $author$project$RuleBased$Isogonal$squareRowsTessellation = function () {
 		start: {x: 0, y: 0}
 	};
 }();
-var $author$project$RuleBased$Isogonal$triangularRowsTessellation = function () {
+var $author$project$RuleBased$Isogonal$triangularRowsTess = function () {
 	var rightRule = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -7243,7 +7352,7 @@ var $author$project$RuleBased$Isogonal$triangularRowsTessellation = function () 
 		start: {x: 0, y: 0}
 	};
 }();
-var $author$project$RuleBased$Isogonal$trithagoreanTessellation = function () {
+var $author$project$RuleBased$Isogonal$trithagoreanTess = function () {
 	var triRule3 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -7421,12 +7530,12 @@ var $author$project$RuleBased$Isogonal$trithagoreanTessellation = function () {
 }();
 var $author$project$RuleBased$Isogonal$isogonalTesselations = _List_fromArray(
 	[
-		_Utils_Tuple2('Square Rows', $author$project$RuleBased$Isogonal$squareRowsTessellation),
-		_Utils_Tuple2('Triangular Rows', $author$project$RuleBased$Isogonal$triangularRowsTessellation),
-		_Utils_Tuple2('Pythagorean', $author$project$RuleBased$Isogonal$pythagoreanTessellation),
-		_Utils_Tuple2('Trithagorean', $author$project$RuleBased$Isogonal$trithagoreanTessellation),
-		_Utils_Tuple2('Hexa Star', $author$project$RuleBased$Isogonal$hexaStarTessellation),
-		_Utils_Tuple2('Hexa Gyra', $author$project$RuleBased$Isogonal$hexaGyraTessellation)
+		_Utils_Tuple2('Square Rows', $author$project$RuleBased$Isogonal$squareRowsTess),
+		_Utils_Tuple2('Triangular Rows', $author$project$RuleBased$Isogonal$triangularRowsTess),
+		_Utils_Tuple2('Pythagorean', $author$project$RuleBased$Isogonal$pythagoreanTess),
+		_Utils_Tuple2('Trithagorean', $author$project$RuleBased$Isogonal$trithagoreanTess),
+		_Utils_Tuple2('Hexa Star', $author$project$RuleBased$Isogonal$hexaStarTess),
+		_Utils_Tuple2('Hexa Gyra', $author$project$RuleBased$Isogonal$hexaGyraTess)
 	]);
 var $author$project$Shapes$cairo = {
 	angles: _List_fromArray(
@@ -7456,7 +7565,7 @@ var $author$project$Rules$car = {
 	poly: $author$project$Shapes$cairo,
 	scale: 1
 };
-var $author$project$RuleBased$Laves$cairoPentagonalTessellation = function () {
+var $author$project$RuleBased$Laves$cairoPentagonalTess = function () {
 	var upR = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -7717,7 +7826,7 @@ var $author$project$Rules$kit = function () {
 		A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$kite));
 	return {centre: c, col: $author$project$Util$Primary, dist: 0.21, poly: $author$project$Shapes$kite, scale: 1};
 }();
-var $author$project$RuleBased$Laves$deltodailTriHexagonalTessellation = function () {
+var $author$project$RuleBased$Laves$deltodailTriHexagonalTess = function () {
 	var triTile2 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -7913,7 +8022,7 @@ var $author$project$Rules$lft = function () {
 					A2($author$project$Polygon$getPoint, 1, $author$project$Shapes$left)))));
 	return {centre: c, col: $author$project$Util$Primary, dist: 0.12, poly: $author$project$Shapes$left, scale: 1};
 }();
-var $author$project$RuleBased$Laves$disdyakisRhombileTessellation = function () {
+var $author$project$RuleBased$Laves$disdyakisRhombileTess = function () {
 	var subRule1 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -8066,7 +8175,7 @@ var $author$project$RuleBased$Laves$disdyakisRhombileTessellation = function () 
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Laves$floretPentagonalTessellation = function () {
+var $author$project$RuleBased$Laves$floretPentagonalTess = function () {
 	var petal3 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -8369,7 +8478,7 @@ var $author$project$Rules$pri = {
 	poly: $author$project$Shapes$prism,
 	scale: 1
 };
-var $author$project$RuleBased$Laves$prismaticPentagonalTessellation = function () {
+var $author$project$RuleBased$Laves$prismaticPentagonalTess = function () {
 	var up2 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -8529,7 +8638,7 @@ var $author$project$RuleBased$Laves$prismaticPentagonalTessellation = function (
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Laves$rhombileStarTessellation = function () {
+var $author$project$RuleBased$Laves$rhombileStarTess = function () {
 	var hexTile = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -8721,7 +8830,7 @@ var $author$project$RuleBased$Laves$rhombileStarTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Laves$rhombileTessellation = function () {
+var $author$project$RuleBased$Laves$rhombileTess = function () {
 	var subRule1 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -8831,7 +8940,7 @@ var $author$project$Rules$iso = {
 	poly: $author$project$Shapes$isosceles,
 	scale: 1
 };
-var $author$project$RuleBased$Laves$tetrakisSquareTessellation = function () {
+var $author$project$RuleBased$Laves$tetrakisSquareTess = function () {
 	var subRule1 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -9092,7 +9201,7 @@ var $author$project$Rules$st = F2(
 						A2($author$project$Rules$pt, n, pc)),
 					pc)));
 	});
-var $author$project$RuleBased$Laves$triakisStarTessellation = function () {
+var $author$project$RuleBased$Laves$triakisStarTess = function () {
 	var hexTile = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -9339,7 +9448,7 @@ var $author$project$RuleBased$Laves$triakisStarTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Laves$triakisTriangularTessellation = function () {
+var $author$project$RuleBased$Laves$triakisTriangularTess = function () {
 	var triTile2 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -9493,18 +9602,18 @@ var $author$project$RuleBased$Laves$triakisTriangularTessellation = function () 
 }();
 var $author$project$RuleBased$Laves$lavesTesselations = _List_fromArray(
 	[
-		_Utils_Tuple2('Triakis Triangular', $author$project$RuleBased$Laves$triakisTriangularTessellation),
-		_Utils_Tuple2('Triakis Star', $author$project$RuleBased$Laves$triakisStarTessellation),
-		_Utils_Tuple2('Rhombile', $author$project$RuleBased$Laves$rhombileTessellation),
-		_Utils_Tuple2('Rhombile Star', $author$project$RuleBased$Laves$rhombileStarTessellation),
-		_Utils_Tuple2('Tetrakis Square', $author$project$RuleBased$Laves$tetrakisSquareTessellation),
-		_Utils_Tuple2('Disdyakis Rhombile', $author$project$RuleBased$Laves$disdyakisRhombileTessellation),
-		_Utils_Tuple2('Deltoidal Trihexagonal', $author$project$RuleBased$Laves$deltodailTriHexagonalTessellation),
-		_Utils_Tuple2('Cairo Pentagonal', $author$project$RuleBased$Laves$cairoPentagonalTessellation),
-		_Utils_Tuple2('Floret Pentagonal', $author$project$RuleBased$Laves$floretPentagonalTessellation),
-		_Utils_Tuple2('Prismatic Pentagonal', $author$project$RuleBased$Laves$prismaticPentagonalTessellation)
+		_Utils_Tuple2('Triakis Triangular', $author$project$RuleBased$Laves$triakisTriangularTess),
+		_Utils_Tuple2('Triakis Star', $author$project$RuleBased$Laves$triakisStarTess),
+		_Utils_Tuple2('Rhombile', $author$project$RuleBased$Laves$rhombileTess),
+		_Utils_Tuple2('Rhombile Star', $author$project$RuleBased$Laves$rhombileStarTess),
+		_Utils_Tuple2('Tetrakis Square', $author$project$RuleBased$Laves$tetrakisSquareTess),
+		_Utils_Tuple2('Disdyakis Rhombile', $author$project$RuleBased$Laves$disdyakisRhombileTess),
+		_Utils_Tuple2('Deltoidal Trihexagonal', $author$project$RuleBased$Laves$deltodailTriHexagonalTess),
+		_Utils_Tuple2('Cairo Pentagonal', $author$project$RuleBased$Laves$cairoPentagonalTess),
+		_Utils_Tuple2('Floret Pentagonal', $author$project$RuleBased$Laves$floretPentagonalTess),
+		_Utils_Tuple2('Prismatic Pentagonal', $author$project$RuleBased$Laves$prismaticPentagonalTess)
 	]);
-var $author$project$RuleBased$Regular$hexagonalFlowerTessellation = function () {
+var $author$project$RuleBased$Regular$hexagonalFlowerTess = function () {
 	var fill4 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -9754,7 +9863,7 @@ var $author$project$RuleBased$Regular$hexagonalFlowerTessellation = function () 
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Regular$hexagonalTessellation = function () {
+var $author$project$RuleBased$Regular$hexagonalTess = function () {
 	var hexRule5 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -9870,7 +9979,7 @@ var $author$project$RuleBased$Regular$hexagonalTessellation = function () {
 		start: {x: 0, y: 0}
 	};
 }();
-var $author$project$RuleBased$Regular$rotatedSquareTessellation = function () {
+var $author$project$RuleBased$Regular$rotatedSquareTess = function () {
 	var squareRule4 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -9981,7 +10090,7 @@ var $author$project$RuleBased$Regular$rotatedSquareTessellation = function () {
 		start: {x: 0, y: 0}
 	};
 }();
-var $author$project$RuleBased$Regular$rotatedTriangularTessellation = function () {
+var $author$project$RuleBased$Regular$rotatedTriangularTess = function () {
 	var triRule4 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -10101,7 +10210,7 @@ var $author$project$RuleBased$Regular$rotatedTriangularTessellation = function (
 		start: {x: 0, y: 0}
 	};
 }();
-var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
+var $author$project$RuleBased$Regular$squareFlowerTess = function () {
 	var fill3 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -10250,7 +10359,7 @@ var $author$project$RuleBased$Regular$squareFlowerTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Regular$squareTessellation = function () {
+var $author$project$RuleBased$Regular$squareTess = function () {
 	var squareRule3 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -10333,7 +10442,7 @@ var $author$project$RuleBased$Regular$squareTessellation = function () {
 		start: {x: 0, y: 0}
 	};
 }();
-var $author$project$RuleBased$Regular$triangularTessellation = function () {
+var $author$project$RuleBased$Regular$triangularTess = function () {
 	var triRule4 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -10441,15 +10550,15 @@ var $author$project$RuleBased$Regular$triangularTessellation = function () {
 }();
 var $author$project$RuleBased$Regular$regularTesselations = _List_fromArray(
 	[
-		_Utils_Tuple2('Square', $author$project$RuleBased$Regular$squareTessellation),
-		_Utils_Tuple2('Rotated Square', $author$project$RuleBased$Regular$rotatedSquareTessellation),
-		_Utils_Tuple2('Square Flower', $author$project$RuleBased$Regular$squareFlowerTessellation),
-		_Utils_Tuple2('Triangular', $author$project$RuleBased$Regular$triangularTessellation),
-		_Utils_Tuple2('Rotated Triangular', $author$project$RuleBased$Regular$rotatedTriangularTessellation),
-		_Utils_Tuple2('Hexagonal', $author$project$RuleBased$Regular$hexagonalTessellation),
-		_Utils_Tuple2('Hexa Flower', $author$project$RuleBased$Regular$hexagonalFlowerTessellation)
+		_Utils_Tuple2('Square', $author$project$RuleBased$Regular$squareTess),
+		_Utils_Tuple2('Rotated Square', $author$project$RuleBased$Regular$rotatedSquareTess),
+		_Utils_Tuple2('Square Flower', $author$project$RuleBased$Regular$squareFlowerTess),
+		_Utils_Tuple2('Triangular', $author$project$RuleBased$Regular$triangularTess),
+		_Utils_Tuple2('Rotated Triangular', $author$project$RuleBased$Regular$rotatedTriangularTess),
+		_Utils_Tuple2('Hexagonal', $author$project$RuleBased$Regular$hexagonalTess),
+		_Utils_Tuple2('Hexa Flower', $author$project$RuleBased$Regular$hexagonalFlowerTess)
 	]);
-var $author$project$RuleBased$Semiregular$elongatedTriangularTessellation = function () {
+var $author$project$RuleBased$Semiregular$elongatedTriangularTess = function () {
 	var squareRule4 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -10560,7 +10669,7 @@ var $author$project$RuleBased$Semiregular$elongatedTriangularTessellation = func
 		start: {x: 0, y: 0}
 	};
 }();
-var $author$project$RuleBased$Semiregular$rhombiTriHexagonalTessellation = function () {
+var $author$project$RuleBased$Semiregular$rhombiTriHexagonalTess = function () {
 	var triRule = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -10676,7 +10785,7 @@ var $author$project$RuleBased$Semiregular$rhombiTriHexagonalTessellation = funct
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Semiregular$snubSquareTessellation = function () {
+var $author$project$RuleBased$Semiregular$snubSquareTess = function () {
 	var triUp = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -10791,7 +10900,7 @@ var $author$project$RuleBased$Semiregular$snubSquareTessellation = function () {
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Semiregular$snubTriHexagonalTessellation = function () {
+var $author$project$RuleBased$Semiregular$snubTriHexagonalTess = function () {
 	var hexRule1 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -11002,7 +11111,7 @@ var $author$project$RuleBased$Semiregular$snubTriHexagonalTessellation = functio
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Semiregular$triHexagonalTessellation = function () {
+var $author$project$RuleBased$Semiregular$triHexagonalTess = function () {
 	var ruleTri2 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -11195,7 +11304,7 @@ var $author$project$Rules$dod = {
 	poly: $author$project$Shapes$dodecagon,
 	scale: 1
 };
-var $author$project$RuleBased$Semiregular$truncatedHexagonalTessellation = function () {
+var $author$project$RuleBased$Semiregular$truncatedHexagonalTess = function () {
 	var rule3 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -11338,7 +11447,7 @@ var $author$project$Rules$oct = {
 	poly: $author$project$Shapes$octagon,
 	scale: 1
 };
-var $author$project$RuleBased$Semiregular$truncatedSquareTessellation = function () {
+var $author$project$RuleBased$Semiregular$truncatedSquareTess = function () {
 	var rule4 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -11469,7 +11578,7 @@ var $author$project$RuleBased$Semiregular$truncatedSquareTessellation = function
 		start: {x: 0.5, y: 0.5}
 	};
 }();
-var $author$project$RuleBased$Semiregular$truncatedTriHexagonalTessellation = function () {
+var $author$project$RuleBased$Semiregular$truncatedTriHexagonalTess = function () {
 	var squRule2 = _Utils_update(
 		$author$project$Rules$r,
 		{
@@ -11617,14 +11726,14 @@ var $author$project$RuleBased$Semiregular$truncatedTriHexagonalTessellation = fu
 }();
 var $author$project$RuleBased$Semiregular$semiregularTesselations = _List_fromArray(
 	[
-		_Utils_Tuple2('Truncated Square', $author$project$RuleBased$Semiregular$truncatedSquareTessellation),
-		_Utils_Tuple2('Truncated Hexagonal', $author$project$RuleBased$Semiregular$truncatedHexagonalTessellation),
-		_Utils_Tuple2('Trihexagonal', $author$project$RuleBased$Semiregular$triHexagonalTessellation),
-		_Utils_Tuple2('Rhombitrihexagonal', $author$project$RuleBased$Semiregular$rhombiTriHexagonalTessellation),
-		_Utils_Tuple2('Truncated Trihexagonal', $author$project$RuleBased$Semiregular$truncatedTriHexagonalTessellation),
-		_Utils_Tuple2('Snub Trihexagonal', $author$project$RuleBased$Semiregular$snubTriHexagonalTessellation),
-		_Utils_Tuple2('Snub Square', $author$project$RuleBased$Semiregular$snubSquareTessellation),
-		_Utils_Tuple2('Elongated Triangular', $author$project$RuleBased$Semiregular$elongatedTriangularTessellation)
+		_Utils_Tuple2('Truncated Square', $author$project$RuleBased$Semiregular$truncatedSquareTess),
+		_Utils_Tuple2('Truncated Hexagonal', $author$project$RuleBased$Semiregular$truncatedHexagonalTess),
+		_Utils_Tuple2('Trihexagonal', $author$project$RuleBased$Semiregular$triHexagonalTess),
+		_Utils_Tuple2('Rhombitrihexagonal', $author$project$RuleBased$Semiregular$rhombiTriHexagonalTess),
+		_Utils_Tuple2('Truncated Trihexagonal', $author$project$RuleBased$Semiregular$truncatedTriHexagonalTess),
+		_Utils_Tuple2('Snub Trihexagonal', $author$project$RuleBased$Semiregular$snubTriHexagonalTess),
+		_Utils_Tuple2('Snub Square', $author$project$RuleBased$Semiregular$snubSquareTess),
+		_Utils_Tuple2('Elongated Triangular', $author$project$RuleBased$Semiregular$elongatedTriangularTess)
 	]);
 var $author$project$Main$categoryTessellations = _List_fromArray(
 	[

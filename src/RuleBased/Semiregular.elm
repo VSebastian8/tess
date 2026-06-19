@@ -8,19 +8,19 @@ import Util exposing (..)
 
 semiregularTesselations : List ( String, Tess )
 semiregularTesselations =
-    [ ( "Truncated Square", truncatedSquareTessellation )
-    , ( "Truncated Hexagonal", truncatedHexagonalTessellation )
-    , ( "Trihexagonal", triHexagonalTessellation )
-    , ( "Rhombitrihexagonal", rhombiTriHexagonalTessellation )
-    , ( "Truncated Trihexagonal", truncatedTriHexagonalTessellation )
-    , ( "Snub Trihexagonal", snubTriHexagonalTessellation )
-    , ( "Snub Square", snubSquareTessellation )
-    , ( "Elongated Triangular", elongatedTriangularTessellation )
+    [ ( "Truncated Square", truncatedSquareTess )
+    , ( "Truncated Hexagonal", truncatedHexagonalTess )
+    , ( "Trihexagonal", triHexagonalTess )
+    , ( "Rhombitrihexagonal", rhombiTriHexagonalTess )
+    , ( "Truncated Trihexagonal", truncatedTriHexagonalTess )
+    , ( "Snub Trihexagonal", snubTriHexagonalTess )
+    , ( "Snub Square", snubSquareTess )
+    , ( "Elongated Triangular", elongatedTriangularTess )
     ]
 
 
-truncatedSquareTessellation : Tess
-truncatedSquareTessellation =
+truncatedSquareTess : Tess
+truncatedSquareTess =
     let
         rule1 =
             { r
@@ -75,8 +75,8 @@ truncatedSquareTessellation =
     }
 
 
-truncatedHexagonalTessellation : Tess
-truncatedHexagonalTessellation =
+truncatedHexagonalTess : Tess
+truncatedHexagonalTess =
     let
         rule1 =
             { r
@@ -123,8 +123,8 @@ truncatedHexagonalTessellation =
     }
 
 
-triHexagonalTessellation : Tess
-triHexagonalTessellation =
+triHexagonalTess : Tess
+triHexagonalTess =
     let
         ruleHex1 =
             { r
@@ -174,8 +174,8 @@ triHexagonalTessellation =
     }
 
 
-rhombiTriHexagonalTessellation : Tess
-rhombiTriHexagonalTessellation =
+rhombiTriHexagonalTess : Tess
+rhombiTriHexagonalTess =
     let
         hexRule =
             { r | anchor = hexv, additions = [ { squ | col = Ternary } |> tr { x = 0, y = -1 } ], bounds = ( { x = -1, y = -1 }, { x = 3, y = 3 } ) }
@@ -215,8 +215,8 @@ rhombiTriHexagonalTessellation =
     }
 
 
-truncatedTriHexagonalTessellation : Tess
-truncatedTriHexagonalTessellation =
+truncatedTriHexagonalTess : Tess
+truncatedTriHexagonalTess =
     let
         dodRule =
             { r | anchor = dod, additions = [ { squ | col = Ternary } |> tr (dod |> pt 1) |> tr { x = 0, y = -1 } ], bounds = ( { x = -1, y = -1.5 }, { x = 5, y = 5 } ) }
@@ -268,8 +268,8 @@ truncatedTriHexagonalTessellation =
     }
 
 
-snubTriHexagonalTessellation : Tess
-snubTriHexagonalTessellation =
+snubTriHexagonalTess : Tess
+snubTriHexagonalTess =
     let
         hexRule1 =
             { r
@@ -317,8 +317,8 @@ snubTriHexagonalTessellation =
     { rules = [ hexRule1, hexRule2 ], open = [ hexv ], closed = [], size = 30, start = { x = 0.5, y = 0.5 } }
 
 
-snubSquareTessellation : Tess
-snubSquareTessellation =
+snubSquareTess : Tess
+snubSquareTess =
     let
         triRight =
             { r
@@ -350,8 +350,8 @@ snubSquareTessellation =
     }
 
 
-elongatedTriangularTessellation : Tess
-elongatedTriangularTessellation =
+elongatedTriangularTess : Tess
+elongatedTriangularTess =
     let
         squareRule1 =
             { r
