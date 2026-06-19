@@ -62,16 +62,15 @@ truncatedSquareTess =
                 , bounds = ( { x = -1, y = -2.2 }, { x = 3, y = 6.8 } )
             }
     in
-    { rules =
-        [ rule1
-        , rule2
-        , rule4
-        , rule3
-        ]
-    , open = [ oct ]
-    , closed = []
-    , size = 15
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ rule1
+            , rule2
+            , rule4
+            , rule3
+            ]
+        , open = [ oct ]
+        , size = 15
     }
 
 
@@ -111,15 +110,15 @@ truncatedHexagonalTess =
                 , bounds = ( { x = 0, y = -4 }, { x = 4, y = 8 } )
             }
     in
-    { rules =
-        [ rule1
-        , rule2
-        , rule3
-        ]
-    , open = [ dod ]
-    , closed = []
-    , size = 15
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ rule1
+            , rule2
+            , rule3
+            ]
+        , open = [ dod ]
+        , size = 15
+        , margin = ( 2, 2 )
     }
 
 
@@ -166,11 +165,10 @@ triHexagonalTess =
                 , bounds = ( { x = -1.5, y = -2 }, { x = 5, y = 5 } )
             }
     in
-    { rules = [ ruleHex1, ruleTri1, ruleTri2, ruleHex2 ]
-    , open = [ hexv ]
-    , closed = []
-    , size = 30
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules = [ ruleHex1, ruleTri1, ruleTri2, ruleHex2 ]
+        , open = [ hexv ]
+        , margin = ( 1, 1 )
     }
 
 
@@ -207,11 +205,10 @@ rhombiTriHexagonalTess =
                 , bounds = ( { x = -1, y = -2 }, { x = 3, y = 3 } )
             }
     in
-    { rules = [ hexRule, squRule1, triRule, squRule2 ]
-    , open = [ hexv ]
-    , closed = []
-    , size = 30
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules = [ hexRule, squRule1, triRule, squRule2 ]
+        , open = [ hexv ]
+        , margin = ( 1, 1 )
     }
 
 
@@ -250,21 +247,21 @@ truncatedTriHexagonalTess =
                 , bounds = ( { x = -2, y = -3 }, { x = 5, y = 4 } )
             }
     in
-    { rules =
-        [ dodRule
-        , squRule1
-        , hexRule
-        , squRule2
-        ]
-    , open =
-        [ dod
-        , { squ | col = Ternary } |> tr (dod |> pt 1) |> tr { x = 0, y = -1 }
-        , { squ | col = Ternary } |> rt squ.centre -90 |> rto -30 |> tr (dod |> pt 5)
-        , { squ | col = Ternary } |> rt squ.centre -90 |> rto -150 |> tr (dod |> pt 9)
-        ]
-    , closed = []
-    , size = 15
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ dodRule
+            , squRule1
+            , hexRule
+            , squRule2
+            ]
+        , open =
+            [ dod
+            , { squ | col = Ternary } |> tr (dod |> pt 1) |> tr { x = 0, y = -1 }
+            , { squ | col = Ternary } |> rt squ.centre -90 |> rto -30 |> tr (dod |> pt 5)
+            , { squ | col = Ternary } |> rt squ.centre -90 |> rto -150 |> tr (dod |> pt 9)
+            ]
+        , size = 15
+        , margin = ( 2, 1 )
     }
 
 
@@ -314,7 +311,11 @@ snubTriHexagonalTess =
                 , bounds = ( { x = -3, y = -3 }, { x = 7, y = 7 } )
             }
     in
-    { rules = [ hexRule1, hexRule2 ], open = [ hexv ], closed = [], size = 30, start = { x = 0.5, y = 0.5 } }
+    { t
+        | rules = [ hexRule1, hexRule2 ]
+        , open = [ hexv ]
+        , margin = ( 1, 1 )
+    }
 
 
 snubSquareTess : Tess
@@ -339,14 +340,13 @@ snubSquareTess =
                 , bounds = ( { x = 0, y = -2 }, { x = 1, y = 2 } )
             }
     in
-    { rules = [ triRight, triUp ]
-    , open =
-        [ eqi |> rto -30 |> tr { x = (eqi |> rto -30).centre.x, y = 0 }
-        , eqi |> rto 150 |> tr { x = (eqi |> rto -30).centre.x, y = 0 } |> tr { x = 0, y = 1 }
-        ]
-    , closed = []
-    , size = 30
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules = [ triRight, triUp ]
+        , open =
+            [ eqi |> rto -30 |> tr { x = (eqi |> rto -30).centre.x, y = 0 }
+            , eqi |> rto 150 |> tr { x = (eqi |> rto -30).centre.x, y = 0 } |> tr { x = 0, y = 1 }
+            ]
+        , margin = ( 1, 1 )
     }
 
 
@@ -395,9 +395,9 @@ elongatedTriangularTess =
                 , bounds = ( { x = -1, y = 0 }, { x = 3, y = 3 } )
             }
     in
-    { rules = [ squareRule1, squareRule2, squareRule3, squareRule4 ]
-    , open = [ squ ]
-    , closed = []
-    , size = 30
-    , start = { x = 0, y = 0 }
+    { t
+        | rules = [ squareRule1, squareRule2, squareRule3, squareRule4 ]
+        , open = [ squ ]
+        , start = { x = 0, y = 0 }
+        , margin = ( 1, 1 )
     }

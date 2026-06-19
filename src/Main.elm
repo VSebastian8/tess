@@ -430,7 +430,8 @@ showTess tess animated w h =
         (renderTess
             (fix
                 (placeStart tess w h)
-                ( { x = -3, y = -3 }, { x = w / tess.size + 4, y = h / tess.size + 4 } )
+                -- ( { x = -3, y = -3 }, { x = w / tess.size + 4, y = h / tess.size + 4 } )
+                ( { x = -1 * Tuple.first tess.margin, y = -1 * Tuple.first tess.margin }, { x = w / tess.size + Tuple.second tess.margin, y = h / tess.size + Tuple.second tess.margin } )
             )
             animated
         )

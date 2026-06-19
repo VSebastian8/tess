@@ -51,15 +51,14 @@ squareTess =
                 , bounds = ( { x = 0, y = 0 }, { x = 3, y = 3 } )
             }
     in
-    { rules =
-        [ squareRule1
-        , squareRule2
-        , squareRule3
-        ]
-    , open = [ squ ]
-    , closed = []
-    , size = 30
-    , start = { x = 0, y = 0 }
+    { t
+        | rules =
+            [ squareRule1
+            , squareRule2
+            , squareRule3
+            ]
+        , open = [ squ ]
+        , start = { x = 0, y = 0 }
     }
 
 
@@ -102,11 +101,11 @@ triangularTess =
                 , bounds = ( { x = -0.5, y = 0 }, { x = 1, y = 2 } )
             }
     in
-    { rules = [ triRule1, triRule2, triRule3, triRule4 ]
-    , open = [ eqi |> tr { x = -0.5, y = 0 } ]
-    , closed = []
-    , size = 30
-    , start = { x = 0, y = 0 }
+    { t
+        | rules = [ triRule1, triRule2, triRule3, triRule4 ]
+        , open = [ eqi |> tr { x = -0.5, y = 0 } ]
+        , start = { x = 0, y = 0 }
+        , margin = ( 0, 1 )
     }
 
 
@@ -154,13 +153,13 @@ hexagonalTess =
                 , bounds = ( { x = -1, y = -0.2 }, { x = 3.2, y = 3.2 } )
             }
     in
-    { rules = [ hexRule1, hexRule2, hexRule3, hexRule4, hexRule5 ]
-    , open =
-        [ hex |> tr { x = -0.5, y = -0.5 }
-        ]
-    , closed = []
-    , size = 30
-    , start = { x = 0, y = 0 }
+    { t
+        | rules = [ hexRule1, hexRule2, hexRule3, hexRule4, hexRule5 ]
+        , open =
+            [ hex |> tr { x = -0.5, y = -0.5 }
+            ]
+        , start = { x = 0, y = 0 }
+        , margin = ( 1, 1 )
     }
 
 
@@ -202,16 +201,16 @@ rotatedSquareTess =
                 , bounds = ( { x = -0.8, y = -0.8 }, { x = 3, y = 2.8 } )
             }
     in
-    { rules =
-        [ squareRule1
-        , squareRule2
-        , squareRule3
-        , squareRule4
-        ]
-    , open = [ squ |> rto 45 |> tr { x = -1, y = 0 } ]
-    , closed = []
-    , size = 30
-    , start = { x = 0, y = 0 }
+    { t
+        | rules =
+            [ squareRule1
+            , squareRule2
+            , squareRule3
+            , squareRule4
+            ]
+        , open = [ squ |> rto 45 |> tr { x = -1, y = 0 } ]
+        , start = { x = 0, y = 0 }
+        , margin = ( 1, 1 )
     }
 
 
@@ -250,11 +249,11 @@ rotatedTriangularTess =
                 , bounds = ( { x = -1, y = -0.2 }, { x = 2, y = 2 } )
             }
     in
-    { rules = [ triRule1, triRule2, triRule3, triRule4 ]
-    , open = [ eqi |> rto 45 |> tr { x = -1, y = 0 } ]
-    , closed = []
-    , size = 30
-    , start = { x = 0, y = 0 }
+    { t
+        | rules = [ triRule1, triRule2, triRule3, triRule4 ]
+        , open = [ eqi |> rto 45 |> tr { x = -1, y = 0 } ]
+        , start = { x = 0, y = 0 }
+        , margin = ( 3, 1 )
     }
 
 
@@ -309,23 +308,22 @@ squareFlowerTess =
                 , bounds = ( { x = -1, y = -2 }, { x = 3, y = 3 } )
             }
     in
-    { rules =
-        [ diag1
-        , diag2
-        , diag3
-        , fill1
-        , fill2
-        , fill3
-        ]
-    , open =
-        [ { squ | col = Secondary } |> rto -90 |> tr { x = 0, y = 1 }
-        , { squ | col = Secondary } |> tr { x = 1, y = 1 }
-        , { squ | col = Secondary } |> rto 90 |> tr { x = 1, y = 0 }
-        , { squ | col = Secondary } |> rto 180
-        ]
-    , closed = [ squ ]
-    , size = 30
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ diag1
+            , diag2
+            , diag3
+            , fill1
+            , fill2
+            , fill3
+            ]
+        , open =
+            [ { squ | col = Secondary } |> rto -90 |> tr { x = 0, y = 1 }
+            , { squ | col = Secondary } |> tr { x = 1, y = 1 }
+            , { squ | col = Secondary } |> rto 90 |> tr { x = 1, y = 0 }
+            , { squ | col = Secondary } |> rto 180
+            ]
+        , closed = [ squ ]
     }
 
 
@@ -372,17 +370,18 @@ hexagonalFlowerTess =
                 , bounds = ( { x = -1, y = -1 }, { x = 3, y = 4 } )
             }
     in
-    { rules = [ diag1, diag2, diag3, diag4, fill1, fill2, fill3, fill4 ]
-    , open =
-        [ { hex | col = Secondary } |> tr (hex |> pt 4 |> neg)
-        , { hex | col = Secondary } |> rt hex.centre -60 |> tr (hex |> pt 1) |> tr (hex |> pt 5 |> neg)
-        , { hex | col = Secondary } |> rt hex.centre -120 |> tr (hex |> pt 2)
-        , { hex | col = Secondary } |> rt hex.centre 180 |> tr (hex |> pt 4)
-        , { hex | col = Secondary } |> rt hex.centre 120 |> tr (hex |> pt 5) |> tr (hex |> pt 1 |> neg)
-        , { hex | col = Secondary } |> rt hex.centre 60 |> tr (hex |> pt 2 |> neg)
-        ]
-            |> List.map (rt hex.centre 30)
-    , closed = [ hex |> rt hex.centre 30 ]
-    , size = 20
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules = [ diag1, diag2, diag3, diag4, fill1, fill2, fill3, fill4 ]
+        , open =
+            [ { hex | col = Secondary } |> tr (hex |> pt 4 |> neg)
+            , { hex | col = Secondary } |> rt hex.centre -60 |> tr (hex |> pt 1) |> tr (hex |> pt 5 |> neg)
+            , { hex | col = Secondary } |> rt hex.centre -120 |> tr (hex |> pt 2)
+            , { hex | col = Secondary } |> rt hex.centre 180 |> tr (hex |> pt 4)
+            , { hex | col = Secondary } |> rt hex.centre 120 |> tr (hex |> pt 5) |> tr (hex |> pt 1 |> neg)
+            , { hex | col = Secondary } |> rt hex.centre 60 |> tr (hex |> pt 2 |> neg)
+            ]
+                |> List.map (rt hex.centre 30)
+        , closed = [ hex |> rt hex.centre 30 ]
+        , size = 20
+        , margin = ( 1, 0 )
     }

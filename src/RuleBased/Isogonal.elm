@@ -62,16 +62,16 @@ squareRowsTess =
                 , bounds = ( { x = 0, y = 0 }, { x = 2, y = 3 } )
             }
     in
-    { rules =
-        [ squareRule1
-        , squareRule2
-        , squareRule3
-        , squareRule4
-        ]
-    , open = [ squ ]
-    , closed = []
-    , size = 30
-    , start = { x = 0, y = 0 }
+    { t
+        | rules =
+            [ squareRule1
+            , squareRule2
+            , squareRule3
+            , squareRule4
+            ]
+        , open = [ squ ]
+        , start = { x = 0, y = 0 }
+        , margin = ( 0, 1 )
     }
 
 
@@ -112,11 +112,11 @@ triangularRowsTess =
                 , bounds = ( { x = 0, y = 0 }, { x = 1, y = 2 } )
             }
     in
-    { rules = [ downRule, rightRule, downRule2 ]
-    , open = [ { eqi | col = Secondary } |> rto -60 |> sc 4 |> sz (1 / 4) ]
-    , closed = []
-    , size = 30
-    , start = { x = 0, y = 0 }
+    { t
+        | rules = [ downRule, rightRule, downRule2 ]
+        , open = [ { eqi | col = Secondary } |> rto -60 |> sc 4 |> sz (1 / 4) ]
+        , start = { x = 0, y = 0 }
+        , margin = ( 0, 1 )
     }
 
 
@@ -162,15 +162,15 @@ pythagoreanTess =
                 , bounds = ( { x = -3, y = -3 }, { x = 7, y = 7 } )
             }
     in
-    { rules =
-        [ squareRule2
-        , squareRule1
-        , squareRule3
-        ]
-    , open = [ squ |> sc 3 ]
-    , closed = []
-    , size = 10
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ squareRule2
+            , squareRule1
+            , squareRule3
+            ]
+        , open = [ squ |> sc 3 ]
+        , size = 10
+        , margin = ( 1, 1 )
     }
 
 
@@ -217,15 +217,15 @@ trithagoreanTess =
                 , bounds = ( { x = -1.7, y = -2.5 }, { x = 5, y = 5 } )
             }
     in
-    { rules =
-        [ triRule1
-        , triRule2
-        , triRule3
-        ]
-    , open = [ eqi |> sc 3 ]
-    , closed = []
-    , size = 15
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ triRule1
+            , triRule2
+            , triRule3
+            ]
+        , open = [ eqi |> sc 3 ]
+        , size = 15
+        , margin = ( 2, 1 )
     }
 
 
@@ -270,15 +270,15 @@ hexaStarTess =
                 , bounds = ( { x = -1.5, y = 0 }, { x = 5, y = 7 } )
             }
     in
-    { rules =
-        [ hexRule1
-        , triRule1
-        , hexRule2
-        ]
-    , open = [ hexv |> rto 0 |> sc 2 ]
-    , closed = []
-    , size = 15
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ hexRule1
+            , triRule1
+            , hexRule2
+            ]
+        , open = [ hexv |> rto 0 |> sc 2 ]
+        , size = 15
+        , margin = ( 2, 2 )
     }
 
 
@@ -315,13 +315,13 @@ hexaGyraTess =
                 , bounds = ( { x = -1, y = 0 }, { x = 5, y = 5 } )
             }
     in
-    { rules =
-        [ hexRule
-        , triRule1
-        , triRule2
-        ]
-    , open = [ hexv |> rto 0 ]
-    , closed = []
-    , size = 20
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ hexRule
+            , triRule1
+            , triRule2
+            ]
+        , open = [ hexv |> rto 0 ]
+        , size = 20
+        , margin = ( 2, 1 )
     }

@@ -77,16 +77,16 @@ triakisTriangularTess =
                 , rotatable = False
             }
     in
-    { rules =
-        [ triTile1
-        , triTile2
-        , subRule1
-        , subRule2
-        ]
-    , closed = []
-    , open = [ eqi ]
-    , size = 60
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ triTile1
+            , triTile2
+            , subRule1
+            , subRule2
+            ]
+        , open = [ eqi ]
+        , size = 60
+        , margin = ( 1, 1 )
     }
 
 
@@ -120,16 +120,13 @@ rhombileTess =
                 , rotatable = False
             }
     in
-    { rules =
-        [ hexTile
-        , subRule1
-        ]
-    , closed = []
-    , open =
-        [ hex
-        ]
-    , size = 30
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ hexTile
+            , subRule1
+            ]
+        , open = [ hex ]
+        , margin = ( 1, 1 )
     }
 
 
@@ -166,16 +163,13 @@ tetrakisSquareTess =
                 , rotatable = False
             }
     in
-    { rules =
-        [ sqTile
-        , subRule1
-        ]
-    , closed = []
-    , open =
-        [ squ
-        ]
-    , size = 40
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ sqTile
+            , subRule1
+            ]
+        , open = [ squ ]
+        , size = 40
     }
 
 
@@ -218,16 +212,14 @@ disdyakisRhombileTess =
                 , rotatable = False
             }
     in
-    { rules =
-        [ hexTile
-        , subRule1
-        ]
-    , closed = []
-    , open =
-        [ hex
-        ]
-    , size = 40
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ hexTile
+            , subRule1
+            ]
+        , open = [ hex ]
+        , size = 40
+        , margin = ( 1, 1 )
     }
 
 
@@ -287,16 +279,16 @@ deltodailTriHexagonalTess =
                 , rotatable = False
             }
     in
-    { rules =
-        [ triTile1
-        , triTile2
-        , subRule1
-        , subRule2
-        ]
-    , closed = []
-    , open = [ eqi ]
-    , size = 60
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ triTile1
+            , triTile2
+            , subRule1
+            , subRule2
+            ]
+        , open = [ eqi ]
+        , size = 60
+        , margin = ( 1, 1 )
     }
 
 
@@ -353,11 +345,11 @@ cairoPentagonalTess =
                 , bounds = ( { x = -1, y = -2.5 }, { x = 2, y = 2.5 } )
             }
     in
-    { rules = [ rhomb1, rhomb2, leftR, rightR, upR, downR ]
-    , closed = []
-    , open = [ car |> rto 90 |> tr { x = -1, y = 0 } ]
-    , size = 20
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules = [ rhomb1, rhomb2, leftR, rightR, upR, downR ]
+        , open = [ car |> rto 90 |> tr { x = -1, y = 0 } ]
+        , size = 20
+        , margin = ( 1, 1 )
     }
 
 
@@ -442,15 +434,15 @@ floretPentagonalTess =
                 , bounds = ( { x = -3.5, y = 0 }, { x = 3.5, y = 3.5 } )
             }
     in
-    { rules = [ petal1, next1, petal2, next2, petal3, next3, add1, add2, add3 ]
-    , open =
-        [ flr
-        , { flr | col = Ternary } |> rto -120 |> tr (flr |> pt 2) |> tr (flr |> pt 1)
-        , { flr | col = Secondary } |> rto 120 |> tr (flr |> pt 4) |> tr (flr |> rto 120 |> pt 2 |> neg)
-        ]
-    , closed = []
-    , start = { x = 0.5, y = 0.5 }
-    , size = 15
+    { t
+        | rules = [ petal1, next1, petal2, next2, petal3, next3, add1, add2, add3 ]
+        , open =
+            [ flr
+            , { flr | col = Ternary } |> rto -120 |> tr (flr |> pt 2) |> tr (flr |> pt 1)
+            , { flr | col = Secondary } |> rto 120 |> tr (flr |> pt 4) |> tr (flr |> rto 120 |> pt 2 |> neg)
+            ]
+        , size = 15
+        , margin = ( 3, 4 )
     }
 
 
@@ -515,11 +507,11 @@ prismaticPentagonalTess =
                 , bounds = ( { x = -0.3, y = -0.3 }, { x = 2, y = 3 } )
             }
     in
-    { rules = [ prism1, prism2, prism3, up1, down1, up2, down2 ]
-    , closed = []
-    , open = [ pri ]
-    , size = 25
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules = [ prism1, prism2, prism3, up1, down1, up2, down2 ]
+        , open = [ pri ]
+        , size = 25
+        , margin = ( 1, 1 )
     }
 
 
@@ -575,16 +567,14 @@ triakisStarTess =
                 , rotatable = False
             }
     in
-    { rules =
-        [ hexTile
-        , subRule1
-        ]
-    , closed = []
-    , open =
-        [ hex
-        ]
-    , size = 55
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ hexTile
+            , subRule1
+            ]
+        , open = [ hex ]
+        , size = 55
+        , margin = ( 1, 1 )
     }
 
 
@@ -630,14 +620,12 @@ rhombileStarTess =
                 , rotatable = False
             }
     in
-    { rules =
-        [ hexTile
-        , subRule1
-        ]
-    , closed = []
-    , open =
-        [ hex
-        ]
-    , size = 55
-    , start = { x = 0.5, y = 0.5 }
+    { t
+        | rules =
+            [ hexTile
+            , subRule1
+            ]
+        , open = [ hex ]
+        , size = 55
+        , margin = ( 1, 1 )
     }

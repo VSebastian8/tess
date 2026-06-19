@@ -175,7 +175,13 @@ type alias Tess =
     , closed : List PC
     , size : Float
     , start : Point
+    , margin : ( Float, Float )
     }
+
+
+t : Tess
+t =
+    { rules = [], open = [], closed = [], size = 30, start = { x = 0.5, y = 0.5 }, margin = ( 0, 0 ) }
 
 
 debugTess : Tess -> Bool -> List (Svg msg)
